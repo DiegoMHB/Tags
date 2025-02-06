@@ -8,22 +8,22 @@ export default function RootLayout() {
   const [auth, setAuth] = useState<boolean>(false);
 
   const links : linkList= [
-    {to: "/profile", text:"Profile"},
-    {to: "/posts", text:"Posts"},
-    {to: "/map", text:"Map"},
+    {to: "/profile", text:"Profile",id:1},
+    {to: "/posts", text:"Posts",id:2},
+    {to: "/map", text:"Map",id:3},
   ]
 
   return (
     <>
-      <div className="flex flex-col justify-between h-screen">
-        <div>
+      <div className="flex flex-col justify-between h-screen  ">
+        <div className="bg-gradient-to-r from-[#c6eef7] to-[#e0f5e6] m-2 mb-0 h-screen rounded-2xl">
           {auth ? <Map /> : <Landing />}
           <button onClick={() => setAuth(!auth)}>cheking</button>
         </div>
 
-        <div>
+        <div className="flex justify-evenly bg-black h-15 items-center " >
             {links.map((el)=> 
-            <NavBarElement key={el.el} link={el.to} text={el.text} />)}
+            <NavBarElement key={el.id} link={el.to} text={el.text} />)}
         </div>
       </div>
     </>
