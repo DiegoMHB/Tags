@@ -1,11 +1,14 @@
+import { NavLink } from "react-router-dom";
+
 type BtnMainProps = {
   text: string;
   mode: number
+  link: string
 };
 
 
 
-export default function BtnMain({ text,mode }: BtnMainProps) {
+export default function BtnMain({ text,mode,link }: BtnMainProps) {
 
     const btnStyle = mode===0 ?
      " text-white bg-black h-12 ":
@@ -13,8 +16,11 @@ export default function BtnMain({ text,mode }: BtnMainProps) {
 
     return (
     <button 
-    className={`w-[80%] max-w-[330px] rounded-full uppercase text-2xl ${btnStyle}`}>
+    className={`w-[80%] max-w-[330px] rounded-full uppercase text-2xl ${btnStyle}`}
+    >
+        <NavLink to={link}>
       {text}
+      </NavLink>
     </button>
   );
 }

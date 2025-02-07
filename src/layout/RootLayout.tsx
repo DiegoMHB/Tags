@@ -1,18 +1,15 @@
-import { useState } from "react";
+import {  useState } from "react";
 import Landing from "../pages/Landing";
 import Map from "../pages/Map";
 import NavBarElement from "../components/NavBarElement";
-import { linkList } from "../types/appTypes";
+import { Outlet } from "react-router-dom";
+import { links } from "../data/links";
 
 export default function RootLayout() {
   const [auth, setAuth] = useState<boolean>(false);
+  const [mapRender] = useState<boolean>(false)
 
-  const links: linkList = [
-    { to: "/home", text: "Home", id: 1 },
-    { to: "/profile", text: "Profile", id: 1 },
-    { to: "/posts", text: "Posts", id: 2 },
-    { to: "/map", text: "Map", id: 3 },
-  ];
+
 
   return (
     <>
@@ -29,7 +26,7 @@ export default function RootLayout() {
         bg-gradient-to-r from-[#c6eef7] to-[#e0f5e6] 
         h-[88%] rounded-2xl"
           >
-            {auth ? <Map /> : <Landing />}
+            {auth ? <Outlet /> : mapRender? <Map /> : <Landing />  }
           </section>
 
           <section className="flex justify-evenly bg-black h-15 items-center max-w-[400px] ">
