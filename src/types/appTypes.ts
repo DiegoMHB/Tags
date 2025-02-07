@@ -4,4 +4,7 @@ export type link = {
     text:string
 }
 
-export type linkList = link[]
+export type linkList = {
+    online : link[]
+    offline : link[]
+}

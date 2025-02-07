@@ -1,21 +1,27 @@
 import Landing from "../pages/Landing";
 import Map from "../pages/Map";
 import NavBarElement from "../components/NavBarElement";
-import { Outlet, useLocation } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { links } from "../data/links";
 import { appStore } from "../zustand/appStore";
+import { useEffect } from "react";
 
 export default function RootLayout() {
   const { auth, setAuth, mapRender } = appStore();
-
   const url = useLocation().pathname;
+  const navigate = useNavigate();
 
   const linkRendered =
-    url === "/map"
-      ? links.filter((li) => li.text !== "Map")
-      : links.filter((li) => li.text !== "Home");
+    auth
+      ? links.online
+      : links.offline
 
-  console.log(linkRendered);
+//if online go to profile
+  useEffect(() => {
+    if (auth) {
+      navigate("/profile");
+    }
+  }, [auth, navigate]);
 
   return (
     <>
@@ -23,7 +29,7 @@ export default function RootLayout() {
         <main className="flex flex-col justify-between h-screen max-w-[400px] max-h-[1000px] ">
           <section className="flex justify-evenly bg-black h-10 items-center ">
             <button className="bg-white " onClick={setAuth}>
-              cheking
+              cheking    {auth? "online":"offline"}
             </button>
           </section>
 
@@ -32,9 +38,9 @@ export default function RootLayout() {
         bg-gradient-to-r from-[#c6eef7] to-[#e0f5e6] 
         h-[88%] rounded-2xl"
           >
-            {!auth && !mapRender ? (
+            {url === "/" && !mapRender ? (
               <Landing />
-            ) : !auth && mapRender ? (
+            ) : url === "/" && mapRender ? (
               <Map />
             ) : (
               <Outlet />
