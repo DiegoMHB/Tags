@@ -9,9 +9,9 @@ type BtnMainProps = {
 
 
 
-export default function BtnMain({ text,mode,link,onClick }: BtnMainProps) {
+export default function BtnMain({ text,mode,link, onClick }: BtnMainProps) {
 
-    const btnStyle = mode===0 ?
+    const btnStyle = mode === 0 ?
      " text-white bg-black h-12 ":
      " text-black bg-white h-16 mb-5"
 

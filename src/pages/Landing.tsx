@@ -1,4 +1,3 @@
-import {  useNavigate } from "react-router-dom";
 import BtnMain from "../components/buttons/BtnMain";
 import { appStore } from "../zustand/appStore";
 
@@ -6,10 +5,9 @@ export default function Landing() {
 
   const { setMapRender } = appStore();
 
-  const navigate = useNavigate()
+
   function handleClick  () {
     setMapRender();
-    navigate('/map')
   }
 
   return (
