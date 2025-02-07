@@ -21,12 +21,13 @@ export default function RootLayout() {
     if (auth) {
       navigate("/profile");
     }
+    else  navigate("/")
   }, [auth, navigate]);
 
   return (
     <>
       <main className="flex justify-center items-center bg-black">
-        <main className="flex flex-col justify-between h-screen max-w-[400px] max-h-[1000px] ">
+        <main className="flex flex-col justify-between h-screen max-w-[400px]  ">
           <section className="flex justify-evenly bg-black h-10 items-center ">
             <button className="bg-white " onClick={setAuth}>
               cheking    {auth? "online":"offline"}
@@ -36,7 +37,7 @@ export default function RootLayout() {
           <section
             className="flex-1 flex align-middle justify-center 
         bg-gradient-to-r from-[#c6eef7] to-[#e0f5e6] 
-        h-[88%] rounded-2xl"
+        h-[100%] rounded-2xl"
           >
             {url === "/" && !mapRender ? (
               <Landing />
