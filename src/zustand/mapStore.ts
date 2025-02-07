@@ -1,0 +1,36 @@
+import { create } from "zustand";
+
+export type MapStoreType ={
+ coordinates : number[],
+ loading : boolean,
+ error: string,
+ getCoords : ()=> void
+}
+
+export const mapStore = create<MapStoreType>()((set) => ({
+
+    coordinates : [0,0],
+    loading : false,
+    error : "",
+
+    getCoords: ()=> {
+        set({loading:true})
+        navigator.geolocation.getCurrentPosition( (position) => {
+            const res = [position.coords.latitude, position.coords.longitude];
+            console.log(res)
+            set({coordinates: res , loading:false });
+          },
+          (error) => {
+            console.error("No location found:", error);
+            if(error) set({error: error.message}) 
+            
+          },
+          {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0,
+          })
+
+    }
+    
+}))
