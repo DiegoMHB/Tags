@@ -16,26 +16,29 @@ export default function RootLayout() {
 
   return (
     <>
-      <div className="flex flex-col justify-between h-screen ">
-        <section className="flex justify-evenly bg-black h-10p items-center ">
-          <button className="bg-white " onClick={() => setAuth(!auth)}>
-            cheking
-          </button>
-        </section>
+      <main className="flex justify-center items-center bg-black" >
+        <main className="flex flex-col justify-between h-screen max-w-[400px] max-h-[1000px] ">
+          <section className="flex justify-evenly bg-black h-10 items-center ">
+            <button className="bg-white " onClick={() => setAuth(!auth)}>
+              cheking
+            </button>
+          </section>
 
-        <section 
-        className="flex-1 flex align-middle justify-center 
-        bg-gradient-to-r from-[#c6eef7] to-[#e0f5e6] m-2 mb-0 
-        h-[88%] rounded-2xl">
-          {auth ? <Map /> : <Landing />}
-        </section>
+          <section
+            className="flex-1 flex align-middle justify-center 
+        bg-gradient-to-r from-[#c6eef7] to-[#e0f5e6] 
+        h-[88%] rounded-2xl"
+          >
+            {auth ? <Map /> : <Landing />}
+          </section>
 
-        <section className="flex justify-evenly bg-black h-15 items-center ">
-          {links.map((el) => (
-            <NavBarElement key={el.id} link={el.to} text={el.text} />
-          ))}
-        </section>
-      </div>
+          <section className="flex justify-evenly bg-black h-15 items-center max-w-[400px] ">
+            {links.map((el) => (
+              <NavBarElement key={el.id} link={el.to} text={el.text} />
+            ))}
+          </section>
+        </main>
+      </main>
     </>
   );
 }
