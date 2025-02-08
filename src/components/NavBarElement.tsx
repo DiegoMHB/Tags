@@ -25,8 +25,8 @@ export default function NavBarElement({ text, link }: NavBarElementProps) {
 
 
   return (
-    <div className=" px-5 py-2 flex justify-center items-center bg-[#c6eef7] rounded-full">
-      <p className=" text-s text-black" onClick={handleClick}>
+    <div className=" w-15 h-5 flex justify-center items-center bg-[#c6eef7] rounded-full">
+      <p className=" text-xs text-black" onClick={handleClick}>
         {text}
       </p>
     </div>

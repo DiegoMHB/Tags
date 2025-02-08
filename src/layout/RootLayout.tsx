@@ -26,9 +26,9 @@ export default function RootLayout() {
 
   return (
     <>
-      <main className="flex justify-center items-center bg-black">
-        <main className="flex flex-col justify-between h-screen max-w-[400px]  ">
-          <section className="flex justify-evenly bg-black h-10 items-center ">
+      <main className="flex justify-center items-center]">
+        <main className="flex flex-col justify-between items-center h-screen max-w-[400px]  bg-[#00061A] ">
+          <section className="flex justify-evenly bg-gradient-to-b from-[#00062A] to-[#00061A] h-10 w-full items-center ">
             <button className="bg-white " onClick={setAuth}>
               cheking    {auth? "online":"offline"}
             </button>
@@ -37,7 +37,7 @@ export default function RootLayout() {
           <section
             className="flex-1 flex align-middle justify-center 
         bg-gradient-to-r from-[#c6eef7] to-[#e0f5e6] 
-        h-[100%] rounded-2xl"
+        h-[100%] w-[100%] rounded-2xl"
           >
             {url === "/" && !mapRender ? (
               <Landing />
@@ -48,7 +48,7 @@ export default function RootLayout() {
             )}
           </section>
 
-          <section className="flex justify-evenly bg-black h-15 items-center max-w-[400px] ">
+          <section className="flex justify-evenly bg-gradient-to-t from-[#00062A] to-[#00061A]  h-12 w-full  items-center max-w-[400px] ">
             {linkRendered.map((el) => (
               <NavBarElement key={el.id} link={el.to} text={el.text} />
             ))}
