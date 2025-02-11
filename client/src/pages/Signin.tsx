@@ -4,6 +4,8 @@ import { useState } from "react";
 import BtnMain from "../components/buttons/BtnMain";
 import { NewUser } from "../types/userTypes";
 import { userStore } from "../zustand/userStore";
+import { useNavigate } from "react-router-dom";
+import { appStore } from "../zustand/appStore";
 
 const initialUser: NewUser = {
   name: "",
@@ -17,6 +19,8 @@ const initialUser: NewUser = {
 export default function Signin() {
 
   const {signIn} = userStore();
+  const {setAuth} = appStore();
+  const navigate = useNavigate();
 
   const [user, setUser] = useState<NewUser>(initialUser);
 
@@ -36,7 +40,9 @@ export default function Signin() {
 
   function handelSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
-    signIn(user)
+    signIn(user);
+    navigate('/profile');
+    setAuth()
   }
 
   return (
