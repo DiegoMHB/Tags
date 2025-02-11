@@ -1,11 +1,9 @@
-//
-
 import { useState } from "react";
-import BtnMain from "../components/buttons/BtnMain";
+import { useNavigate } from "react-router-dom";
 import { NewUser } from "../types/userTypes";
 import { userStore } from "../zustand/userStore";
-import { useNavigate } from "react-router-dom";
 import { appStore } from "../zustand/appStore";
+import BtnMain from "../components/buttons/BtnMain";
 
 const initialUser: NewUser = {
   name: "",
@@ -29,11 +27,11 @@ export default function Signin() {
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLSelectElement>
   ) {
-    const data = e.target;
+    const {name,value} = e.target;
     setUser((prev: NewUser) => {
       return {
         ...prev,
-        [data.name]: data.value,
+        [name]: value,
       };
     });
   }

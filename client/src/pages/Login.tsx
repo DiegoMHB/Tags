@@ -1,41 +1,65 @@
+import { useState } from "react";
 import BtnMain from "../components/buttons/BtnMain";
+import { LoginForm } from "../types/appTypes";
 
 export default function Login() {
 
+  const [loginForm, setLoginForm] = useState <LoginForm>({
+    email: "",
+    password: "",
+  });
 
-  return     (
-  <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
-        <h3 className="text-2xl">LOGIN :</h3>
-  
-        <form className=" w-[300px] bg-gradient-to-t from-[#FFFFFF]/20 to-[#FFFFFF]/30 border-gray-500 rounded-3xl">
-          <section className=" flex flex-col justify-center items-start gap-2 p-5">
-            <input
-              placeholder="...mail*"
-              className="w-[100%]"
-              type="text"
-              name="mail"
-              required
-              value=""
-              />
-            <input
-              placeholder="...password* "
-              className="w-[100%]"
-              type="password"
-              name="password"
-              required
-              value=""
-              />
-    
-          </section>
-  
-          <div className=" flex flex-col justify-center items-center w-[100%] my-3">
-            <BtnMain text="Submit" mode={1} link=""  />
-          </div>
+  function handleChange (e :React.ChangeEvent<HTMLInputElement>) {
+    const {name,value} = e.target;
+    setLoginForm((prev) => {
+        return {
+            ...prev,
+            [name] : value
+        }
+    })
+  }
 
-        </form>
-        <span id="fileName" className=" ">
-          If error uploading
-        </span>
-      </main>
-    );
+  function handelSubmit (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    e.preventDefault();
+    console.log(loginForm)
+
+  }
+
+
+
+  return (
+    <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
+      <h3 className="text-2xl">LOGIN :</h3>
+
+      <form className=" w-[300px] bg-gradient-to-t from-[#FFFFFF]/20 to-[#FFFFFF]/30 border-gray-500 rounded-3xl">
+        <section className=" flex flex-col justify-center items-start gap-2 p-5">
+          <input
+            placeholder="...mail*"
+            className="w-[100%]"
+            type="email"
+            name="email"
+            required
+            value={loginForm.email}
+            onChange={handleChange}
+            />
+          <input
+            placeholder="...password* "
+            className="w-[100%]"
+            type="password"
+            name="password"
+            required
+            value={loginForm.password}
+            onChange={handleChange}
+          />
+        </section>
+
+        <div className=" flex flex-col justify-center items-center w-[100%] my-3">
+          <BtnMain text="Submit" mode={1} link="" onClick={handelSubmit} />
+        </div>
+      </form>
+      <span id="fileName" className=" ">
+        If error uploading
+      </span>
+    </main>
+  );
 }

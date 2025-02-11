@@ -8,3 +8,8 @@ export type linkList = {
     online : link[]
     offline : link[]
 }
+
+export type LoginForm = {
+    email : string
+    password: string
+}
