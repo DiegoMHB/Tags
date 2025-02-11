@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import BtnMain from "../components/buttons/BtnMain";
-import { User } from "../types/userTypes";
+import { NewUser } from "../types/userTypes";
+import { userStore } from "../zustand/userStore";
 
-const initialUser: User = {
+const initialUser: NewUser = {
   name: "",
   userName: "",
   email: "",
@@ -14,7 +15,10 @@ const initialUser: User = {
 };
 
 export default function Signin() {
-  const [user, setUser] = useState<User>(initialUser);
+
+  const {signIn} = userStore();
+
+  const [user, setUser] = useState<NewUser>(initialUser);
 
   function handleChange(
     e:
@@ -22,7 +26,7 @@ export default function Signin() {
       | React.ChangeEvent<HTMLSelectElement>
   ) {
     const data = e.target;
-    setUser((prev: User) => {
+    setUser((prev: NewUser) => {
       return {
         ...prev,
         [data.name]: data.value,
@@ -30,11 +34,15 @@ export default function Signin() {
     });
   }
 
-  function handelSubmit() {}
+  function handelSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+    e.preventDefault();
+    signIn(user)
+  }
 
   return (
     <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
       <h3 className="text-2xl">CREATE AN ACCOUNT :</h3>
+
       <form className=" w-[300px] bg-gradient-to-t from-[#FFFFFF]/20 to-[#FFFFFF]/30 border-gray-500 rounded-3xl">
         <section className=" flex flex-col justify-center items-start gap-2 p-5">
           <input
@@ -44,7 +52,8 @@ export default function Signin() {
             name="userName"
             required
             onChange={handleChange}
-          />
+            value={user.userName}
+            />
           <input
             placeholder="...name* "
             className="w-[100%]"
@@ -52,7 +61,8 @@ export default function Signin() {
             name="name"
             required
             onChange={handleChange}
-          />
+            value={user.name}
+            />
           <input
             placeholder="...email*"
             className="w-[100%]"
@@ -60,7 +70,8 @@ export default function Signin() {
             name="email"
             required
             onChange={handleChange}
-          />
+            value={user.email}
+            />
           <input
             placeholder="...password*"
             className="w-[100%]"
@@ -68,13 +79,15 @@ export default function Signin() {
             name="password"
             required
             onChange={handleChange}
-          />
+            value={user.password}
+            />
 
           <select
             className="w-[100%] text-gray-500"
             name="city"
             required
             onChange={handleChange}
+            value={user.city}
           >
             <option className=" text-gray-500">-- Select a City --</option>
             <option value="Berlin" className=" text-gray-500">

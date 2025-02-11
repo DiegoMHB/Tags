@@ -1,8 +1,15 @@
-export type User = {
+export type NewUser = {
     name: string
     userName :string
     email : string
     password : string
     city : string
-    profilePicture: null | File
+    profilePicture: null | string
+}
+
+export type User = NewUser	& {
+    id: string
+    friends : string[]
+    posts : string[]
+
 }
