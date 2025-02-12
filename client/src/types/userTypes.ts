@@ -9,7 +9,5 @@ export type NewUser = {
 
 export type User = NewUser	& {
     id: string
-    friends : string[]
-    posts : string[]
 
 }

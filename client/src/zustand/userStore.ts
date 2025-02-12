@@ -1,12 +1,13 @@
 import { create } from "zustand";
 import { NewUser, User } from "../types/userTypes";
-import { v4 as v4uuid } from "uuid";
 import { LoginForm } from "../types/appTypes";
+
+const url = "http://localhost:3000/"
 
 export type UserStoreType = {
     user: User
-    loading : boolean
-    error : string
+    loading: boolean
+    error: string
     signIn: (user: NewUser) => void
     logIn: (user: NewUser) => void
 }
@@ -19,25 +20,50 @@ const initialUser: User = {
     city: "",
     profilePicture: null,
     id: "",
-    friends: [],
-    posts: []
 };
 
 export const userStore = create<UserStoreType>()((set) => ({
 
     user: initialUser,
     loading: false,
-    error : "",
+    error: "",
 
-    signIn: (user : NewUser) => {
+    signIn: async (user: NewUser) => {
         //request to backend. if ok: navigates to profile, setAuth, set user
         //if not: error = message -> signIn
-      
+        set({ loading: true });
+
+        try {
+            const response = await fetch(`${url}register`, {
+                method: "POST",
+                body: JSON.stringify(user),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (!response.ok) {
+                const errorData = await response.json();
+                set({ error: errorData.message });
+                return
+
+            }
+            const data = await response.json(); 
+            console.log('dataaaa', data)
+            set({user: {...data}})
+
+        } catch (e) {
+            set({ error: e as string })
+        } finally {
+            set({ loading: false });
+        }
+
+
     },
 
-    logIn : (form : LoginForm) => {
+    logIn: (form: LoginForm) => {
+        console.log(form)
         //request to backend. if ok: navigates to profile, setAuth, set user
         //if not: error = message -> logIn
     }
 
-   }))
+}))
