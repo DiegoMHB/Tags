@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import User from '../models/User.model';
 import bcrypt from 'bcrypt'
-import { CreatedAt } from 'sequelize-typescript';
 
 
 
@@ -23,7 +22,7 @@ export const register = async (req: Request, res: Response): Promise<any> => {
                 password: "",
                 city: user.city,
                 profilePicture: user.profilePicture,
-                CreatedAt: user.createdAt
+                createdAt: user.createdAt
             }
         })
 
@@ -57,10 +56,10 @@ export const login = async (req: Request, res: Response): Promise<any> => {
                     password: "",
                     city: user.city,
                     profilePicture: user.profilePicture,
-                    CreatedAt: user.createdAt
+                    createdAt: user.createdAt
                 }
             })
-            
+
         } else {
             throw new Error('Wrong Password')
         }
@@ -68,7 +67,6 @@ export const login = async (req: Request, res: Response): Promise<any> => {
 
 
     } catch (e) {
-        console.log('------------',e)
         return res.status(400).send({ error: e })
     }
 

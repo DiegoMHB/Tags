@@ -42,7 +42,7 @@ class User extends Model {
     city: string
 
     @Column({
-        type: DataType.STRING(100)
+        type: DataType.TEXT
     })
     profilePicture: string
     
