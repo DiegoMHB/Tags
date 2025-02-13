@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import { useForm } from "react-hook-form";
 import { NewUser, User } from "../types/userTypes";
 import { LoginForm } from "../types/appTypes";
 
@@ -30,8 +31,10 @@ export const userStore = create<UserStoreType>()((set) => ({
     loading: false,
     message: "",
 
+
     signIn: async (user: NewUser) => {
         set({ loading: true });
+        console.log(user)
 
         try {
             const response = await fetch(`${url}register`, {
