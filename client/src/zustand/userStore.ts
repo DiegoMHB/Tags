@@ -43,13 +43,14 @@ export const userStore = create<UserStoreType>()((set) => ({
             });
             if (!response.ok) {
                 const errorData = await response.json();
+                console.log(errorData,'-- ERROR --')
                 set({ error: errorData.message });
                 return
 
             }
             const data = await response.json(); 
             console.log('dataaaa', data)
-            set({user: {...data}})
+            set({user:{...data.user},error:data.message})
 
         } catch (e) {
             set({ error: e as string })
