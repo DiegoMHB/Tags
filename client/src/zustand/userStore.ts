@@ -7,9 +7,9 @@ const url = "http://localhost:3000/"
 export type UserStoreType = {
     user: User
     loading: boolean
-    error: string
+    message: string
     signIn: (user: NewUser) => void
-    logIn: (user: NewUser) => void
+    logIn: (user: LoginForm) => void
 }
 
 const initialUser: User = {
@@ -20,18 +20,16 @@ const initialUser: User = {
     city: "",
     profilePicture: null,
     id: "",
-    createdAt : ""
+    createdAt: ""
 };
 
 export const userStore = create<UserStoreType>()((set) => ({
 
     user: initialUser,
     loading: false,
-    error: "",
+    message: "",
 
     signIn: async (user: NewUser) => {
-        //request to backend. if ok: navigates to profile, setAuth, set user
-        //if not: error = message -> signIn
         set({ loading: true });
 
         try {
@@ -44,17 +42,16 @@ export const userStore = create<UserStoreType>()((set) => ({
             });
             if (!response.ok) {
                 const errorData = await response.json();
-                console.log(errorData,'-- ERROR --')
-                set({ error: errorData.message });
+                set({ message: errorData.message });
                 return
 
             }
-            const data = await response.json(); 
+            const data = await response.json();
             console.log('dataaaa', data)
-            set({user:{...data.user},error:data.message})
+            set({ user: { ...data.user }, message: data.message })
 
         } catch (e) {
-            set({ error: e as string })
+            set({ message: e as string })
         } finally {
             set({ loading: false });
         }
@@ -62,10 +59,29 @@ export const userStore = create<UserStoreType>()((set) => ({
 
     },
 
-    logIn: (form: LoginForm) => {
-        console.log(form)
-        //request to backend. if ok: navigates to profile, setAuth, set user
-        //if not: error = message -> logIn
+    logIn: async (form: LoginForm) => {
+        set({ loading: true });
+        try {
+            const response = await fetch(`${url}login`, {
+                method: "POST",
+                body: JSON.stringify(form),
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            if(!response.ok){
+                const errorData = await response.json();
+                set({ message: errorData.message });
+                return
+            };
+            const data = await response.json();
+            set({ user: { ...data.user }, message: data.message })
+
+        } catch (e) {
+            console.log(e)
+        } finally {
+            set({loading:false})
+        }
     }
 
 }))

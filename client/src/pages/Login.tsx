@@ -1,8 +1,11 @@
 import { useState } from "react";
 import BtnMain from "../components/buttons/BtnMain";
 import { LoginForm } from "../types/appTypes";
+import { userStore } from "../zustand/userStore";
 
 export default function Login() {
+
+    const  {logIn} = userStore();
 
   const [loginForm, setLoginForm] = useState <LoginForm>({
     email: "",
@@ -21,7 +24,8 @@ export default function Login() {
 
   function handelSubmit (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
-    console.log(loginForm)
+    logIn(loginForm)
+    
 
   }
 
