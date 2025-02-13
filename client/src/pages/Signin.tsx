@@ -4,9 +4,9 @@ import { NewUser } from "../types/userTypes";
 import { userStore } from "../zustand/userStore";
 import { appStore } from "../zustand/appStore";
 import { uploadFile } from "../assets/firebase/firebase";
+import { useForm } from "react-hook-form";
 import BtnMain from "../components/buttons/BtnMain";
 import Error from "../components/Error";
-import { useForm } from "react-hook-form";
 
 const initialUser: NewUser = {
   name: "",
@@ -41,6 +41,7 @@ export default function Signin() {
 
   function createProfile(user: NewUser) {
     signIn(user);
+    
     navigate("/profile");
     setAuth();
   }
@@ -134,7 +135,7 @@ export default function Signin() {
               className="w-[100%] text-gray-500"
               {...register("city", {
                 required: "City is required",
-                value:"",
+                value: "",
               })}
             >
               <option value="" className=" text-gray-500" disabled>
@@ -172,12 +173,11 @@ export default function Signin() {
             disabled={false}
           />
 
-          <span className="text-xs font-bold ">
-            {selectedFile
-              ? `${selectedFile.name}`
-              : !isUploaded
-              ? "No file chosen"
-              : ""}
+          <span className="text-xs  uppercase">
+            {!selectedFile
+              ? ""
+              : `${selectedFile.name}`
+             }
           </span>
         </div>
 
@@ -189,7 +189,9 @@ export default function Signin() {
             onClick={handleSubmit(createProfile)}
             disabled={selectedFile && !isUploaded ? true : false}
           />
+          <p className=" absolute top-6 left-0  text-xs  uppercase">{selectedFile && !isUploaded ? 'Wait until the picture is uploaded' : ''}</p>
         </div>
+
       </form>
       <span className=" ">{message}</span>
     </main>
