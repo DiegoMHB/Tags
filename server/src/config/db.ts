@@ -7,8 +7,7 @@ dotenv.config();
 
 
 const db = new Sequelize(process.env.DATABASE_URL!, {
-    dialect: 'postgres', 
-    models: [path.join(__dirname, '/../models')], 
+    models: [path.join(__dirname, '/../models/**/*.ts')], 
 });
 
 export default db;

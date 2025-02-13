@@ -1,4 +1,4 @@
-import { Table, Column, Model, DataType, PrimaryKey } from "sequelize-typescript";
+import { Table, Column, Model, DataType, PrimaryKey, Default} from "sequelize-typescript";
 
 @Table({
     tableName: 'users'
@@ -8,8 +8,9 @@ class User extends Model {
 
 
     @PrimaryKey
+    @Default(DataType.UUIDV4)
     @Column({
-        type: DataType.STRING(100)
+        type: DataType.UUID
     })
     id: string;
 
