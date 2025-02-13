@@ -5,10 +5,10 @@ export type NewUser = {
     password : string
     city : string
     profilePicture: null | string
-    createdAt: string
 }
 
 export type User = NewUser	& {
     id: string
+    createdAt: string | null
 
 }

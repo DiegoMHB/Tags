@@ -2,34 +2,35 @@ import { useState } from "react";
 import BtnMain from "../components/buttons/BtnMain";
 import { LoginForm } from "../types/appTypes";
 import { userStore } from "../zustand/userStore";
+import { useNavigate } from "react-router-dom";
+import { appStore } from "../zustand/appStore";
 
 export default function Login() {
+  const { logIn } = userStore();
+  const { setAuth } = appStore();
+  const navigate = useNavigate();
 
-    const  {logIn} = userStore();
-
-  const [loginForm, setLoginForm] = useState <LoginForm>({
+  const [loginForm, setLoginForm] = useState<LoginForm>({
     email: "",
     password: "",
   });
 
-  function handleChange (e :React.ChangeEvent<HTMLInputElement>) {
-    const {name,value} = e.target;
+  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const { name, value } = e.target;
     setLoginForm((prev) => {
-        return {
-            ...prev,
-            [name] : value
-        }
-    })
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
   }
 
-  function handelSubmit (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+  function handelSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
-    logIn(loginForm)
-    
-
+    logIn(loginForm);
+    navigate("/profile");
+    setAuth();
   }
-
-
 
   return (
     <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
@@ -45,7 +46,7 @@ export default function Login() {
             required
             value={loginForm.email}
             onChange={handleChange}
-            />
+          />
           <input
             placeholder="...password* "
             className="w-[100%]"
@@ -58,7 +59,13 @@ export default function Login() {
         </section>
 
         <div className=" flex flex-col justify-center items-center w-[100%] my-3">
-          <BtnMain text="Submit" mode={1} link="" onClick={handelSubmit} />
+          <BtnMain
+            text="Submit"
+            mode={1}
+            link=""
+            onClick={handelSubmit}
+            disabled={false}
+          />
         </div>
       </form>
       <span id="fileName" className=" ">

@@ -5,9 +5,10 @@ type BtnMainProps = {
   mode: number;
   link: string;
   onClick?: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  disabled: boolean
 };
 
-export default function BtnMain({ text, mode, link, onClick }: BtnMainProps) {
+export default function BtnMain({ text, mode, link, onClick,disabled }: BtnMainProps) {
   const btnStyle =
     mode === 0
       ? " text-white bg-black h-12 "
@@ -16,7 +17,7 @@ export default function BtnMain({ text, mode, link, onClick }: BtnMainProps) {
   return (
     <button
       className={`w-[80%] max-w-[330px] rounded-full uppercase text-2xl ${btnStyle}`}
-      onClick={onClick}
+      onClick={onClick} disabled={disabled}
     >
       <NavLink to={link}> {text} </NavLink>
     </button>

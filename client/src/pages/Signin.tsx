@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NewUser } from "../types/userTypes";
 import { userStore } from "../zustand/userStore";
 import { appStore } from "../zustand/appStore";
 import BtnMain from "../components/buttons/BtnMain";
+import { uploadFile } from "../assets/firebase/firebase";
 
 const initialUser: NewUser = {
   name: "",
@@ -15,19 +16,21 @@ const initialUser: NewUser = {
 };
 
 export default function Signin() {
-
-  const {signIn} = userStore();
-  const {setAuth} = appStore();
+  const { signIn, message } = userStore();
+  const { setAuth } = appStore();
   const navigate = useNavigate();
+  const fileInputRef = useRef <HTMLInputElement>(null!);
 
   const [user, setUser] = useState<NewUser>(initialUser);
+  const [selectedFile, setselectedFile] = useState<null | File>(null);
+  const [isUploaded, setIsUploaded] = useState(false);
 
   function handleChange(
     e:
       | React.ChangeEvent<HTMLInputElement>
       | React.ChangeEvent<HTMLSelectElement>
   ) {
-    const {name,value} = e.target;
+    const { name, value } = e.target;
     setUser((prev: NewUser) => {
       return {
         ...prev,
@@ -36,12 +39,42 @@ export default function Signin() {
     });
   }
 
+  const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return; 
+    const file = e.target.files[0];
+    setselectedFile(file);
+  };
+
   function handelSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
     signIn(user);
-    navigate('/profile');
-    setAuth()
+    navigate("/profile");
+    setAuth();
   }
+
+  useEffect(() => {
+    if (selectedFile) {
+      
+      const upload = async () => {
+        try {
+          const url = await uploadFile(selectedFile, "/Profile_pics/");
+          if (typeof url !== "string") {
+            throw new Error();
+          }
+          setUser((prevForm) => ({
+            ...prevForm,
+            profilePicture: url, 
+          }));
+          setIsUploaded(true);
+        } catch (e) {
+          setselectedFile(null);
+          console.log(e);
+        }
+      };
+  
+      upload(); 
+    }
+  }, [selectedFile])
 
   return (
     <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
@@ -57,7 +90,7 @@ export default function Signin() {
             required
             onChange={handleChange}
             value={user.userName}
-            />
+          />
           <input
             placeholder="...name* "
             className="w-[100%]"
@@ -66,7 +99,7 @@ export default function Signin() {
             required
             onChange={handleChange}
             value={user.name}
-            />
+          />
           <input
             placeholder="...email*"
             className="w-[100%]"
@@ -75,7 +108,7 @@ export default function Signin() {
             required
             onChange={handleChange}
             value={user.email}
-            />
+          />
           <input
             placeholder="...password*"
             className="w-[100%]"
@@ -84,7 +117,7 @@ export default function Signin() {
             required
             onChange={handleChange}
             value={user.password}
-            />
+          />
 
           <select
             className="w-[100%] text-gray-500"
@@ -110,20 +143,33 @@ export default function Signin() {
         </section>
 
         <div className=" flex flex-col justify-center items-center w-[100%] my-6">
-          <input style={{ display: "none" }} type="file" name="" value="" />
-          <BtnMain text="Upload a Picture" mode={0} link="" />
+          <input
+            style={{ display: "none" }}
+            ref={fileInputRef}
+            type="file"
+            onInput={handleFile}
+          />
+          <BtnMain
+            text="Upload a Picture"
+            mode={0}
+            link=""
+            onClick={() => fileInputRef.current.click()}
+            disabled={false}
+          />
 
-          <span id="fileName" className=" ">
-            If error uploading
+          <span className="text-xs font-bold ">
+          {selectedFile ? `${selectedFile.name}` : !isUploaded? "No file chosen" : ""}
           </span>
         </div>
 
         <div className=" flex flex-col justify-center items-center w-[100%] my-3">
-          <BtnMain text="Submit" mode={1} link="" onClick={handelSubmit} />
+          <BtnMain text="Submit" mode={1} link="" onClick={handelSubmit} 
+          disabled={selectedFile && !isUploaded? true:false} 
+          />
         </div>
       </form>
-      <span id="fileName" className=" ">
-        If error uploading
+      <span  className=" ">
+        {message}
       </span>
     </main>
   );
