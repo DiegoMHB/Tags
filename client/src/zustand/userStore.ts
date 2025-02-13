@@ -20,6 +20,7 @@ const initialUser: User = {
     city: "",
     profilePicture: null,
     id: "",
+    createdAt : ""
 };
 
 export const userStore = create<UserStoreType>()((set) => ({
