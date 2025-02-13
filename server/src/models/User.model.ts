@@ -1,7 +1,9 @@
-import { Table, Column, Model, DataType, PrimaryKey, Default} from "sequelize-typescript";
+import { Table, Column, Model, DataType, PrimaryKey, Default, CreatedAt} from "sequelize-typescript";
 
 @Table({
-    tableName: 'users'
+    tableName: 'users',
+    timestamps: true,
+    createdAt: true
 })
 
 class User extends Model {
@@ -43,6 +45,13 @@ class User extends Model {
         type: DataType.STRING(100)
     })
     profilePicture: string
+    
+    @CreatedAt
+    @Column({
+        type: DataType.DATE
+    })
+    createdAt: Date
+    
 
 
 }

@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import User from '../models/User.model';
 import bcrypt from 'bcrypt'
+import { CreatedAt } from 'sequelize-typescript';
 
 
 
@@ -8,11 +9,10 @@ export const register = async (req: Request, res: Response): Promise<any> => {
 
     try {
         const data = req.body;
-        console.log('CONTROLLER1111', data)
         data.password = await bcrypt.hash(data.password, 10);
         const user = new User(data);
-        console.log('CONTROLLER1111', user)
         user.save();
+        console.log('------', user)
 
         return res.status(201).json({
             message: "Successfully created",
@@ -23,7 +23,8 @@ export const register = async (req: Request, res: Response): Promise<any> => {
                 email: user.email,
                 password: "",
                 city: user.city,
-                profilePicture: user.profilePicture
+                profilePicture: user.profilePicture,
+                CreatedAt:user.createdAt
             }
         })
 
