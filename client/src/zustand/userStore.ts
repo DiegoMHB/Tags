@@ -9,7 +9,6 @@ export type UserStoreType = {
     auth: boolean
     loading: boolean
     message: string
-    // setAuth: () => void
     signIn: (user: NewUser) => void
     logIn: (user: LoginForm) => void
     logOut: () => void

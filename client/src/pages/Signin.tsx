@@ -6,24 +6,16 @@ import { uploadFile } from "../assets/firebase/firebase";
 import { useForm } from "react-hook-form";
 import BtnMain from "../components/buttons/BtnMain";
 import Error from "../components/Error";
-
-// const initialUser: NewUser = {
-//   name: "",
-//   userName: "",
-//   email: "",
-//   password: "",
-//   city: "",
-//   profilePicture: null,
-// };
+import { appStore } from "../zustand/appStore";
 
 export default function Signin() {
   const { signIn, message } = userStore();
+  const { setError, error } = appStore();
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null!);
 
-//   const [user, setUser] = useState<NewUser>(initialUser);
   const [selectedFile, setselectedFile] = useState<null | File>(null);
-  const [url, setUrl] = useState('');
+  const [url, setUrl] = useState("");
 
   const {
     register,
@@ -37,8 +29,8 @@ export default function Signin() {
     setselectedFile(file);
   };
 
-  function createProfile(user : NewUser) {
-    user = {...user, profilePicture : url}
+  function createProfile(user: NewUser) {
+    user = { ...user, profilePicture: url };
     signIn(user);
     navigate("/profile");
   }
@@ -47,24 +39,21 @@ export default function Signin() {
     if (selectedFile) {
       const upload = async () => {
         try {
-          const url = await uploadFile(selectedFile, "/Profile_pics/");
-          if (typeof url !== "string") {
-            throw "No pic uploaded";
+          const urlPic = await uploadFile(selectedFile, "/Profile_pics/");
+          if (!urlPic) {
+            setError("Failed uploading");
+            return;
           }
-        //   setUser((prevForm) => ({
-        //     ...prevForm,
-        //     profilePicture: url,
-        //   }));
-          setUrl(url);
+          setUrl(urlPic);
         } catch (e) {
-          setselectedFile(null);
           console.log(e);
+          setError("Failed uploading");
         }
       };
 
       upload();
     }
-  }, [selectedFile]);
+  }, [selectedFile, setError]);
 
   return (
     <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
@@ -170,12 +159,14 @@ export default function Signin() {
             disabled={false}
           />
 
-          <span className="text-xs  uppercase">
+          <span className=  "text-xs uppercase" >
             {!selectedFile
               ? ""
-              : `${selectedFile.name}`
-             }
+              : selectedFile && error === "Failed uploading"
+              ? error
+              : selectedFile.name}
           </span>
+          <span className="text-xs uppercase text-green-800">{url? "Succeded!": null}</span>
         </div>
 
         <div className=" flex flex-col justify-center items-center w-[100%] my-3">
@@ -186,9 +177,10 @@ export default function Signin() {
             onClick={handleSubmit(createProfile)}
             disabled={selectedFile && !url ? true : false}
           />
-          <p className=" absolute top-6 left-0  text-xs  uppercase">{selectedFile && !url ? 'Wait until the picture is uploaded' : ''}</p>
+          <p className=" absolute top-6 left-0  text-xs  uppercase">
+            {selectedFile && !url ? "Wait until the picture is uploaded" : ""}
+          </p>
         </div>
-
       </form>
       <span className=" ">{message}</span>
     </main>

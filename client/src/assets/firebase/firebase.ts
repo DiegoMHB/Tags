@@ -18,8 +18,8 @@ const firebaseConfig = {
     storageBucket: "taxi-39e95.firebasestorage.app",
     messagingSenderId: "467277184687",
     appId: "1:467277184687:web:f3d548ea9c9b2d32375e5a"
-  };
-  
+};
+
 
 
 
@@ -28,14 +28,19 @@ const app = initializeApp(firebaseConfig);
 
 export const storage = getStorage(app);
 
-export async function  uploadFile (file:File, location :string) {
-  const fileExtension = file.name.split('.').pop();
-  const metadata = {
-    contentType: file.type, 
-  };
+export async function uploadFile(file: File, location: string) {
+    const fileExtension = file.name.split('.').pop();
+    const metadata = {
+        contentType: file.type,
+    };
 
-  const storageRef = ref(storage, location + v4() + fileExtension);
-  await uploadBytes(storageRef, file, metadata);
-  const url = await getDownloadURL(storageRef);
-  return url
+    const storageRef = ref(storage, location + v4() + fileExtension);
+    const upLoaded = await uploadBytes(storageRef, file, metadata);
+    if (upLoaded.metadata) {
+        const url = await getDownloadURL(storageRef);
+        return url
+    }
+    else {
+        return
+    }
 }
