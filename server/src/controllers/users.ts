@@ -1,30 +1,39 @@
 import { Request, Response } from "express";
 import User from "../models/User.model";
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
+const jwt = require('jsonwebtoken');
 
-
+const jsonToken = process.env.JSON_TOKEN
 
 export const register = async (req: Request, res: Response): Promise<any> => {
 
     try {
-        const data = req.body;
-        data.password = "1234" //always 123 --DEV--
-        data.password = await bcrypt.hash(data.password, 10);
-        const user = new User(data);
-        //Verifying if userName or Email already exists
-        if (await User.findOne({ where: { email: user.email } })) throw ({ message: "Email already registered" })
-        if (await User.findOne({ where: { userName: user.userName } })) throw ({ message: "Username already registered" })
+        const user = req.body;
+        user.password = "1234" //always 123 --DEV--
+        user.password = await bcrypt.hash(user.password, 10);
+        const newUser = new User(user);
 
-        const response = await user.save();
+        //Verifying if userName or Email already exists
+        if (await User.findOne({ where: { email: newUser.email } })) throw ({ message: "Email already registered" })
+        if (await User.findOne({ where: { userName: newUser.userName } })) throw ({ message: "Username already registered" })
+
+        const response = await newUser.save();
 
         if (response.dataValues) {
-            return res.status(201).json({
-                message: "Successfully created",
-                user: {
-                    ...response.dataValues,
-                    password: ""
-                }
-            })
+            response.password = "";
+            const token = jwt.sign(
+                { id: response.id, username: response.userName },
+                jsonToken,
+                { expiresIn: '1h' });
+
+            return res
+                .cookie('access_token', token, {
+                    httpOnly: true,
+                    secure: false,
+                    sameSite: 'strict',
+                })
+                .status(200)
+                .send(response)
         }
 
 
@@ -47,22 +56,23 @@ export const login = async (req: Request, res: Response): Promise<any> => {
 
         const check = await bcrypt.compare(data.password, user.password)
         if (check) {
-            return res.status(201).json({
-                message: "Logged in",
-                user: {
-                    id: user.id,
-                    name: user.name,
-                    userName: user.userName,
-                    email: user.email,
-                    password: "",
-                    city: user.city,
-                    profilePicture: user.profilePicture,
-                    createdAt: user.createdAt
-                }
-            })
+            user.password = '';
+            const token = jwt.sign(
+                { id: user.id, username: user.userName },
+                jsonToken,
+                { expiresIn: '1h' });
+
+            return res
+                .cookie('access_token', token, {
+                    httpOnly: true,
+                    secure: false,
+                    sameSite: 'strict',
+                })
+                .status(200)
+                .send(user)
 
         } else {
-            throw({ message: "Wrong Password" })
+            throw ({ message: "Wrong Password" })
         }
 
     } catch (error) {
@@ -73,3 +83,9 @@ export const login = async (req: Request, res: Response): Promise<any> => {
     }
 
 }
+
+export const userLogout = async (req: Request, res: Response): Promise<any> => {
+    return res
+      .clearCookie('access_token', { httpOnly: true, secure: false, sameSite: 'strict' })
+      .send({ message: 'Cookie deleted, session expired' });
+  }

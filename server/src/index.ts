@@ -1,5 +1,6 @@
 import express from "express";
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 import cors from "cors";
 import db from "./config/db";
 import router from "./router";
@@ -14,6 +15,7 @@ app.use(cors({
     credentials: true,
 }));
 app.use(bodyParser.json());
+app.use(cookieParser())
 app.use(router)
 
 async function connectDB() {
