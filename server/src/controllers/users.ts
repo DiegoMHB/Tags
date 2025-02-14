@@ -33,7 +33,7 @@ export const register = async (req: Request, res: Response): Promise<any> => {
                     sameSite: 'strict',
                 })
                 .status(200)
-                .send(response)
+                .send({user:response.dataValues, message: "Login successfull"})
         }
 
 
