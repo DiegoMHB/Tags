@@ -5,9 +5,11 @@ import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { links } from "../data/links";
 import { appStore } from "../zustand/appStore";
 import { useEffect } from "react";
+import { userStore } from "../zustand/userStore";
 
 export default function RootLayout() {
-  const { auth, setAuth, mapRender } = appStore();
+  const {  mapRender } = appStore();
+  const {  auth } = userStore();
   const url = useLocation().pathname;
   const navigate = useNavigate();
 
@@ -29,9 +31,7 @@ export default function RootLayout() {
       <main className="flex justify-center items-center]">
         <main className="flex flex-col justify-between items-center h-screen max-w-[400px]  bg-[#00061A] ">
           <section className="flex justify-evenly bg-gradient-to-b from-[#00062A] to-[#00061A] h-10 w-full items-center ">
-            <button className="bg-white " onClick={setAuth}>
-              cheking    {auth? "online":"offline"}
-            </button>
+           
           </section>
 
           <section

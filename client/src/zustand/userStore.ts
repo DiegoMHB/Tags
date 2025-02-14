@@ -1,5 +1,4 @@
 import { create } from "zustand";
-import { useForm } from "react-hook-form";
 import { NewUser, User } from "../types/userTypes";
 import { LoginForm } from "../types/appTypes";
 
@@ -7,10 +6,13 @@ const url = "http://localhost:3000/"
 
 export type UserStoreType = {
     user: User
+    auth: boolean
     loading: boolean
     message: string
+    // setAuth: () => void
     signIn: (user: NewUser) => void
     logIn: (user: LoginForm) => void
+    logOut: () => void
 }
 
 const initialUser: User = {
@@ -22,16 +24,17 @@ const initialUser: User = {
     profilePicture: null,
     id: "",
     createdAt: null,
-    
+
 };
 
 export const userStore = create<UserStoreType>()((set) => ({
 
     user: initialUser,
+    auth: false,
     loading: false,
     message: "",
 
-
+    
     signIn: async (user: NewUser) => {
         set({ loading: true });
         console.log(user)
@@ -47,12 +50,13 @@ export const userStore = create<UserStoreType>()((set) => ({
             if (!response.ok) {
                 const errorData = await response.json();
                 set({ message: errorData.message });
-                return
+                return errorData.message
 
             }
             const data = await response.json();
-            console.log('dataaaa', data)
+            console.log(data)
             set({ user: { ...data.user }, message: data.message })
+            set({ auth: true })
 
         } catch (e) {
             set({ message: e as string })
@@ -62,7 +66,7 @@ export const userStore = create<UserStoreType>()((set) => ({
 
 
     },
-
+    
     logIn: async (form: LoginForm) => {
         set({ loading: true });
         try {
@@ -73,19 +77,28 @@ export const userStore = create<UserStoreType>()((set) => ({
                     'Content-Type': 'application/json',
                 },
             });
-            if(!response.ok){
+            if (!response.ok) {
                 const errorData = await response.json();
                 set({ message: errorData.message });
                 return
             };
             const data = await response.json();
             set({ user: { ...data.user }, message: data.message })
-
+            set({ auth: true })
+            
         } catch (e) {
             console.log(e)
         } finally {
-            set({loading:false})
+            set({ loading: false })
         }
+    },
+    logOut:  () => {
+        set(()=> ({
+            user: initialUser,
+            auth: false,
+            loading: false,
+            message: "",
+        }))
     }
 
 }))

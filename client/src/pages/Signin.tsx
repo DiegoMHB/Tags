@@ -2,30 +2,28 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { NewUser } from "../types/userTypes";
 import { userStore } from "../zustand/userStore";
-import { appStore } from "../zustand/appStore";
 import { uploadFile } from "../assets/firebase/firebase";
 import { useForm } from "react-hook-form";
 import BtnMain from "../components/buttons/BtnMain";
 import Error from "../components/Error";
 
-const initialUser: NewUser = {
-  name: "",
-  userName: "",
-  email: "",
-  password: "",
-  city: "",
-  profilePicture: null,
-};
+// const initialUser: NewUser = {
+//   name: "",
+//   userName: "",
+//   email: "",
+//   password: "",
+//   city: "",
+//   profilePicture: null,
+// };
 
 export default function Signin() {
   const { signIn, message } = userStore();
-  const { setAuth } = appStore();
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null!);
 
-  const [user, setUser] = useState<NewUser>(initialUser);
+//   const [user, setUser] = useState<NewUser>(initialUser);
   const [selectedFile, setselectedFile] = useState<null | File>(null);
-  const [isUploaded, setIsUploaded] = useState(false);
+  const [url, setUrl] = useState('');
 
   const {
     register,
@@ -39,11 +37,10 @@ export default function Signin() {
     setselectedFile(file);
   };
 
-  function createProfile(user: NewUser) {
+  function createProfile(user : NewUser) {
+    user = {...user, profilePicture : url}
     signIn(user);
-    
     navigate("/profile");
-    setAuth();
   }
 
   useEffect(() => {
@@ -54,11 +51,11 @@ export default function Signin() {
           if (typeof url !== "string") {
             throw "No pic uploaded";
           }
-          setUser((prevForm) => ({
-            ...prevForm,
-            profilePicture: url,
-          }));
-          setIsUploaded(true);
+        //   setUser((prevForm) => ({
+        //     ...prevForm,
+        //     profilePicture: url,
+        //   }));
+          setUrl(url);
         } catch (e) {
           setselectedFile(null);
           console.log(e);
@@ -124,7 +121,7 @@ export default function Signin() {
               type="password"
               {...register("password", {
                 required: "Password is required",
-                minLength: { value: 8, message: "Minimum 8 characters" },
+                minLength: { value: 1, message: "Minimum 8 characters" },
               })}
             />
             {errors.password && <Error> {errors.password?.message} </Error>}
@@ -187,9 +184,9 @@ export default function Signin() {
             mode={1}
             link=""
             onClick={handleSubmit(createProfile)}
-            disabled={selectedFile && !isUploaded ? true : false}
+            disabled={selectedFile && !url ? true : false}
           />
-          <p className=" absolute top-6 left-0  text-xs  uppercase">{selectedFile && !isUploaded ? 'Wait until the picture is uploaded' : ''}</p>
+          <p className=" absolute top-6 left-0  text-xs  uppercase">{selectedFile && !url ? 'Wait until the picture is uploaded' : ''}</p>
         </div>
 
       </form>

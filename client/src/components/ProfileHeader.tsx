@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
 import stampToDate from "../assets/helperFunctions/stampToDate";
 import { userStore } from "../zustand/userStore";
-import { appStore } from "../zustand/appStore";
-import BtnMain from "./buttons/BtnMain";
 
 export default function ProfileHeader() {
   const { user } = userStore();
-  const { auth, setAuth } = appStore();
+  const { auth } = userStore();
   const [date, setDate] = useState<string | null>(null);
 
   useEffect(() => {
@@ -49,15 +47,7 @@ export default function ProfileHeader() {
         </div>
       </div>
 
-      <div className=" w-full flex justify-center mb-5">
-        <BtnMain
-          mode={0}
-          text={"Log Out"}
-          onClick={() => setAuth()}
-          link="/"
-          disabled={false}
-        />
-      </div>
+      
     </section>
   );
 }
