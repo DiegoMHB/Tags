@@ -41,6 +41,7 @@ export const userStore = create<UserStoreType>()((set) => ({
             const response = await fetch(`${url}register`, {
                 method: "POST",
                 body: JSON.stringify(user),
+                credentials: 'include',
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -70,6 +71,7 @@ export const userStore = create<UserStoreType>()((set) => ({
             const response = await fetch(`${url}login`, {
                 method: "POST",
                 body: JSON.stringify(form),
+                credentials: 'include',
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -80,6 +82,7 @@ export const userStore = create<UserStoreType>()((set) => ({
                 throw (data)
             };
             const data = await response.json();
+            console.log(data)
             set({ user: { ...data.user }, errorMessage: data.message })
             set({ auth: true });
             set({ errorMessage: "" });
