@@ -48,7 +48,7 @@ export const userStore = create<UserStoreType>()((set) => ({
             if (!response.ok) {
                 const data = await response.json();
                 set({ errorMessage: data.error });
-                throw(data)
+                throw (data)
             }
             const data = await response.json();
             set({ user: { ...data.user }, errorMessage: data.message });
@@ -77,7 +77,7 @@ export const userStore = create<UserStoreType>()((set) => ({
             if (!response.ok) {
                 const data = await response.json();
                 set({ errorMessage: data.error });
-                throw(data)
+                throw (data)
             };
             const data = await response.json();
             set({ user: { ...data.user }, errorMessage: data.message })
@@ -90,14 +90,31 @@ export const userStore = create<UserStoreType>()((set) => ({
             set({ loading: false })
         }
     },
-    
-    logOut: () => {
-        set(() => ({
-            user: initialUser,
-            auth: false,
-            loading: false,
-            errorMessage: "",
-        }))
+
+    logOut: async () => {
+        try {
+            const response = await fetch(`${url}logout`, {
+                method: "GET",
+                credentials: 'include',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+            if (!response.ok) {
+                throw new Error('Session couldn\'t be closed');
+            }
+            const data = await response.json();
+            console.log(data)
+            set(() => ({
+                user: initialUser,
+                auth: false,
+                loading: false,
+                errorMessage: "",
+            }))
+            return data
+        } catch (error) {
+            return (error);
+        }
     }
 
 }))
