@@ -51,7 +51,6 @@ export const login = async (req: Request, res: Response): Promise<any> => {
         const data = req.body;
 
         const user = await User.findOne({ where: { email: data.email } });
-
         if (!user) throw ({ message: "Email not registered" })
 
         const check = await bcrypt.compare(data.password, user.password)
@@ -69,7 +68,7 @@ export const login = async (req: Request, res: Response): Promise<any> => {
                     sameSite: 'strict',
                 })
                 .status(200)
-                .send(user)
+                .send({user:user.dataValues, message: "Login successfull"})
 
         } else {
             throw ({ message: "Wrong Password" })
@@ -84,8 +83,8 @@ export const login = async (req: Request, res: Response): Promise<any> => {
 
 }
 
-export const userLogout = async (req: Request, res: Response): Promise<any> => {
+export const logout = async (req: Request, res: Response): Promise<any> => {
     return res
       .clearCookie('access_token', { httpOnly: true, secure: false, sameSite: 'strict' })
-      .send({ message: 'Cookie deleted, session expired' });
+      .send({ message: 'Cookie deleted, session expired', ok:true  });
   }

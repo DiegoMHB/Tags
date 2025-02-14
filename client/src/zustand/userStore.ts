@@ -82,7 +82,6 @@ export const userStore = create<UserStoreType>()((set) => ({
                 throw (data)
             };
             const data = await response.json();
-            console.log(data)
             set({ user: { ...data.user }, errorMessage: data.message })
             set({ auth: true });
             set({ errorMessage: "" });
@@ -104,17 +103,16 @@ export const userStore = create<UserStoreType>()((set) => ({
                 },
             });
             if (!response.ok) {
+                console.log('nooooo')
                 throw new Error('Session couldn\'t be closed');
             }
-            const data = await response.json();
-            console.log(data)
             set(() => ({
                 user: initialUser,
                 auth: false,
                 loading: false,
                 errorMessage: "",
             }))
-            return data
+            return 
         } catch (error) {
             return (error);
         }
