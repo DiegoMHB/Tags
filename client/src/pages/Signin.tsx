@@ -9,7 +9,7 @@ import Error from "../components/Error";
 import { appStore } from "../zustand/appStore";
 
 export default function Signin() {
-  const { signIn, errorMessage,auth } = userStore();
+  const { signIn, errorMessage, auth } = userStore();
   const { setError, error } = appStore();
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null!);
@@ -30,12 +30,7 @@ export default function Signin() {
     setselectedFile(file);
   };
 
-   async function createProfile(user: NewUser) {
-    user = { ...user, profilePicture: url };
-    await signIn(user);
- 
-  }
-
+  //uploads picture and handle errors
   useEffect(() => {
     if (selectedFile) {
       const upload = async () => {
@@ -56,16 +51,20 @@ export default function Signin() {
     }
   }, [selectedFile, setError]);
 
+  //creates profile->useEffect to show error or navigate to map if auth=true
+  async function createProfile(user: NewUser) {
+    user = { ...user, profilePicture: url };
+    await signIn(user);
+  }
+
   useEffect(() => {
     if (!auth) {
-        return;
-      } else {
-        reset();
-        navigate("/profile");
-      }
-  }, [auth, errorMessage,navigate,reset]);
-
-  
+      return;
+    } else {
+      reset();
+      navigate("/map");
+    }
+  }, [auth, errorMessage, navigate, reset]);
 
   return (
     <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
@@ -191,12 +190,15 @@ export default function Signin() {
             onClick={handleSubmit(createProfile)}
             disabled={selectedFile && !url ? true : false}
           />
-          <p className=" absolute top-6 left-0  text-xs  uppercase">
+           <span className="text-red-600 text-sm uppercase ">{errorMessage}</span>
+           
+          {            /* --NOT WORKING --
+           <p className=" absolute top-6 left-0  text-xs  uppercase">
             {selectedFile && !url ? "Wait until the picture is uploaded" : ""}
-          </p>
+          </p> */}
         </div>
       </form>
-      <span className=" ">{errorMessage}</span>
+     
     </main>
   );
 }

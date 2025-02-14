@@ -1,12 +1,12 @@
 import { initializeApp } from "firebase/app";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { v4 } from 'uuid'
+import { v4 } from "uuid"
 
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
+// Your web app"s Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
 const firebase = import.meta.env.VITE_FIREBASE_API;
@@ -29,7 +29,7 @@ const app = initializeApp(firebaseConfig);
 export const storage = getStorage(app);
 
 export async function uploadFile(file: File, location: string) {
-    const fileExtension = file.name.split('.').pop();
+    const fileExtension = file.name.split(".").pop();
     const metadata = {
         contentType: file.type,
     };

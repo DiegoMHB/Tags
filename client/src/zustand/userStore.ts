@@ -33,7 +33,7 @@ export const userStore = create<UserStoreType>()((set) => ({
     loading: false,
     errorMessage: "",
 
-    
+
     signIn: async (user: NewUser) => {
         set({ loading: true });
 
@@ -42,28 +42,28 @@ export const userStore = create<UserStoreType>()((set) => ({
                 method: "POST",
                 body: JSON.stringify(user),
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
             });
             if (!response.ok) {
                 const data = await response.json();
                 set({ errorMessage: data.error });
-                throw new Error(data)
+                throw(data)
             }
             const data = await response.json();
-            set({ user: { ...data.user }, errorMessage: data.message })
-            set({ auth: true })
-            set({errorMessage: '' })
+            set({ user: { ...data.user }, errorMessage: data.message });
+            set({ auth: true });
+            set({ errorMessage: "" });
 
         } catch (e) {
-            console.log('Error',e)
+            console.log("Error", e)
         } finally {
             set({ loading: false });
         }
 
 
     },
-    
+
     logIn: async (form: LoginForm) => {
         set({ loading: true });
         try {
@@ -71,26 +71,28 @@ export const userStore = create<UserStoreType>()((set) => ({
                 method: "POST",
                 body: JSON.stringify(form),
                 headers: {
-                    'Content-Type': 'application/json',
+                    "Content-Type": "application/json",
                 },
             });
             if (!response.ok) {
-                const errorData = await response.json();
-                set({ errorMessage: errorData.message });
-                return
+                const data = await response.json();
+                set({ errorMessage: data.error });
+                throw(data)
             };
             const data = await response.json();
             set({ user: { ...data.user }, errorMessage: data.message })
-            set({ auth: true })
-            
+            set({ auth: true });
+            set({ errorMessage: "" });
+
         } catch (e) {
-            console.log(e)
+            console.log("Error", e)
         } finally {
             set({ loading: false })
         }
     },
-    logOut:  () => {
-        set(()=> ({
+    
+    logOut: () => {
+        set(() => ({
             user: initialUser,
             auth: false,
             loading: false,

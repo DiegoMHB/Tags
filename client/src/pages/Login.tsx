@@ -1,13 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BtnMain from "../components/buttons/BtnMain";
 import { LoginForm } from "../types/appTypes";
 import { userStore } from "../zustand/userStore";
 import { useNavigate } from "react-router-dom";
-import { appStore } from "../zustand/appStore";
 
 export default function Login() {
-  const { logIn } = userStore();
-  const { setAuth } = appStore();
+  const { logIn,errorMessage,auth } = userStore();
   const navigate = useNavigate();
 
   const [loginForm, setLoginForm] = useState<LoginForm>({
@@ -25,12 +23,19 @@ export default function Login() {
     });
   }
 
-  function handelSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+  //execute login -> useEffect to show error or navigate to map if auth=true
+  async function handelSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
     e.preventDefault();
-    logIn(loginForm);
-    navigate("/profile");
-    setAuth();
+    await logIn(loginForm);
   }
+
+   useEffect(() => {
+      if (!auth) {
+        return;
+      } else {
+        navigate("/map");
+      }
+    }, [auth, navigate]);
 
   return (
     <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
@@ -66,11 +71,11 @@ export default function Login() {
             onClick={handelSubmit}
             disabled={false}
           />
+      <span id="fileName" className="text-red-600 text-xs uppercase text-center ">
+       {errorMessage}
+      </span>
         </div>
       </form>
-      <span id="fileName" className=" ">
-        If error uploading
-      </span>
     </main>
   );
 }
