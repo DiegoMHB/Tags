@@ -1,7 +1,7 @@
-import { Table, Column, Model, DataType, PrimaryKey, Default, CreatedAt} from "sequelize-typescript";
+import { Table, Column, Model, DataType, PrimaryKey, Default, CreatedAt } from "sequelize-typescript";
 
 @Table({
-    tableName: 'users',
+    tableName: "users",
     timestamps: true,
     createdAt: true
 })
@@ -22,12 +22,15 @@ class User extends Model {
     name: string
 
     @Column({
-        type: DataType.STRING(100)
+        type: DataType.STRING(100),
+        unique: true
+
     })
     userName: string
 
     @Column({
-        type: DataType.STRING(100)
+        type: DataType.STRING(100),
+        unique: true
     })
     email: string
 
@@ -42,16 +45,16 @@ class User extends Model {
     city: string
 
     @Column({
-        type: DataType.TEXT
+        type: DataType.STRING(255)
     })
     profilePicture: string
-    
+
     @CreatedAt
     @Column({
         type: DataType.DATE
     })
     createdAt: Date
-    
+
 
 
 }

@@ -1,8 +1,8 @@
-import express from 'express';
-import bodyParser from 'body-parser';
-import cors from 'cors';
-import db from './config/db';
-import router from './router';
+import express from "express";
+import bodyParser from "body-parser";
+import cors from "cors";
+import db from "./config/db";
+import router from "./router";
 
 
 
@@ -10,7 +10,7 @@ const app = express();
 const port = 3000;
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: "http://localhost:5173",
     credentials: true,
 }));
 app.use(bodyParser.json());
