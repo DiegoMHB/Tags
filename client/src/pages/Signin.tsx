@@ -9,7 +9,7 @@ import Error from "../components/Error";
 import { appStore } from "../zustand/appStore";
 
 export default function Signin() {
-  const { signIn, message } = userStore();
+  const { signIn, errorMessage,auth } = userStore();
   const { setError, error } = appStore();
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null!);
@@ -21,6 +21,7 @@ export default function Signin() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<NewUser>();
 
   const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -29,10 +30,10 @@ export default function Signin() {
     setselectedFile(file);
   };
 
-  function createProfile(user: NewUser) {
+   async function createProfile(user: NewUser) {
     user = { ...user, profilePicture: url };
-    signIn(user);
-    navigate("/profile");
+    await signIn(user);
+ 
   }
 
   useEffect(() => {
@@ -54,6 +55,17 @@ export default function Signin() {
       upload();
     }
   }, [selectedFile, setError]);
+
+  useEffect(() => {
+    if (!auth) {
+        return;
+      } else {
+        reset();
+        navigate("/profile");
+      }
+  }, [auth, errorMessage,navigate,reset]);
+
+  
 
   return (
     <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
@@ -159,14 +171,16 @@ export default function Signin() {
             disabled={false}
           />
 
-          <span className=  "text-xs uppercase" >
+          <span className="text-xs uppercase">
             {!selectedFile
               ? ""
               : selectedFile && error === "Failed uploading"
               ? error
               : selectedFile.name}
           </span>
-          <span className="text-xs uppercase text-green-800">{url? "Succeded!": null}</span>
+          <span className="text-xs uppercase text-green-800">
+            {url ? "Succeded!" : null}
+          </span>
         </div>
 
         <div className=" flex flex-col justify-center items-center w-[100%] my-3">
@@ -182,7 +196,7 @@ export default function Signin() {
           </p>
         </div>
       </form>
-      <span className=" ">{message}</span>
+      <span className=" ">{errorMessage}</span>
     </main>
   );
 }

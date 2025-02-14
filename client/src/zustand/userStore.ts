@@ -8,7 +8,7 @@ export type UserStoreType = {
     user: User
     auth: boolean
     loading: boolean
-    message: string
+    errorMessage: string
     signIn: (user: NewUser) => void
     logIn: (user: LoginForm) => void
     logOut: () => void
@@ -31,12 +31,11 @@ export const userStore = create<UserStoreType>()((set) => ({
     user: initialUser,
     auth: false,
     loading: false,
-    message: "",
+    errorMessage: "",
 
     
     signIn: async (user: NewUser) => {
         set({ loading: true });
-        console.log(user)
 
         try {
             const response = await fetch(`${url}register`, {
@@ -47,18 +46,17 @@ export const userStore = create<UserStoreType>()((set) => ({
                 },
             });
             if (!response.ok) {
-                const errorData = await response.json();
-                set({ message: errorData.message });
-                return errorData.message
-
+                const data = await response.json();
+                set({ errorMessage: data.error });
+                throw new Error(data)
             }
             const data = await response.json();
-            console.log(data)
-            set({ user: { ...data.user }, message: data.message })
+            set({ user: { ...data.user }, errorMessage: data.message })
             set({ auth: true })
+            set({errorMessage: '' })
 
         } catch (e) {
-            set({ message: e as string })
+            console.log('Error',e)
         } finally {
             set({ loading: false });
         }
@@ -78,11 +76,11 @@ export const userStore = create<UserStoreType>()((set) => ({
             });
             if (!response.ok) {
                 const errorData = await response.json();
-                set({ message: errorData.message });
+                set({ errorMessage: errorData.message });
                 return
             };
             const data = await response.json();
-            set({ user: { ...data.user }, message: data.message })
+            set({ user: { ...data.user }, errorMessage: data.message })
             set({ auth: true })
             
         } catch (e) {
@@ -96,7 +94,7 @@ export const userStore = create<UserStoreType>()((set) => ({
             user: initialUser,
             auth: false,
             loading: false,
-            message: "",
+            errorMessage: "",
         }))
     }
 
