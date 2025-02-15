@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import BtnMain from "../components/buttons/BtnMain";
 import Error from "../components/Error";
 import { appStore } from "../zustand/appStore";
+import { cities } from "../data/listUtilities";
 
 export default function Signin() {
   const { signIn, errorMessage, auth } = userStore();
@@ -126,7 +127,7 @@ export default function Signin() {
             />
             {errors.password && <Error> {errors.password?.message} </Error>}
           </div>
-
+            
           <div className="relative w-full">
             <select
               className="w-[100%] text-gray-500"
@@ -135,21 +136,18 @@ export default function Signin() {
                 value: "",
               })}
             >
+
+{            /* --TO DO: MAP THROW AN ARRAY WITH CITIES-   */}
               <option value="" className=" text-gray-500" disabled>
                 -- Select a City --
               </option>
-              <option value="Berlin" className=" text-gray-500">
-                Berlin
-              </option>
-              <option value="London" className=" text-gray-500">
-                London
-              </option>
-              <option value="Madrid" className=" text-gray-500">
-                Madrid
-              </option>
-              <option value="Paris" className=" text-gray-500">
-                Paris
-              </option>
+              {cities.map((city)=>(
+                  <option value={city.value} key={city.id} className=" text-gray-500">
+                  {city.label}
+                </option>
+              ))}
+            
+           
             </select>
             {errors.city && <Error> {errors.city?.message} </Error>}
           </div>
@@ -192,7 +190,7 @@ export default function Signin() {
           />
            <span className="text-red-600 text-sm uppercase ">{errorMessage}</span>
            
-          {            /* --NOT WORKING --
+          {            /* --TO DO DISABLED BUTTON UNTIL WHILE PICTURE LOADS--
            <p className=" absolute top-6 left-0  text-xs  uppercase">
             {selectedFile && !url ? "Wait until the picture is uploaded" : ""}
           </p> */}

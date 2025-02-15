@@ -13,3 +13,10 @@ export type LoginForm = {
     email : string
     password: string
 }
+
+export type Selection = {
+    label:string,
+    id:number,
+    value:string
+}
+
