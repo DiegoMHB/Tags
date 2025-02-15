@@ -28,7 +28,7 @@ export const cities: Selection[] = [
 
 export const categories: Selection[] = [
     { id: 1, value: "taxi", label: "Taxi"},
-    { id: 1, value: "ticket", label: "Ticket"},
-    { id: 1, value: "info", label: "Info"},
+    { id: 2, value: "ticket", label: "Ticket"},
+    { id: 3, value: "info", label: "Info"},
 ]
 

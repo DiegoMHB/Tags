@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { NewUser, User } from "../types/userTypes";
 import { LoginForm } from "../types/appTypes";
+import { NewPostType } from "../types/postTypes";
 
 const url = "http://localhost:3000/"
 
@@ -9,6 +10,9 @@ export type UserStoreType = {
     auth: boolean
     loading: boolean
     errorMessage: string
+    activePost: NewPostType | null
+
+    setActivePost: (post: NewPostType)=> void
     signIn: (user: NewUser) => void
     logIn: (user: LoginForm) => void
     logOut: () => void
@@ -32,6 +36,9 @@ export const userStore = create<UserStoreType>()((set) => ({
     auth: false,
     loading: false,
     errorMessage: "",
+    activePost: null,
+
+    setActivePost: (post: NewPostType) => set({ activePost: post }),
 
 
     signIn: async (user: NewUser) => {
@@ -112,7 +119,7 @@ export const userStore = create<UserStoreType>()((set) => ({
                 loading: false,
                 errorMessage: "",
             }))
-            return 
+            return
         } catch (error) {
             return (error);
         }

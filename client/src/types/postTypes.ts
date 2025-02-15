@@ -1,14 +1,14 @@
-export type newPostType = {
-    need : boolean, //need:true, offer:false
+export type NewPostType = {
+    need : "NEED" | "OFFER",
     category : string,
     duration: number,
     title: string,
     description: string,
-    pictures? : string[]
+    pictures? : string
 }
 
 
-export type PostType = newPostType & {
+export type PostType = NewPostType & {
     id: string,
     userId: string,
     location : number[],
