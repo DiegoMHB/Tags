@@ -1,22 +1,19 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { NewUser } from "../types/userTypes";
 import { userStore } from "../zustand/userStore";
-import { uploadFile } from "../assets/firebase/firebase";
 import { useForm } from "react-hook-form";
 import BtnMain from "../components/buttons/BtnMain";
 import Error from "../components/Error";
-import { appStore } from "../zustand/appStore";
 import { cities } from "../data/listUtilities";
+import { appStore } from "../zustand/appStore";
+import FotoUploader from "../components/buttons/FotoUploader";
 
 export default function Signin() {
   const { signIn, errorMessage, auth } = userStore();
-  const { setError, error } = appStore();
-  const navigate = useNavigate();
-  const fileInputRef = useRef<HTMLInputElement>(null!);
+  const { fotoUrl, selectedFile,setFotoUrl,setSelectedFile  } = appStore();
 
-  const [selectedFile, setselectedFile] = useState<null | File>(null);
-  const [url, setUrl] = useState("");
+  const navigate = useNavigate();
 
   const {
     register,
@@ -25,36 +22,9 @@ export default function Signin() {
     reset,
   } = useForm<NewUser>();
 
-  const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
-    const file = e.target.files[0];
-    setselectedFile(file);
-  };
-
-  //uploads picture and handle errors
-  useEffect(() => {
-    if (selectedFile) {
-      const upload = async () => {
-        try {
-          const urlPic = await uploadFile(selectedFile, "/Profile_pics/");
-          if (!urlPic) {
-            setError("Failed uploading");
-            return;
-          }
-          setUrl(urlPic);
-        } catch (e) {
-          console.log(e);
-          setError("Failed uploading");
-        }
-      };
-
-      upload();
-    }
-  }, [selectedFile, setError]);
-
   //creates profile->useEffect to show error or navigate to map if auth=true
   async function createProfile(user: NewUser) {
-    user = { ...user, profilePicture: url };
+    user = { ...user, profilePicture: fotoUrl };
     await signIn(user);
   }
 
@@ -63,9 +33,13 @@ export default function Signin() {
       return;
     } else {
       reset();
+      setFotoUrl('');
+      setSelectedFile(null)  
+      
       navigate("/map");
     }
-  }, [auth, errorMessage, navigate, reset]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [auth]);
 
   return (
     <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
@@ -127,7 +101,7 @@ export default function Signin() {
             />
             {errors.password && <Error> {errors.password?.message} </Error>}
           </div>
-            
+
           <div className="relative w-full">
             <select
               className="w-[100%] text-gray-500"
@@ -136,49 +110,24 @@ export default function Signin() {
                 value: "",
               })}
             >
-
-{            /* --TO DO: MAP THROW AN ARRAY WITH CITIES-   */}
               <option value="" className=" text-gray-500" disabled>
                 -- Select a City --
               </option>
-              {cities.map((city)=>(
-                  <option value={city.value} key={city.id} className=" text-gray-500">
+              {cities.map((city) => (
+                <option
+                  value={city.value}
+                  key={city.id}
+                  className=" text-gray-500"
+                >
                   {city.label}
                 </option>
               ))}
-            
-           
             </select>
             {errors.city && <Error> {errors.city?.message} </Error>}
           </div>
         </section>
 
-        <div className=" flex flex-col justify-center items-center w-[100%] my-6">
-          <input
-            style={{ display: "none" }}
-            ref={fileInputRef}
-            type="file"
-            onInput={handleFile}
-          />
-          <BtnMain
-            text="Upload a Picture"
-            mode={0}
-            link=""
-            onClick={() => fileInputRef.current.click()}
-            disabled={false}
-          />
-
-          <span className="text-xs uppercase">
-            {!selectedFile
-              ? ""
-              : selectedFile && error === "Failed uploading"
-              ? error
-              : selectedFile.name}
-          </span>
-          <span className="text-xs uppercase text-green-800">
-            {url ? "Succeded!" : null}
-          </span>
-        </div>
+        <FotoUploader />
 
         <div className=" flex flex-col justify-center items-center w-[100%] my-3">
           <BtnMain
@@ -186,17 +135,14 @@ export default function Signin() {
             mode={1}
             link=""
             onClick={handleSubmit(createProfile)}
-            disabled={selectedFile && !url ? true : false}
+            disabled={selectedFile && !fotoUrl ? true : false}
           />
-           <span className="text-red-600 text-sm uppercase ">{errorMessage}</span>
-           
-          {            /* --TO DO DISABLED BUTTON UNTIL WHILE PICTURE LOADS--
-           <p className=" absolute top-6 left-0  text-xs  uppercase">
-            {selectedFile && !url ? "Wait until the picture is uploaded" : ""}
-          </p> */}
+          <span className="text-red-600 text-sm uppercase ">
+            {errorMessage}
+          </span>
         </div>
+
       </form>
-     
     </main>
   );
 }

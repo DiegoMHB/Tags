@@ -1,57 +1,47 @@
 import { useForm } from "react-hook-form";
 import Error from "../components/Error";
-import { newPostType, PostType } from "../types/postTypes";
+import { NewPostType } from "../types/postTypes";
 import { categories } from "../data/listUtilities";
-import { useEffect, useRef, useState } from "react";
 import BtnMain from "../components/buttons/BtnMain";
-import { uploadFile } from "../assets/firebase/firebase";
+import FotoUploader from "../components/buttons/FotoUploader";
 import { appStore } from "../zustand/appStore";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { userStore } from "../zustand/userStore";
 
 export default function NewPost() {
+  const { fotoUrl, selectedFile, setFotoUrl, setSelectedFile, error } =
+    appStore();
+  const { activePost,setActivePost } = userStore();
+  const navigate = useNavigate();
 
-  const [selectedFile, setselectedFile] = useState<null | File>(null);
-    const [url, setUrl] = useState("");
-   const fileInputRef = useRef<HTMLInputElement>(null!);
-   const { setError, error } = appStore();
+  const {
+    reset,
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<NewPostType>();
 
-   
-   const {
-       register,
-       handleSubmit,
-       formState: { errors },
-    } = useForm<PostType>();
-  
-    async function createPost(post: newPostType) {
-        post = { ...post };
+  async function createPost(post: NewPostType) {
+    post = { ...post, pictures: fotoUrl };
+    setActivePost(post)
+  }
+
+  useEffect(() => {
+    if(activePost !== null){
+    if (error) {
+      return;
+    } if(!error)
+      reset();
+      setFotoUrl("");
+      setSelectedFile(null);
+      console.log(activePost);
+
+      navigate("/profile");
     }
-
-  const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) return;
-    const file = e.target.files[0];
-    setselectedFile(file);
-  };
-
-    //uploads picture and handle errors
-    useEffect(() => {
-      if (selectedFile) {
-        const upload = async () => {
-          try {
-            const urlPic = await uploadFile(selectedFile, "/Profile_pics/");
-            if (!urlPic) {
-              setError("Failed uploading");
-              return;
-            }
-            setUrl(urlPic);
-          } catch (e) {
-            console.log(e);
-            setError("Failed uploading");
-          }
-        };
-  
-        upload();
-      }
-    }, [selectedFile, setError]);
-
+    
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activePost]);
 
   return (
     <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
@@ -59,18 +49,18 @@ export default function NewPost() {
 
       <form className=" w-[300px] bg-gradient-to-t from-[#FFFFFF]/20 to-[#FFFFFF]/30 border-gray-500 rounded-3xl">
         <section className=" flex flex-col justify-center items-start gap-7 p-5 ">
-          <div className="relative w-full">
-            <fieldset className=" flex justify-around items-center text-sm mb-2">
-              <div className="flex gap-2 items-center">
-                <label htmlFor="need">NEED: </label>
-                <input {...register("need")} type="radio" value="NEED" />
-              </div>
-              <div className="flex gap-2 items-center">
-                <label htmlFor="offer">OFFER: </label>
-                <input {...register("need")} type="radio" value="OFFER" />
-              </div>
-            </fieldset>
+          <fieldset className=" flex justify-around items-center text-sm mb-2 relative w-full">
+            <div className="flex gap-2 items-center">
+              <label htmlFor="need">NEED: </label>
+              <input {...register("need")} type="radio" value="NEED" />
+            </div>
+            <div className="flex gap-2 items-center">
+              <label htmlFor="offer">OFFER: </label>
+              <input {...register("need")} type="radio" value="OFFER" />
+            </div>
+          </fieldset>
 
+          <div className="relative w-full">
             <select
               className="w-[100%] text-gray-500"
               {...register("category", {
@@ -107,20 +97,6 @@ export default function NewPost() {
             {errors.title && <Error> {errors.title?.message} </Error>}
           </div>
 
-          <div className="relative w-full h-30">
-            <textarea
-              placeholder="...description (max 50 characters)*"
-              className="w-[100%] "
-              {...register("description", {
-                required: "Description is required",
-                maxLength: { value: 50, message: "Maximal 50 characters" },
-              })}
-            />
-            {errors.description && (
-              <Error> {errors.description?.message} </Error>
-            )}
-          </div>
-
           <div className="relative w-full">
             <input
               placeholder="...duration*"
@@ -132,21 +108,30 @@ export default function NewPost() {
                 required: "Duration is required",
               })}
             />
-            {errors.description && (
-              <Error> {errors.description?.message} </Error>
-            )}
+            {errors.duration && <Error> {errors.duration?.message} </Error>}
           </div>
-          <div className=" flex flex-col justify-center items-center w-[100%] my-3">
-            <BtnMain
-              text="Post it!"
-              disabled={false}
-              mode={1}
-              link=""
-              onClick={handleSubmit(createPost)}
+
+          <div className="relative w-full h-20 ">
+            <textarea
+              placeholder="...description (max 80 characters)"
+              className="w-[100%] resize-none"
+              maxLength={80}
             />
-            <span className="text-red-600 text-sm uppercase ">{}</span>
           </div>
         </section>
+
+        <FotoUploader />
+
+        <div className=" flex flex-col justify-center items-center w-[100%] my-3">
+          <BtnMain
+            text="Post it!"
+            disabled={selectedFile && !fotoUrl ? true : false}
+            mode={1}
+            link=""
+            onClick={handleSubmit(createPost)}
+          />
+          <span className="text-red-600 text-sm uppercase ">{error}</span>
+        </div>
       </form>
     </main>
   );
