@@ -16,7 +16,9 @@ export default function BtnMain({ text, mode, link, onClick,disabled }: BtnMainP
 
   return (
     <button
-      className={`w-[80%] max-w-[330px] rounded-full uppercase text-2xl ${btnStyle}`}
+      className={`w-[80%] max-w-[330px] rounded-full uppercase text-2xl ${btnStyle} ${
+        disabled ? "text-zinc-500 cursor-not-allowed" : null
+      } `}
       onClick={onClick} disabled={disabled}
     >
       <NavLink to={link}> {text} </NavLink>
