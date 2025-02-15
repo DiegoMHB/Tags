@@ -2,7 +2,7 @@ import Landing from "../pages/Landing";
 import Map from "../pages/Map";
 import NavBarElement from "../components/NavBarElement";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
-import { links } from "../data/links";
+import { links } from "../data/listUtilities";
 import { appStore } from "../zustand/appStore";
 import { useEffect } from "react";
 import { userStore } from "../zustand/userStore";

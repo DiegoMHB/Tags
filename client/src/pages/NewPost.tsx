@@ -1,0 +1,102 @@
+import { useForm } from "react-hook-form";
+import Error from "../components/Error";
+import { PostType } from "../types/postTypes";
+import { categories } from "../data/listUtilities";
+import { useEffect } from "react";
+
+export default function NewPost() {
+  useEffect(() => console.log(categories), []);
+  const {
+    register,
+    formState: { errors },
+  } = useForm<PostType>();
+  return (
+    <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
+      <h3 className="text-2xl">CREATE AN ACCOUNT :</h3>
+
+      <form className=" w-[300px] bg-gradient-to-t from-[#FFFFFF]/20 to-[#FFFFFF]/30 border-gray-500 rounded-3xl">
+        <section className=" flex flex-col justify-center items-start gap-7 p-5 ">
+          <div className="relative w-full">
+            
+            
+            <fieldset className=" flex justify-around items-center text-sm mb-2">
+              <div className="flex gap-2 items-center">
+                <label htmlFor="need">NEED:  </label>
+                <input {...register("need")} type="radio" value="NEED" />
+              </div>
+              <div className="flex gap-2 items-center">
+                <label htmlFor="offer">OFFER: </label>
+                <input {...register("need")} type="radio" value="OFFER" />
+              </div>
+            </fieldset>
+
+            <select
+              className="w-[100%] text-gray-500"
+              {...register("category", {
+                required: "category is required",
+                value: "",
+              })}
+            >
+              <option value="" className=" text-gray-500" disabled>
+                -- Select a Category --
+              </option>
+              {categories.map((cat) => (
+                <option
+                  value={cat.value}
+                  key={cat.id}
+                  className=" text-gray-500"
+                >
+                  {cat.label}
+                </option>
+              ))}
+            </select>
+            {errors.category && <Error> {errors.category?.message} </Error>}
+          </div>
+
+          <div className="relative w-full">
+            <input
+              placeholder="...title*"
+              className="w-[100%]"
+              type="text"
+              {...register("title", {
+                required: "Title is required",
+                maxLength: { value: 15, message: "Maximal 15 characters" },
+              })}
+            />
+            {errors.title && <Error> {errors.title?.message} </Error>}
+          </div>
+
+          <div className="relative w-full h-30">
+            <textarea
+              placeholder="...description (max 50 characters)*"
+              className="w-[100%] "
+              {...register("description", {
+                required: "Description is required",
+                maxLength: { value: 50, message: "Maximal 50 characters" },
+              })}
+            />
+            {errors.description && (
+              <Error> {errors.description?.message} </Error>
+            )}
+          </div>
+
+          <div className="relative w-full">
+            <input
+              placeholder="...duration*"
+              className="w-[100%]"
+              type="number"
+              step={15}
+              min={15}
+              {...register("duration", {
+                required: "Duration is required",
+              })}
+            />
+            {errors.description && (
+              <Error> {errors.description?.message} </Error>
+            )}
+          </div>
+        </section>
+      </form>
+    </main>
+  );
+}
