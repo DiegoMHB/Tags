@@ -1,4 +1,5 @@
-import { Table, Column, Model, DataType, PrimaryKey, Default, CreatedAt } from "sequelize-typescript";
+import { Table, Column, Model, DataType, PrimaryKey, Default, CreatedAt, HasMany } from "sequelize-typescript";
+import Post from "./Post.model";
 
 @Table({
     tableName: "users",
@@ -17,41 +18,42 @@ class User extends Model {
     id: string;
 
     @Column({
-        type: DataType.STRING(100)
+        type: DataType.STRING(100), allowNull: false
     })
     name: string
 
     @Column({
-        type: DataType.STRING(100),
-        unique: true
+        type: DataType.STRING(100), allowNull: false, unique: true
 
     })
     userName: string
 
     @Column({
-        type: DataType.STRING(100),
-        unique: true
+        type: DataType.STRING(100), allowNull: false, unique: true
     })
     email: string
 
     @Column({
-        type: DataType.STRING(100)
+        type: DataType.STRING(100),allowNull: false
     })
     password: string
 
     @Column({
-        type: DataType.STRING(100)
+        type: DataType.STRING(100),allowNull: false
     })
     city: string
 
     @Column({
-        type: DataType.STRING(255)
+        type: DataType.STRING(255),allowNull: false
     })
     profilePicture: string
 
+    @HasMany(() => Post)
+    posts!: Post[];
+
     @CreatedAt
     @Column({
-        type: DataType.DATE
+        type: DataType.DATE,allowNull: false
     })
     createdAt: Date
 
