@@ -33,8 +33,8 @@ export const register = async (req: Request, res: Response): Promise<any> => {
                     sameSite: 'strict',
                 })
                 .status(200)
-                .send({user:response.dataValues, message: "Login successfull"})
-        }
+                .send({ user: response.dataValues, message: "Login successfull" })
+        } else throw ({ message: "Couldnt save USER in DB" })
 
 
     } catch (error) {
@@ -68,7 +68,7 @@ export const login = async (req: Request, res: Response): Promise<any> => {
                     sameSite: 'strict',
                 })
                 .status(200)
-                .send({user:user.dataValues, message: "Login successfull"})
+                .send({ user: user.dataValues, message: "Login successfull" })
 
         } else {
             throw ({ message: "Wrong Password" })
@@ -85,6 +85,6 @@ export const login = async (req: Request, res: Response): Promise<any> => {
 
 export const logout = async (req: Request, res: Response): Promise<any> => {
     return res
-      .clearCookie('access_token', { httpOnly: true, secure: false, sameSite: 'strict' })
-      .send({ message: 'Cookie deleted, session expired', ok:true  });
-  }
+        .clearCookie('access_token', { httpOnly: true, secure: false, sameSite: 'strict' })
+        .send({ message: 'Cookie deleted, session expired', ok: true });
+}
