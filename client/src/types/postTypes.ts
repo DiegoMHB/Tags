@@ -5,11 +5,14 @@ export type NewPostType = {
     title: string,
     description: string,
     pictures? : string
+    userId: string,
+    coordinates : number[],
 }
 
 
 export type PostType = NewPostType & {
     id: string,
-    userId: string,
-    location : number[],
+    createdAt: string | null,
+    destroyedAt : string
+
 }

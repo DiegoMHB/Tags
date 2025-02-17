@@ -12,7 +12,7 @@ export type UserStoreType = {
     errorMessage: string
     activePost: NewPostType | null
 
-    setActivePost: (post: NewPostType)=> void
+    createActivePost: (post: NewPostType)=> void
     signIn: (user: NewUser) => void
     logIn: (user: LoginForm) => void
     logOut: () => void
@@ -38,10 +38,39 @@ export const userStore = create<UserStoreType>()((set) => ({
     errorMessage: "",
     activePost: null,
 
-    setActivePost: (post: NewPostType) => set({ activePost: post }),
+    createActivePost: async (post: NewPostType) => {
+        set({ loading: true });
+
+        try {
+            const response = await fetch(`${url}newPost`, {
+                method: "POST",
+                body: JSON.stringify(post),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            if (!response.ok) {
+                const data = await response.json();
+                set({ errorMessage: data.error });
+                throw (data)
+            }
+            const data = await response.json();
+            set({ activePost: data });            
+            set({ errorMessage: "" });
+
+        } catch (e) {
+            console.log("Error", e)
+        } finally {
+            set({ loading: false });
+        }
 
 
-    signIn: async (user: NewUser) => {
+    },
+        
+
+
+
+    signIn: async (user: NewUser) : Promise<void> => {
         set({ loading: true });
 
         try {
@@ -72,11 +101,11 @@ export const userStore = create<UserStoreType>()((set) => ({
 
     },
 
-    logIn: async (form: LoginForm) => {
+    logIn: async (form: LoginForm): Promise<void>  => {
         set({ loading: true });
         try {
             const response = await fetch(`${url}login`, {
-                method: "POST",
+                method: "POST", 
                 body: JSON.stringify(form),
                 credentials: 'include',
                 headers: {
@@ -100,7 +129,7 @@ export const userStore = create<UserStoreType>()((set) => ({
         }
     },
 
-    logOut: async () => {
+    logOut: async () : Promise<void> => {
         try {
             const response = await fetch(`${url}logout`, {
                 method: "GET",
@@ -110,7 +139,6 @@ export const userStore = create<UserStoreType>()((set) => ({
                 },
             });
             if (!response.ok) {
-                console.log('nooooo')
                 throw new Error('Session couldn\'t be closed');
             }
             set(() => ({
@@ -121,7 +149,7 @@ export const userStore = create<UserStoreType>()((set) => ({
             }))
             return
         } catch (error) {
-            return (error);
+            set({ errorMessage: error as string});
         }
     }
 

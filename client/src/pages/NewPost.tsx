@@ -8,11 +8,14 @@ import { appStore } from "../zustand/appStore";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { userStore } from "../zustand/userStore";
+import { mapStore } from "../zustand/mapStore";
 
 export default function NewPost() {
+
   const { fotoUrl, selectedFile, setFotoUrl, setSelectedFile, error } =
     appStore();
-  const { activePost,setActivePost } = userStore();
+  const { activePost,createActivePost, user } = userStore();
+  const {coordinates} = mapStore()
   const navigate = useNavigate();
 
   const {
@@ -23,8 +26,10 @@ export default function NewPost() {
   } = useForm<NewPostType>();
 
   async function createPost(post: NewPostType) {
-    post = { ...post, pictures: fotoUrl };
-    setActivePost(post)
+    console.log(coordinates)
+    post = { ...post, pictures: fotoUrl, userId:user.id, coordinates };
+
+    createActivePost(post)
   }
 
   useEffect(() => {
