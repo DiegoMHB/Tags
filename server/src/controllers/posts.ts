@@ -8,16 +8,22 @@ export const newPost = async (req: Request, res: Response): Promise<any> => {
     try {
         const post = req.body;
         const newPost = new Post(post);
-        console.log('----',newPost)
+        console.log('----', newPost)
         const response = await newPost.save();
-        // console.log(response,'++++')
 
         if (response.dataValues) {
-            // console.log(response)
+
+            setTimeout(async () => {
+                const postToDelete = await Post.findByPk(response.dataValues.id);
+                console.log('delete---------->',postToDelete)
+                await postToDelete.destroy();
+                console.log("DELETED")
+            }, 15 * 1000);
+
             return res
                 .status(200)
                 .send({ post: response.dataValues, message: "Post succesfully created" })
-        }else throw ({ message: "Couldnt save POST in DB" })
+        } else throw ({ message: "Couldnt save POST in DB" })
 
     } catch (error) {
         if (error.message) {
