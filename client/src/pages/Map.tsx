@@ -2,14 +2,14 @@ import { MapContainer, TileLayer,Marker, Popup } from "react-leaflet";
 import { mapUtilities } from "../data/mapUtilities";
 import "leaflet/dist/leaflet.css";
 import { mapStore } from "../zustand/mapStore";
-import { LatLngTuple } from "leaflet";
-import { useEffect } from "react";
+import { divIcon, LatLngTuple } from "leaflet";
+import { appStore } from "../zustand/appStore";
 
 export default function Map() {
 
-    const {coordinates , getCoords } = mapStore(); 
+    const {coordinates } = mapStore(); 
+    const {posts } = appStore(); 
 
-    useEffect(()=> getCoords(),[])
 
   return (
     <>
@@ -21,11 +21,33 @@ export default function Map() {
               id="map"
             />
 
-            <Marker position={[51.505, -0.09,]}>
+            <Marker position={ coordinates as LatLngTuple}>
+                
               <Popup>
-                A pretty CSS3 popup. <br />
+                You are here
               </Popup>
             </Marker>
+
+            {posts.map( post => (
+                
+                <Marker position={post.coordinates} key={post.id} 
+                icon={divIcon({
+                    className: "marker_icon",
+                    html: `<div>
+                <h2 class='marker_tag'>#${post.title} </h2>
+                
+              </div>`,
+                  })}
+                >
+                
+              <Popup>
+               
+              </Popup>
+            </Marker>
+
+            ))
+            
+            }
           </MapContainer>
         </section>
     </>

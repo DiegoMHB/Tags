@@ -26,7 +26,6 @@ export default function NewPost() {
   } = useForm<NewPostType>();
 
   async function createPost(post: NewPostType) {
-    console.log(coordinates,post)
     post = { ...post, picture: fotoUrl, userId:user.id, coordinates };
 
     createActivePost(post)

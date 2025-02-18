@@ -41,6 +41,7 @@ class Post extends Model {
         type: DataType.STRING(100), allowNull: false
     })
     description!: string
+    
 
     @Column({
         type: DataType.STRING(100), allowNull: false
@@ -52,17 +53,7 @@ class Post extends Model {
         type: DataType.ARRAY(DataType.FLOAT), allowNull:false
     })
     coordinates: number[]
-    
-    // @Column({
-    //     type: DataType.FLOAT, //allowNull: false
-    // })
-    // coordinate0: number
-    
-    // @Column({
-    //     type: DataType.FLOAT, //allowNull: false
-    // })
-    // coordinate1: number
-    
+
     
     @CreatedAt
     @Column({
@@ -70,8 +61,9 @@ class Post extends Model {
     })
     createdAt: Date
     
+   
     @Column({
-        type: DataType.DATE,// allowNull: false
+        type: DataType.DATE, allowNull: false
     })
     destroyAt: Date
     
@@ -99,15 +91,8 @@ class Post extends Model {
         post.destroyAt = destroyAt
     }
 
-    // @BeforeCreate
-    // static setCoordinates(post: Post) {
-    //     console.log('POST---------->',post)
-    //     const coord = (post).coordinates;
-    //     console.log('Coordenadas recibidas:', coord);
-    //     post.coordinate0 = +coord[0];
-    //     post.coordinate1 = +coord[1];
 
-    // }
+
 
 }
 

@@ -4,10 +4,12 @@ import { LoginForm } from "../types/appTypes";
 import { userStore } from "../zustand/userStore";
 import { useNavigate } from "react-router-dom";
 import { mapStore } from "../zustand/mapStore";
+import { appStore } from "../zustand/appStore";
 
 export default function Login() {
-  const { logIn,errorMessage,auth } = userStore();
-  const {getCoords}=mapStore()
+  const { logIn, errorMessage, auth } = userStore();
+  const { getCoords } = mapStore();
+  const { getPosts } = appStore();
   const navigate = useNavigate();
 
   const [loginForm, setLoginForm] = useState<LoginForm>({
@@ -26,20 +28,23 @@ export default function Login() {
   }
 
   //execute login -> useEffect to show error or navigate to map if auth=true
-  async function handelSubmit(e: React.MouseEvent<HTMLButtonElement, MouseEvent>) {
+  async function handelSubmit(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) {
     e.preventDefault();
     await logIn(loginForm);
   }
 
-   useEffect(() => {
-      if (!auth) {
-        return;
-      } else {
-        getCoords();
-        navigate("/map");
-      }
+  useEffect(() => {
+    if (!auth) {
+      return;
+    } else {
+      getCoords();
+      getPosts();
+      navigate("/map");
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [auth]);
+  }, [auth]);
 
   return (
     <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
@@ -75,9 +80,12 @@ export default function Login() {
             onClick={handelSubmit}
             disabled={false}
           />
-      <span id="fileName" className="text-red-600 text-xs uppercase text-center ">
-       {errorMessage}
-      </span>
+          <span
+            id="fileName"
+            className="text-red-600 text-xs uppercase text-center "
+          >
+            {errorMessage}
+          </span>
         </div>
       </form>
     </main>

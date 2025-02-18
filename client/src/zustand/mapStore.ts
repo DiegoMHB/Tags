@@ -1,7 +1,8 @@
+import { LatLngTuple } from "leaflet";
 import { create } from "zustand";
 
 export type MapStoreType ={
- coordinates : number[],
+ coordinates : LatLngTuple,
  loading : boolean,
  error: string,
  getCoords : ()=> void
@@ -17,7 +18,7 @@ export const mapStore = create<MapStoreType>()((set) => ({
         set({loading:true})
         navigator.geolocation.getCurrentPosition( (position) => {
             const res = [position.coords.latitude, position.coords.longitude];
-            set({coordinates: res , loading:false });
+            set({coordinates: res as LatLngTuple , loading:false });
           },
           (error) => {
             console.error("No location found:", error);

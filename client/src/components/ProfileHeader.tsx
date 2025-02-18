@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import stampToDate from "../assets/helperFunctions/stampToDate";
 import { userStore } from "../zustand/userStore";
+import image from "../assets/processed_cv_photo.jpg"
 
 export default function ProfileHeader() {
   const { user } = userStore();
@@ -19,8 +20,8 @@ export default function ProfileHeader() {
       <div className="flex m-5 gap-5 ">
         
           <img className="w-20 h-20 object-cover"
-            src={user.profilePicture!}
-            alt={"https://via.placeholder.com/150"}
+            src={user.profilePicture? user.profilePicture : image}
+            alt={"photo"}
           />
         
         <div className=" flex flex-col w-full h-20">

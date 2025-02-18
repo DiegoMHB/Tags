@@ -1,8 +1,18 @@
+import { useEffect } from "react";
 import BtnMain from "../components/buttons/BtnMain";
 import { appStore } from "../zustand/appStore";
+import { mapStore } from "../zustand/mapStore";
 
 export default function Landing() {
-  const { setMapRender } = appStore();
+  const { setMapRender, getPosts } = appStore();
+  const { getCoords } = mapStore();
+
+ 
+  useEffect(() => {
+    getCoords();
+    getPosts();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className="flex flex-col justify-center items-center w-screen space-y-4">
@@ -20,7 +30,7 @@ export default function Landing() {
         link="/login"
         disabled={false}
       ></BtnMain>
-      
+
       <BtnMain
         text={"Sign In"}
         mode={0}

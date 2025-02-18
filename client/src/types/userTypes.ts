@@ -4,7 +4,7 @@ export type NewUser = {
     email : string
     password : string
     city : string
-    profilePicture: null | string
+    profilePicture?:  string | null
     post : string
 }
 

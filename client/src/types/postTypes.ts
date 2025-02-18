@@ -1,3 +1,5 @@
+import { LatLngTuple } from "leaflet"
+
 export type NewPostType = {
     need : "NEED" | "OFFER",
     category : string,
@@ -6,7 +8,7 @@ export type NewPostType = {
     description: string,
     picture? : string
     userId: string,
-    coordinates : number[],
+    coordinates : LatLngTuple,
 }
 
 

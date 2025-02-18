@@ -1,6 +1,6 @@
 import express from "express";
 import { register, login, logout } from "./controllers/users";
-import { newPost } from "./controllers/posts";
+import { newPost, getPosts } from "./controllers/posts";
 
 
 const router = express.Router();
@@ -16,6 +16,8 @@ router.get("/logout", logout);
 //post
 
 router.post("/newPost", newPost);
+
+router.get("/getPosts", getPosts);
 
 
 export default router;

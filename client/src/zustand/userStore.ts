@@ -56,7 +56,6 @@ export const userStore = create<UserStoreType>()((set) => ({
                 throw (data)
             }
             const data = await response.json();
-            console.log(data.message)
             
             
             set({ activePost: data.post });
