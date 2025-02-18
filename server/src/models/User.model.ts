@@ -1,5 +1,6 @@
-import { Table, Column, Model, DataType, PrimaryKey, Default, CreatedAt, HasMany } from "sequelize-typescript";
+import { Table, Column, Model, DataType, PrimaryKey, Default, CreatedAt, HasMany, HasOne } from "sequelize-typescript";
 import Post from "./Post.model";
+import { NonAttribute } from "sequelize";
 
 @Table({
     tableName: "users",
@@ -34,26 +35,30 @@ class User extends Model {
     email: string
 
     @Column({
-        type: DataType.STRING(100),allowNull: false
+        type: DataType.STRING(100), allowNull: false
     })
     password: string
 
     @Column({
-        type: DataType.STRING(100),allowNull: false
+        type: DataType.STRING(100), allowNull: false
     })
     city: string
 
     @Column({
-        type: DataType.STRING(255),allowNull: false
+        type: DataType.STRING(255), allowNull: false
     })
     profilePicture: string
 
-    @HasMany(() => Post)
-    posts!: Post[];
+    @HasOne(() => Post, {
+        foreignKey: 'userId',
+        onDelete: 'CASCADE',
+        hooks: true,
+    })
+    post: Post
 
     @CreatedAt
     @Column({
-        type: DataType.DATE,allowNull: false
+        type: DataType.DATE, allowNull: false
     })
     createdAt: Date
 
