@@ -26,8 +26,8 @@ export default function NewPost() {
   } = useForm<NewPostType>();
 
   async function createPost(post: NewPostType) {
-    console.log(coordinates)
-    post = { ...post, pictures: fotoUrl, userId:user.id, coordinates };
+    console.log(coordinates,post)
+    post = { ...post, picture: fotoUrl, userId:user.id, coordinates };
 
     createActivePost(post)
   }
@@ -40,7 +40,6 @@ export default function NewPost() {
       reset();
       setFotoUrl("");
       setSelectedFile(null);
-      console.log(activePost);
 
       navigate("/profile");
     }
@@ -121,6 +120,9 @@ export default function NewPost() {
               placeholder="...description (max 80 characters)"
               className="w-[100%] resize-none"
               maxLength={80}
+              {...register("description", {
+                required: "A description is required",
+              })}
             />
           </div>
         </section>

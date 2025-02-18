@@ -4,7 +4,7 @@ export type NewPostType = {
     duration: number,
     title: string,
     description: string,
-    pictures? : string
+    picture? : string
     userId: string,
     coordinates : number[],
 }
@@ -13,6 +13,6 @@ export type NewPostType = {
 export type PostType = NewPostType & {
     id: string,
     createdAt: string | null,
-    destroyedAt : string
+    destroyAt : string
 
 }

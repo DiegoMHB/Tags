@@ -21,7 +21,7 @@ export default function RootLayout() {
 //if online go to profile
   useEffect(() => {
     if (auth) {
-      navigate("/profile");
+      navigate("/map");
     }
     else  navigate("/")
   }, [auth, navigate]);

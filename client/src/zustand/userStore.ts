@@ -12,7 +12,7 @@ export type UserStoreType = {
     errorMessage: string
     activePost: NewPostType | null
 
-    createActivePost: (post: NewPostType)=> void
+    createActivePost: (post: NewPostType) => void
     signIn: (user: NewUser) => void
     logIn: (user: LoginForm) => void
     logOut: () => void
@@ -27,6 +27,7 @@ const initialUser: User = {
     profilePicture: null,
     id: "",
     createdAt: null,
+    post: ""
 
 };
 
@@ -55,8 +56,15 @@ export const userStore = create<UserStoreType>()((set) => ({
                 throw (data)
             }
             const data = await response.json();
-            set({ activePost: data });            
+            console.log(data.message)
+            
+            
+            set({ activePost: data.post });
             set({ errorMessage: "" });
+            //deleting the activePost after duration
+            setTimeout(()=>{
+                set({activePost:null})
+            },data.post.duration* 60 * 1000 );
 
         } catch (e) {
             console.log("Error", e)
@@ -66,11 +74,11 @@ export const userStore = create<UserStoreType>()((set) => ({
 
 
     },
-        
 
 
 
-    signIn: async (user: NewUser) : Promise<void> => {
+
+    signIn: async (user: NewUser): Promise<void> => {
         set({ loading: true });
 
         try {
@@ -101,11 +109,11 @@ export const userStore = create<UserStoreType>()((set) => ({
 
     },
 
-    logIn: async (form: LoginForm): Promise<void>  => {
+    logIn: async (form: LoginForm): Promise<void> => {
         set({ loading: true });
         try {
             const response = await fetch(`${url}login`, {
-                method: "POST", 
+                method: "POST",
                 body: JSON.stringify(form),
                 credentials: 'include',
                 headers: {
@@ -129,7 +137,7 @@ export const userStore = create<UserStoreType>()((set) => ({
         }
     },
 
-    logOut: async () : Promise<void> => {
+    logOut: async (): Promise<void> => {
         try {
             const response = await fetch(`${url}logout`, {
                 method: "GET",
@@ -149,7 +157,7 @@ export const userStore = create<UserStoreType>()((set) => ({
             }))
             return
         } catch (error) {
-            set({ errorMessage: error as string});
+            set({ errorMessage: error as string });
         }
     }
 

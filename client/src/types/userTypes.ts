@@ -5,6 +5,7 @@ export type NewUser = {
     password : string
     city : string
     profilePicture: null | string
+    post : string
 }
 
 export type User = NewUser	& {

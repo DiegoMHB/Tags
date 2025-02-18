@@ -3,9 +3,11 @@ import BtnMain from "../components/buttons/BtnMain";
 import { LoginForm } from "../types/appTypes";
 import { userStore } from "../zustand/userStore";
 import { useNavigate } from "react-router-dom";
+import { mapStore } from "../zustand/mapStore";
 
 export default function Login() {
   const { logIn,errorMessage,auth } = userStore();
+  const {getCoords}=mapStore()
   const navigate = useNavigate();
 
   const [loginForm, setLoginForm] = useState<LoginForm>({
@@ -33,9 +35,11 @@ export default function Login() {
       if (!auth) {
         return;
       } else {
+        getCoords();
         navigate("/map");
       }
-    }, [auth, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [auth]);
 
   return (
     <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
