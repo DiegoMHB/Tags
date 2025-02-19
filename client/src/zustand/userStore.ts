@@ -74,12 +74,13 @@ export const userStore = create<UserStoreType>()((set) => ({
 
 
     },
+
     deleteActivePost: async (id:string) => {
         set({ loading: true });
         try{
             const response = await fetch(`${url}deletePost`, {
                 method: "DELETE",
-                body: JSON.stringify(id),
+                body: JSON.stringify({id}),
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -90,7 +91,6 @@ export const userStore = create<UserStoreType>()((set) => ({
                 throw (data) //advertir al usuario
             }
             const data = await response.json();
-            console.log(data)
             set({ errorMessage: data.message });
             set({activePost: null})
             

@@ -46,13 +46,12 @@ export default function NewPost() {
           <h1 className="text-2xl text-center">You have an active post: </h1>
           <PostComponent></PostComponent>
           <div className=" flex flex-col justify-center items-center w-[100%] my-3">
-           
             <BtnMain
               text="Edit Post"
               disabled={selectedFile && !fotoUrl ? true : false}
               mode={1}
               link=""
-              onClick={()=> {deleteActivePost(activePost.id)}}
+              onClick={() => {}}
             />
 
             <BtnMain
@@ -60,7 +59,9 @@ export default function NewPost() {
               disabled={selectedFile && !fotoUrl ? true : false}
               mode={0}
               link=""
-              onClick={()=> {}}
+              onClick={() => {
+                deleteActivePost(activePost.id);
+              }}
             />
           </div>
         </div>
