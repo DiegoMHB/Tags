@@ -25,6 +25,7 @@ export default function Signin() {
   //creates profile->useEffect to show error or navigate to map if auth=true
   async function createProfile(user: NewUser) {
     user = { ...user, profilePicture: fotoUrl };
+    
     await signIn(user);
   }
 

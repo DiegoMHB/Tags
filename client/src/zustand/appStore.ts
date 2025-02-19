@@ -33,6 +33,7 @@ export const appStore = create<AppStoreType>()((set) => ({
     setMapRender: () => set((state) => ({ mapRender: !state.mapRender })),
     setFotoUrl: (newUrl) => set({ fotoUrl: newUrl }),
     setSelectedFile: (file) => set({ selectedFile: file }),
+    
     getPosts: async () => {
         set({loading : true});
         const response = await fetch(`${url}getPosts`, {
@@ -42,7 +43,6 @@ export const appStore = create<AppStoreType>()((set) => ({
             throw new Error('Couldn´t get posts');
         }
         const data = await response.json();
-        console.log(data.posts)
         set(()=> ({
             loading: false,
             posts: data.posts
