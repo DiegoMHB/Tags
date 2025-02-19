@@ -72,3 +72,21 @@ export const deletePost = async (req: Request, res: Response): Promise<any> => {
         return res.status(500).send({ error: "Something happened: try again" });
     }
 }
+
+export const getActivePost = async (req: Request, res: Response): Promise<any> => {
+    try {
+        const {userId} = req.body;    
+        const response = await Post.findOne(userId)
+        if (response) {
+            return res
+                .status(200)
+                .send({ post: response, message: "Post get" })
+        } else throw ({ message: "Couldnt get POST from DB" })
+
+    } catch (error) {
+        if (error.message) {
+            return res.status(400).send({ error: error.message });
+        }
+        return res.status(500).send({ error: "Something happened: try again" });
+    }
+}
