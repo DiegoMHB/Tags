@@ -4,11 +4,14 @@ import Post from "../models/Post.model";
 
 
 
+
     export const newPost = async (req: Request, res: Response): Promise<any> => {
         try {
             const post = req.body;
             const newPost = new Post(post);
+            console.log('newPost---------->',newPost)
             const response = await newPost.save();
+            console.log('response---------->',response)
 
             if (response.dataValues) {
                 
@@ -43,6 +46,27 @@ import Post from "../models/Post.model";
                     .status(200)
                     .send({ posts: response, message: "Posts get" })
             } else throw ({ message: "Couldnt get POST from DB" })
+
+        } catch (error) {
+            if (error.message) {
+                return res.status(400).send({ error: error.message });
+            }
+            return res.status(500).send({ error: "Something happened: try again" });
+        }
+    }
+
+    export const deletePost = async (req: Request, res: Response): Promise<any> => {
+        try {
+            const id = req.body
+            const postToDelete = await Post.findByPk(id);
+            console.log(postToDelete)
+            const response = await postToDelete.destroy();
+           console.log(response)
+            // if (response) {
+            //     return res
+            //         .status(200)
+            //         .send({ message: "Post deleted" })
+            // } else throw ({ message: "Couldnt get POST from DB" })
 
         } catch (error) {
             if (error.message) {

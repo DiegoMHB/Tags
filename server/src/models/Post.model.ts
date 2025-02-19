@@ -1,10 +1,8 @@
 import { Table, Column, Model, DataType, PrimaryKey, Default, CreatedAt, ForeignKey, BelongsTo, BeforeCreate, AllowNull } from "sequelize-typescript";
 import User from "./User.model";
-import { FLOAT } from "sequelize";
 
 @Table({
     tableName: "posts",
-    timestamps: true,
 })
 
 class Post extends Model {
@@ -41,44 +39,44 @@ class Post extends Model {
         type: DataType.STRING(100), allowNull: false
     })
     description!: string
-    
+
 
     @Column({
         type: DataType.STRING(100), allowNull: false
     })
     picture: string
 
-    
+
     @Column({
-        type: DataType.ARRAY(DataType.FLOAT), allowNull:false
+        type: DataType.ARRAY(DataType.FLOAT), allowNull: false
     })
     coordinates: number[]
 
-    
+
     @CreatedAt
     @Column({
         type: DataType.DATE, allowNull: false
     })
     createdAt: Date
-    
-   
+
+
     @Column({
-        type: DataType.DATE, allowNull: false
+        type: DataType.DATE, allowNull: true
     })
     destroyAt: Date
-    
-    
+
+
     @ForeignKey(() => User)
     @Column({
-        type: DataType.UUID
+        type: DataType.UUID, allowNull: false
     })
     userId!: string;
-    
+
     @BelongsTo(() => User)
     user!: User;
-    
-    
-    // coordinates: number[]; //so its part of the instance 
+
+
+
 
     //logic to create the destroyAt property
     @BeforeCreate
@@ -88,7 +86,7 @@ class Post extends Model {
         const baseDate = new Date().getTime();
 
         const destroyAt = new Date(baseDate + extraTimeMs);
-        post.destroyAt = destroyAt
+        post.setDataValue('destroyAt', destroyAt);
     }
 
 
