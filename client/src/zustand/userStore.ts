@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { NewUser, User } from "../types/userTypes";
 import { LoginForm } from "../types/appTypes";
-import { NewPostType } from "../types/postTypes";
+import { NewPostType, PostType } from "../types/postTypes";
 
 const url = "http://localhost:3000/"
 
@@ -10,9 +10,11 @@ export type UserStoreType = {
     auth: boolean
     loading: boolean
     errorMessage: string
-    activePost: NewPostType | null
+    activePost: PostType | null
 
     createActivePost: (post: NewPostType) => void
+    deleteActivePost: (id: string) => void
+    
     signIn: (user: NewUser) => void
     logIn: (user: LoginForm) => void
     logOut: () => void
@@ -41,7 +43,6 @@ export const userStore = create<UserStoreType>()((set) => ({
 
     createActivePost: async (post: NewPostType) => {
         set({ loading: true });
-        console.log(post)
         try {
             const response = await fetch(`${url}newPost`, {
                 method: "POST",
@@ -72,6 +73,33 @@ export const userStore = create<UserStoreType>()((set) => ({
         }
 
 
+    },
+    deleteActivePost: async (id:string) => {
+        set({ loading: true });
+        try{
+            const response = await fetch(`${url}deletePost`, {
+                method: "DELETE",
+                body: JSON.stringify(id),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            if (!response.ok) {
+                const data = await response.json();
+                set({ errorMessage: data.error });
+                throw (data) //advertir al usuario
+            }
+            const data = await response.json();
+            console.log(data)
+            set({ errorMessage: data.message });
+            set({activePost: null})
+            
+
+        }catch (e) {
+            console.log("Error", e)
+        } finally {
+            set({ loading: false });
+        }
     },
 
 
@@ -153,6 +181,7 @@ export const userStore = create<UserStoreType>()((set) => ({
                 auth: false,
                 loading: false,
                 errorMessage: "",
+                activePost: null
             }))
             return
         } catch (error) {
