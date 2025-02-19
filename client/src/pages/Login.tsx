@@ -7,7 +7,7 @@ import { mapStore } from "../zustand/mapStore";
 import { appStore } from "../zustand/appStore";
 
 export default function Login() {
-  const { logIn, errorMessage, auth } = userStore();
+  const { logIn, errorMessage, auth, getActivePost, user } = userStore();
   const { getCoords } = mapStore();
   const { getPosts } = appStore();
   const navigate = useNavigate();
@@ -41,6 +41,7 @@ export default function Login() {
     } else {
       getCoords();
       getPosts();
+      getActivePost(user.id);
       navigate("/map");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

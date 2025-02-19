@@ -13,6 +13,7 @@ export type UserStoreType = {
     activePost: PostType | null
 
     createActivePost: (post: NewPostType) => void
+    getActivePost: (id: string) => void
     deleteActivePost: (id: string) => void
     
     signIn: (user: NewUser) => void
@@ -96,6 +97,34 @@ export const userStore = create<UserStoreType>()((set) => ({
             
 
         }catch (e) {
+            console.log("Error", e)
+        } finally {
+            set({ loading: false });
+        }
+    },
+
+    getActivePost: async (userId : string)=> {
+        set({ loading: true });
+
+        try {
+            const response = await fetch(`${url}getActivePost`, {
+                method: "POST",
+                body: JSON.stringify({userId}),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            if (!response.ok) {
+                const data = await response.json();
+                set({ errorMessage: data.error });
+                throw (data)
+            }
+            const data = await response.json();
+            console.log('en recuperando',data)
+            set({ activePost: data.post });
+            set({ errorMessage: "" });
+
+        } catch (e) {
             console.log("Error", e)
         } finally {
             set({ loading: false });
