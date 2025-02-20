@@ -81,3 +81,25 @@
   font-size: inherit;
   min-height: auto;
 }
+
+.marker_container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.my_post_marker{
+    width: 80px;
+    font-size: 12px;
+    white-space: nowrap;
+    align-self: center;
+    text-align: center;
+    
+}
+.post_marker_LED{
+    height: 12px;
+    width: 12px;
+    background: red;
+    border-radius: 6px;
+    
+}

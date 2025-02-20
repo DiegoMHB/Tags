@@ -6,6 +6,11 @@ import { divIcon, LatLngTuple } from "leaflet";
 import { appStore } from "../zustand/appStore";
 import { userStore } from "../zustand/userStore";
 
+//TODO: show on the marker the time (color? wheel? minutes left?)
+//TODO: create a marker component
+//TODO: Pop-up with some info and link to the post. include name of the user and picture
+
+
 export default function Map() {
   const { coordinates } = mapStore();
   const { posts } = appStore();
@@ -21,17 +26,22 @@ export default function Map() {
             id="map"
           />
           {!activePost ? (
-            <Marker position={coordinates as LatLngTuple}>
-              <Popup>You are here</Popup>
-            </Marker>
+              <Marker position={coordinates as LatLngTuple}>
+                <Popup>You are here</Popup>
+              </Marker>
           ) : (
             <Marker
               position={activePost.coordinates}
               icon={divIcon({
-                className: "marker_icon",
-                html: `<div>  <h2 class='marker_tag'>#${activePost.title} </h2> </div>`
+                className: "",
+                html: `<div class="marker_container">
+                   <div  class="post_marker_LED"></div>
+                <h2 class="my_post_marker"> ${"# " + activePost.title} </h2>
+                </div>`,
               })}
-            ></Marker>
+            >
+              <Popup>You´re active post</Popup>
+            </Marker>
           )}
 
           {posts.map((post) => (
@@ -40,13 +50,13 @@ export default function Map() {
               key={post.id}
               icon={divIcon({
                 className: "marker_icon",
-                html: `<div>
-                <h2 class='marker_tag'>#${post.title} </h2>
-                
-              </div>`,
+                html: `<div class="marker_container">
+                <div  class="post_marker_LED"></div>
+             <h2 class="my_post_marker"> ${"# " + post.title} </h2>
+             </div>`,
               })}
             >
-              <Popup></Popup>
+              <Popup>Someone´s Post</Popup>
             </Marker>
           ))}
         </MapContainer>
