@@ -76,7 +76,9 @@ export const deletePost = async (req: Request, res: Response): Promise<any> => {
 export const getActivePost = async (req: Request, res: Response): Promise<any> => {
     try {
         const {userId} = req.body;    
-        const response = await Post.findOne(userId)
+        console.log(userId)
+        const response = await Post.findOne({where: {userId}})
+        console.log(response)
         if (response) {
             return res
                 .status(200)

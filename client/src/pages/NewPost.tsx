@@ -67,7 +67,7 @@ export default function NewPost() {
         </div>
       ) : (
         <div>
-          <h3 className="text-2xl">New Post :</h3>
+          <h3 className="text-2xl text-center">New Post :</h3>
           <form className=" w-[300px] bg-gradient-to-t from-[#FFFFFF]/20 to-[#FFFFFF]/30 border-gray-500 rounded-3xl">
             <section className=" flex flex-col justify-center items-start gap-7 p-5 ">
               <fieldset className=" flex justify-around items-center text-sm mb-2 relative w-full">

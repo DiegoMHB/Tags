@@ -120,7 +120,6 @@ export const userStore = create<UserStoreType>()((set) => ({
                 throw (data)
             }
             const data = await response.json();
-            console.log('en recuperando',data)
             set({ activePost: data.post });
             set({ errorMessage: "" });
 
