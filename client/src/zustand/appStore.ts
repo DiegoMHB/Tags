@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { PostType } from "../types/postTypes";
+import { User } from "../types/userTypes";
 
 const url = "http://localhost:3000/"
 
@@ -10,12 +11,15 @@ export type AppStoreType = {
     fotoUrl: string,
     posts: PostType[],
     loading: boolean,
+    selectedUser: User|null
 
     getPosts : ()=> void,
+    getUserFromPost: (postId:string)=> void,
     setError : (error : string)=> void,
     setMapRender: () => void,
     setFotoUrl: (url : string) =>void,
     setSelectedFile: (file:File | null) => void,
+    setSelecttedUser: (user:User)=>void
 
 
 
@@ -28,11 +32,13 @@ export const appStore = create<AppStoreType>()((set) => ({
     selectedFile: null,
     posts: [],
     loading:false,
+    selectedUser:null,
     
     setError: (err : string) => set({ error: err }),
     setMapRender: () => set((state) => ({ mapRender: !state.mapRender })),
     setFotoUrl: (newUrl) => set({ fotoUrl: newUrl }),
     setSelectedFile: (file) => set({ selectedFile: file }),
+    setSelecttedUser: (user)=> set({selectedUser:user}),
     
     getPosts: async () => {
         set({loading : true});
@@ -47,6 +53,28 @@ export const appStore = create<AppStoreType>()((set) => ({
             loading: false,
             posts: data.posts
         }))
-    }
+    },
+    getUserFromPost : async (userId : string)=> {
+        set({ loading: true });
+
+        try {
+            const response = await fetch(`${url}user/${userId}`);
+            if (!response.ok) {
+                const data = await response.json();
+                set({ error: data.error });
+                throw (data)
+            }
+            const data = await response.json();
+            console.log(data.user)
+            set({ selectedUser: data.user });
+            set({ error: "" });
+
+        } catch (e) {
+            console.log("Error", e)
+        } finally {
+            set({ loading: false });
+        }
+    },
+    
     
 }))

@@ -9,7 +9,7 @@ export type UserStoreType = {
     user: User
     auth: boolean
     loading: boolean
-    errorMessage: string
+    error: string
     activePost: PostType | null
 
     createActivePost: (post: NewPostType) => void
@@ -39,7 +39,7 @@ export const userStore = create<UserStoreType>()((set) => ({
     user: initialUser,
     auth: false,
     loading: false,
-    errorMessage: "",
+    error: "",
     activePost: null,
 
     createActivePost: async (post: NewPostType) => {
@@ -54,14 +54,14 @@ export const userStore = create<UserStoreType>()((set) => ({
             });
             if (!response.ok) {
                 const data = await response.json();
-                set({ errorMessage: data.error });
+                set({ error: data.error });
                 throw (data)
             }
             const data = await response.json();
             
             
             set({ activePost: data.post });
-            set({ errorMessage: "" });
+            set({ error: "" });
             //deleting the activePost after duration
             setTimeout(()=>{
                 set({activePost:null})
@@ -88,11 +88,11 @@ export const userStore = create<UserStoreType>()((set) => ({
             });
             if (!response.ok) {
                 const data = await response.json();
-                set({ errorMessage: data.error });
+                set({ error: data.error });
                 throw (data) //advertir al usuario
             }
             const data = await response.json();
-            set({ errorMessage: data.message });
+            set({ error: data.message });
             set({activePost: null})
             
 
@@ -116,12 +116,12 @@ export const userStore = create<UserStoreType>()((set) => ({
             });
             if (!response.ok) {
                 const data = await response.json();
-                set({ errorMessage: data.error });
+                set({ error: data.error });
                 throw (data)
             }
             const data = await response.json();
             set({ activePost: data.post });
-            set({ errorMessage: "" });
+            set({ error: "" });
 
         } catch (e) {
             console.log("Error", e)
@@ -147,13 +147,13 @@ export const userStore = create<UserStoreType>()((set) => ({
             });
             if (!response.ok) {
                 const data = await response.json();
-                set({ errorMessage: data.error });
+                set({ error: data.error });
                 throw (data)
             }
             const data = await response.json();
-            set({ user: { ...data.user }, errorMessage: data.message });
+            set({ user: { ...data.user }, error: data.message });
             set({ auth: true });
-            set({ errorMessage: "" });
+            set({ error: "" });
 
         } catch (e) {
             console.log("Error", e)
@@ -177,13 +177,13 @@ export const userStore = create<UserStoreType>()((set) => ({
             });
             if (!response.ok) {
                 const data = await response.json();
-                set({ errorMessage: data.error });
+                set({ error: data.error });
                 throw (data)
             };
             const data = await response.json();
-            set({ user: { ...data.user }, errorMessage: data.message })
+            set({ user: { ...data.user }, error: data.message })
             set({ auth: true });
-            set({ errorMessage: "" });
+            set({ error: "" });
 
         } catch (e) {
             console.log("Error", e)
@@ -208,12 +208,12 @@ export const userStore = create<UserStoreType>()((set) => ({
                 user: initialUser,
                 auth: false,
                 loading: false,
-                errorMessage: "",
+                error: "",
                 activePost: null
             }))
             return
         } catch (error) {
-            set({ errorMessage: error as string });
+            set({ error: error as string });
         }
     }
 

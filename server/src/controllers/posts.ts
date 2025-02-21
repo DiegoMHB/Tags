@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Post from "../models/Post.model";
+import User from "../models/User.model";
 
 
 
@@ -92,3 +93,5 @@ export const getActivePost = async (req: Request, res: Response): Promise<any> =
         return res.status(500).send({ error: "Something happened: try again" });
     }
 }
+
+

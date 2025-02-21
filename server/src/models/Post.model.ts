@@ -42,7 +42,7 @@ class Post extends Model {
 
 
     @Column({
-        type: DataType.STRING(100), allowNull: false
+        type: DataType.STRING(255), allowNull: false
     })
     picture: string
 

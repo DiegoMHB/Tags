@@ -5,20 +5,20 @@ import { mapStore } from "../zustand/mapStore";
 import { divIcon, LatLngTuple } from "leaflet";
 import { appStore } from "../zustand/appStore";
 import { userStore } from "../zustand/userStore";
+import PopUpPost from "../components/PopUpPost";
 
 //TODO: show on the marker the time (color? wheel? minutes left?)
 //TODO: create a marker component
 //TODO: Pop-up with some info and link to the post. include name of the user and picture
 
-
 export default function Map() {
   const { coordinates } = mapStore();
-  const { posts } = appStore();
+  const { posts, getUserFromPost } = appStore();
   const { activePost } = userStore();
 
   return (
     <>
-      <section className="w-screen h-[100%]">
+      <main className="w-screen h-[100%]">
         <MapContainer center={coordinates as LatLngTuple} zoom={15} id="map">
           <TileLayer
             url={mapUtilities.url}
@@ -26,9 +26,9 @@ export default function Map() {
             id="map"
           />
           {!activePost ? (
-              <Marker position={coordinates as LatLngTuple}>
-                <Popup>You are here</Popup>
-              </Marker>
+            <Marker position={coordinates as LatLngTuple}>
+              <Popup>You are here</Popup>
+            </Marker>
           ) : (
             <Marker
               position={activePost.coordinates}
@@ -46,6 +46,7 @@ export default function Map() {
 
           {posts.map((post) => (
             <Marker
+              eventHandlers={{ click: () => getUserFromPost(post.userId) }}
               position={post.coordinates}
               key={post.id}
               icon={divIcon({
@@ -56,11 +57,13 @@ export default function Map() {
              </div>`,
               })}
             >
-              <Popup>Someone´s Post</Popup>
+              <Popup>
+                <PopUpPost post={post}></PopUpPost>
+              </Popup>
             </Marker>
           ))}
         </MapContainer>
-      </section>
+      </main>
     </>
   );
 }

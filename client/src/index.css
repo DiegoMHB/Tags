@@ -14,7 +14,7 @@
 .hs-leaflet.leaflet-touch .leaflet-bar a {
   line-height: 1.5;
   background-color: rgba(255, 255, 255, 0.8);
-  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+
 }
 
 .hs-leaflet.leaflet-touch .leaflet-bar a:first-child,
@@ -45,14 +45,12 @@
   background-color: #e5e7eb;
 }
 
-.hs-leaflet .leaflet-popup-content-wrapper,
-.hs-leaflet .leaflet-popup-tip {
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-}
 
-.hs-leaflet .leaflet-popup-tip {
-  border-radius: 4px;
-}
+
+.leaflet-popup-tip {
+    border-radius: 4px;
+    display: none;
+  }
 
 .hs-leaflet.leaflet-container a.leaflet-popup-close-button {
   top: -10px;
@@ -81,6 +79,8 @@
   font-size: inherit;
   min-height: auto;
 }
+
+
 
 .marker_container{
     display: flex;

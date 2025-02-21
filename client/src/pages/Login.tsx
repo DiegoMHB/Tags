@@ -3,12 +3,10 @@ import BtnMain from "../components/buttons/BtnMain";
 import { LoginForm } from "../types/appTypes";
 import { userStore } from "../zustand/userStore";
 import { useNavigate } from "react-router-dom";
-import { mapStore } from "../zustand/mapStore";
 import { appStore } from "../zustand/appStore";
 
 export default function Login() {
-  const { logIn, errorMessage, auth, getActivePost, user } = userStore();
-  const { getCoords } = mapStore();
+  const { logIn, error, auth, getActivePost, user } = userStore();
   const { getPosts } = appStore();
   const navigate = useNavigate();
 
@@ -39,7 +37,6 @@ export default function Login() {
     if (!auth) {
       return;
     } else {
-      getCoords();
       getPosts();
       getActivePost(user.id);
       navigate("/map");
@@ -85,7 +82,7 @@ export default function Login() {
             id="fileName"
             className="text-red-600 text-xs uppercase text-center "
           >
-            {errorMessage}
+            {error}
           </span>
         </div>
       </form>

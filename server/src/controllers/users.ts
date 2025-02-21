@@ -88,3 +88,22 @@ export const logout = async (req: Request, res: Response): Promise<any> => {
         .clearCookie('access_token', { httpOnly: true, secure: false, sameSite: 'strict' })
         .send({ message: 'Cookie deleted, session expired', ok: true });
 }
+
+export const getUser = async (req: Request, res: Response) : Promise<any>  => {
+    try {
+        const {id} = req.params;    
+        console.log('ID----------------->',id)
+        const response = await User.findByPk(id)
+        if (response) {
+            return res
+                .status(200)
+                .send({ user: response, message: "User get" })
+        } else throw ({ message: "Couldnt get User from DB" })
+
+    } catch (error) {
+        if (error.message) {
+            return res.status(400).send({ error: error.message });
+        }
+        return res.status(500).send({ error: "Something happened: try again" });
+    }
+}
