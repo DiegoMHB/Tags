@@ -1,11 +1,11 @@
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import { mapUtilities } from "../data/mapUtilities";
 import "leaflet/dist/leaflet.css";
 import { mapStore } from "../zustand/mapStore";
-import { divIcon, LatLngTuple } from "leaflet";
+import {  LatLngTuple } from "leaflet";
 import { appStore } from "../zustand/appStore";
 import { userStore } from "../zustand/userStore";
-import PopUpPost from "../components/PopUpPost";
+import PostMarker from "../components/PostMarker";
 
 //TODO: show on the marker the time (color? wheel? minutes left?)
 //TODO: create a marker component
@@ -13,7 +13,7 @@ import PopUpPost from "../components/PopUpPost";
 
 export default function Map() {
   const { coordinates } = mapStore();
-  const { posts, getUserFromPost } = appStore();
+  const { posts } = appStore();
   const { activePost } = userStore();
 
   return (
@@ -26,41 +26,13 @@ export default function Map() {
             id="map"
           />
           {!activePost ? (
-            <Marker position={coordinates as LatLngTuple}>
-              <Popup>You are here</Popup>
-            </Marker>
+            <Marker position={coordinates as LatLngTuple}></Marker>
           ) : (
-            <Marker
-              position={activePost.coordinates}
-              icon={divIcon({
-                className: "",
-                html: `<div class="marker_container">
-                   <div  class="post_marker_LED"></div>
-                <h2 class="my_post_marker"> ${"# " + activePost.title} </h2>
-                </div>`,
-              })}
-            >
-              <Popup>You´re active post</Popup>
-            </Marker>
+            <PostMarker post={activePost} />
           )}
 
           {posts.map((post) => (
-            <Marker
-              eventHandlers={{ click: () => getUserFromPost(post.userId) }}
-              position={post.coordinates}
-              key={post.id}
-              icon={divIcon({
-                className: "marker_icon",
-                html: `<div class="marker_container">
-                <div  class="post_marker_LED"></div>
-             <h2 class="my_post_marker"> ${"# " + post.title} </h2>
-             </div>`,
-              })}
-            >
-              <Popup>
-                <PopUpPost post={post}></PopUpPost>
-              </Popup>
-            </Marker>
+            <PostMarker post={post} />
           ))}
         </MapContainer>
       </main>
