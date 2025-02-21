@@ -8,8 +8,7 @@ import { userStore } from "../zustand/userStore";
 import PostMarker from "../components/PostMarker";
 
 //TODO: show on the marker the time (color? wheel? minutes left?)
-//TODO: create a marker component
-//TODO: Pop-up with some info and link to the post. include name of the user and picture
+
 
 export default function Map() {
   const { coordinates } = mapStore();

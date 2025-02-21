@@ -4,7 +4,7 @@ import { userStore } from "../zustand/userStore";
 import image from "../assets/processed_cv_photo.jpg"
 
 export default function ProfileHeader() {
-  const { user } = userStore();
+  const { user, activePost } = userStore();
   const { auth } = userStore();
   const [date, setDate] = useState<string | null>(null);
 
@@ -28,8 +28,8 @@ export default function ProfileHeader() {
           <div className="flex flex-row items-center gap-3">
             <div
               className={`${
-                auth ? "bg-green-500" : "bg-red-600"
-              }0 w-3 h-3 rounded-xl`}
+                activePost ? "bg-green-500" : "bg-red-600"
+              } w-3 h-3 rounded-xl`}
             ></div>
             <h3 className="text-xl">{user.userName}</h3>
           </div>

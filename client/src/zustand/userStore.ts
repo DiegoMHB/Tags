@@ -105,9 +105,9 @@ export const userStore = create<UserStoreType>()((set) => ({
 
     getActivePost: async (userId : string)=> {
         set({ loading: true });
-
+        console.log(userId)
         try {
-            const response = await fetch(`${url}getActivePost`, {
+            const response = await fetch(`${url}getPost`, {
                 method: "POST",
                 body: JSON.stringify({userId}),
                 headers: {
@@ -120,6 +120,7 @@ export const userStore = create<UserStoreType>()((set) => ({
                 throw (data)
             }
             const data = await response.json();
+            console.log(data)
             set({ activePost: data.post });
             set({ error: "" });
 

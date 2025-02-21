@@ -40,12 +40,15 @@ export default function NewPost() {
   }
 
   return (
-    <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
+    <div>
       {activePost ? (
-        <div className="w-[80%] flex flex-col gap-10 justify-center">
-          <h1 className="text-2xl text-center">You have an active post: </h1>
-          <PostComponent></PostComponent>
-          <div className=" flex flex-col justify-center items-center w-[100%] my-3">
+        <main className="flex flex-col justify-between items-center w-screen space-y-4  ">
+            <h3 className="text-2xl text-center mt-4">
+              You have an active post:{" "}
+            </h3>
+            <PostComponent activePost={activePost}></PostComponent>
+            <div>
+
             <BtnMain
               text="Edit Post"
               disabled={selectedFile && !fotoUrl ? true : false}
@@ -62,12 +65,12 @@ export default function NewPost() {
               onClick={() => {
                 deleteActivePost(activePost.id);
               }}
-            />
-          </div>
-        </div>
+              />
+              </div>
+        </main>
       ) : (
-        <div>
-          <h3 className="text-2xl text-center">New Post :</h3>
+        <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
+          <h3 className="text-2xl text-center mt-4">New Post :</h3>
           <form className=" w-[300px] bg-gradient-to-t from-[#FFFFFF]/20 to-[#FFFFFF]/30 border-gray-500 rounded-3xl">
             <section className=" flex flex-col justify-center items-start gap-7 p-5 ">
               <fieldset className=" flex justify-around items-center text-sm mb-2 relative w-full">
@@ -157,8 +160,8 @@ export default function NewPost() {
               <span className="text-red-600 text-sm uppercase ">{error}</span>
             </div>
           </form>{" "}
-        </div>
+        </main>
       )}
-    </main>
+    </div>
   );
 }

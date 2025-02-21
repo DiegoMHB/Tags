@@ -75,11 +75,11 @@ export const deletePost = async (req: Request, res: Response): Promise<any> => {
 }
 
 export const getActivePost = async (req: Request, res: Response): Promise<any> => {
+    console.log('aaaaaaaaaaaaaaaaa',req.body)
     try {
         const {userId} = req.body;    
-        console.log(userId)
+        console.log('------------->',userId)
         const response = await Post.findOne({where: {userId}})
-        console.log(response)
         if (response) {
             return res
                 .status(200)

@@ -3,11 +3,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid"
 
 
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app"s Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 
 const firebase = import.meta.env.VITE_FIREBASE_API;
 

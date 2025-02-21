@@ -16,7 +16,7 @@ router.get("/user/:id", getUser);
 
 router.get("/getPosts", getPosts);
 router.post("/newPost", newPost);
-router.post("/activePost", getActivePost);
+router.post("/getPost", getActivePost);
 router.delete("/deletePost", deletePost);
 
 

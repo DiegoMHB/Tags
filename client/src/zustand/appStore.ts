@@ -11,15 +11,15 @@ export type AppStoreType = {
     fotoUrl: string,
     posts: PostType[],
     loading: boolean,
-    selectedUser: User|null
+    selectedUser: User | null
 
-    getPosts : ()=> void,
-    getUserFromPost: (postId:string)=> void,
-    setError : (error : string)=> void,
+    getPosts: () => void,
+    getUserFromPost: (postId: string) => void,
+    setError: (error: string) => void,
     setMapRender: () => void,
-    setFotoUrl: (url : string) =>void,
-    setSelectedFile: (file:File | null) => void,
-    setSelecttedUser: (user:User)=>void
+    setFotoUrl: (url: string) => void,
+    setSelectedFile: (file: File | null) => void,
+    setSelecttedUser: (user: User) => void
 
 
 
@@ -28,20 +28,20 @@ export type AppStoreType = {
 export const appStore = create<AppStoreType>()((set) => ({
     error: "",
     mapRender: false,
-    fotoUrl: "", 
+    fotoUrl: "",
     selectedFile: null,
     posts: [],
-    loading:false,
-    selectedUser:null,
-    
-    setError: (err : string) => set({ error: err }),
+    loading: false,
+    selectedUser: null,
+
+    setError: (err: string) => set({ error: err }),
     setMapRender: () => set((state) => ({ mapRender: !state.mapRender })),
     setFotoUrl: (newUrl) => set({ fotoUrl: newUrl }),
     setSelectedFile: (file) => set({ selectedFile: file }),
-    setSelecttedUser: (user)=> set({selectedUser:user}),
-    
+    setSelecttedUser: (user) => set({ selectedUser: user }),
+
     getPosts: async () => {
-        set({loading : true});
+        set({ loading: true });
         const response = await fetch(`${url}getPosts`, {
             method: "GET",
         })
@@ -49,12 +49,12 @@ export const appStore = create<AppStoreType>()((set) => ({
             throw new Error('Couldn´t get posts');
         }
         const data = await response.json();
-        set(()=> ({
+        set(() => ({
             loading: false,
             posts: data.posts
         }))
     },
-    getUserFromPost : async (userId : string)=> {
+    getUserFromPost: async (userId: string) => {
         set({ loading: true });
 
         try {
@@ -65,7 +65,6 @@ export const appStore = create<AppStoreType>()((set) => ({
                 throw (data)
             }
             const data = await response.json();
-            console.log(data.user)
             set({ selectedUser: data.user });
             set({ error: "" });
 
@@ -75,6 +74,6 @@ export const appStore = create<AppStoreType>()((set) => ({
             set({ loading: false });
         }
     },
-    
-    
+
+
 }))
