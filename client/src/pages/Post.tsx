@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import Error from "../components/Error";
-import { NewPostType } from "../types/postTypes";
+import { NewPostType, PostType } from "../types/postTypes";
 import { categories } from "../data/listUtilities";
 import BtnMain from "../components/buttons/BtnMain";
 import FotoUploader from "../components/buttons/FotoUploader";
@@ -9,18 +9,21 @@ import { useNavigate } from "react-router-dom";
 import { userStore } from "../zustand/userStore";
 import { mapStore } from "../zustand/mapStore";
 import PostComponent from "../components/PostComponent";
+import { useEffect, useState } from "react";
 
 export default function NewPost() {
   const { fotoUrl, selectedFile, setFotoUrl, setSelectedFile, error } =
     appStore();
   const { activePost, createActivePost, user, deleteActivePost } = userStore();
   const { coordinates } = mapStore();
+  const [edit, setEdit] = useState<null | PostType>(null);
   const navigate = useNavigate();
 
   const {
     reset,
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<NewPostType>();
 
@@ -39,37 +42,50 @@ export default function NewPost() {
     }
   }
 
+  useEffect(() => {
+    if (edit) {
+      setValue("category", edit!.category);
+      setValue("duration", edit!.duration);
+      setValue("need", edit!.need);
+      setValue("description", edit!.description);
+      setValue("title", edit!.title);
+    }
+  }, [edit, setValue]);
+
+  function editPost() {}
+
   return (
-    <div>
-      {activePost ? (
-        <main className="flex flex-col justify-between items-center w-screen space-y-4  ">
-            <h3 className="text-2xl text-center mt-4">
-              You have an active post:{" "}
-            </h3>
+    <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
+      {activePost && !edit ? (
+        <div>
+          <h3 className="text-2xl text-center m-3">
+            You have an active post:{" "}
+          </h3>
+          <div className="  w-[300px] bg-gradient-to-t from-[#FFFFFF]/20 to-[#FFFFFF]/30 border-gray-500 rounded-3xl">
             <PostComponent activePost={activePost}></PostComponent>
-            <div>
-
-            <BtnMain
-              text="Edit Post"
-              disabled={selectedFile && !fotoUrl ? true : false}
-              mode={1}
-              link=""
-              onClick={() => {}}
-            />
-
-            <BtnMain
-              text="Delete Post"
-              disabled={selectedFile && !fotoUrl ? true : false}
-              mode={0}
-              link=""
-              onClick={() => {
-                deleteActivePost(activePost.id);
-              }}
+            <div className="flex flex-col justify-between items-center w-[90%] pb-5">
+              <BtnMain
+                text="Edit Post"
+                disabled={selectedFile && !fotoUrl ? true : false}
+                mode={1}
+                link=""
+                onClick={() => setEdit(activePost)}
               />
-              </div>
-        </main>
+
+              <BtnMain
+                text="Delete Post"
+                disabled={selectedFile && !fotoUrl ? true : false}
+                mode={0}
+                link=""
+                onClick={() => {
+                  deleteActivePost(activePost.id);
+                }}
+              />
+            </div>
+          </div>
+        </div>
       ) : (
-        <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
+        <div>
           <h3 className="text-2xl text-center mt-4">New Post :</h3>
           <form className=" w-[300px] bg-gradient-to-t from-[#FFFFFF]/20 to-[#FFFFFF]/30 border-gray-500 rounded-3xl">
             <section className=" flex flex-col justify-center items-start gap-7 p-5 ">
@@ -89,7 +105,6 @@ export default function NewPost() {
                   className="w-[100%] text-gray-500"
                   {...register("category", {
                     required: "category is required",
-                    value: "",
                   })}
                 >
                   <option value="" className=" text-gray-500" disabled>
@@ -147,21 +162,32 @@ export default function NewPost() {
               </div>
             </section>
 
-            <FotoUploader />
+            {edit && <img src={edit.picture } className="w-[40px] h-[40px] object-cover mx-auto"/>}
+            <FotoUploader text={edit? "Change Picture" : "Upload a Picture" } />
 
             <div className=" flex flex-col justify-center items-center w-[100%] my-3">
-              <BtnMain
-                text="Post it!"
-                disabled={selectedFile && !fotoUrl ? true : false}
-                mode={1}
-                link=""
-                onClick={handleSubmit(createPost)}
-              />
+              {!edit ? (
+                <BtnMain
+                  text="Post it!"
+                  disabled={selectedFile && !fotoUrl ? true : false}
+                  mode={1}
+                  link=""
+                  onClick={handleSubmit(createPost)}
+                />
+              ) : (
+                <BtnMain
+                  text="Edit"
+                  disabled={selectedFile && !fotoUrl ? true : false}
+                  mode={1}
+                  link=""
+                  onClick={handleSubmit(editPost)}
+                />
+              )}
               <span className="text-red-600 text-sm uppercase ">{error}</span>
             </div>
-          </form>{" "}
-        </main>
+          </form>
+        </div>
       )}
-    </div>
+    </main>
   );
 }

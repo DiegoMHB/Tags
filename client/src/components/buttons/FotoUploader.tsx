@@ -3,7 +3,11 @@ import { appStore } from "../../zustand/appStore";
 import { uploadFile } from "../../assets/firebase/firebase";
 import BtnMain from "./BtnMain";
 
-export default function FotoUploader() {
+type fotoUploaderProps = {
+    text:string
+}
+
+export default function FotoUploader({text}: fotoUploaderProps) {
 
   const {fotoUrl,setFotoUrl,selectedFile,setSelectedFile,setError, error } = appStore()
   const fileInputRef = useRef<HTMLInputElement>(null!);
@@ -44,7 +48,7 @@ export default function FotoUploader() {
         onInput={handleFile}
       />
       <BtnMain
-        text="Upload a Picture"
+        text={text}
         mode={0}
         link=""
         onClick={() => fileInputRef.current.click()}

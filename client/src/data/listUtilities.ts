@@ -1,4 +1,4 @@
-import {  linkList, Selection } from "../types/appTypes";
+import { linkList, Selection } from "../types/appTypes";
 
 
 export const links: linkList = {
@@ -13,7 +13,7 @@ export const links: linkList = {
             { to: "/map", text: "Map", id: 1 },
             { to: "/profile", text: "Profile", id: 2 },
             { to: "/tags", text: "Tags", id: 3 },
-            { to: "/newPost", text: "Post", id: 4 },
+            { to: "/post", text: "Post", id: 4 },
         ]
 
 };
@@ -27,8 +27,8 @@ export const cities: Selection[] = [
 
 
 export const categories: Selection[] = [
-    { id: 1, value: "taxi", label: "Taxi"},
-    { id: 2, value: "ticket", label: "Ticket"},
-    { id: 3, value: "info", label: "Info"},
+    { id: 1, value: "taxi", label: "Taxi" },
+    { id: 2, value: "ticket", label: "Ticket" },
+    { id: 3, value: "info", label: "Info" },
 ]
 

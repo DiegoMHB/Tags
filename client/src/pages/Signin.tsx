@@ -10,7 +10,7 @@ import { appStore } from "../zustand/appStore";
 import FotoUploader from "../components/buttons/FotoUploader";
 
 export default function Signin() {
-  const { signIn, errorMessage, auth } = userStore();
+  const { signIn, error, auth } = userStore();
   const { fotoUrl, selectedFile,setFotoUrl,setSelectedFile  } = appStore();
 
   const navigate = useNavigate();
@@ -128,7 +128,7 @@ export default function Signin() {
           </div>
         </section>
 
-        <FotoUploader />
+        <FotoUploader text={"Upload a Picture"} />
 
         <div className=" flex flex-col justify-center items-center w-[100%] my-3">
           <BtnMain
@@ -139,7 +139,7 @@ export default function Signin() {
             disabled={selectedFile && !fotoUrl ? true : false}
           />
           <span className="text-red-600 text-sm uppercase ">
-            {errorMessage}
+            {error}
           </span>
         </div>
 
