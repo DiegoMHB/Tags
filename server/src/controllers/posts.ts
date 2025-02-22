@@ -75,7 +75,6 @@ export const deletePost = async (req: Request, res: Response): Promise<any> => {
 }
 
 export const getActivePost = async (req: Request, res: Response): Promise<any> => {
-    console.log('aaaaaaaaaaaaaaaaa',req.body)
     try {
         const {userId} = req.body;    
         console.log('------------->',userId)

@@ -1,6 +1,6 @@
 import express from "express";
-import { register, login, logout,getUser } from "./controllers/users";
-import { newPost, getPosts, deletePost,getActivePost } from "./controllers/posts";
+import { register, login, logout, getUser } from "./controllers/users";
+import { newPost, getPosts, deletePost, getActivePost } from "./controllers/posts";
 
 
 const router = express.Router();
