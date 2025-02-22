@@ -1,6 +1,6 @@
 import { useForm } from "react-hook-form";
 import Error from "../components/Error";
-import { NewPostType, PostType } from "../types/postTypes";
+import { NewPostType } from "../types/postTypes";
 import { categories } from "../data/listUtilities";
 import BtnMain from "../components/buttons/BtnMain";
 import FotoUploader from "../components/buttons/FotoUploader";
@@ -16,7 +16,7 @@ export default function NewPost() {
     appStore();
   const { activePost, createActivePost, user, deleteActivePost } = userStore();
   const { coordinates } = mapStore();
-  const [edit, setEdit] = useState<null | PostType>(null);
+  const [edit, setEdit] = useState<null | NewPostType>(null);
   const navigate = useNavigate();
 
   const {
@@ -27,17 +27,31 @@ export default function NewPost() {
     formState: { errors },
   } = useForm<NewPostType>();
 
-  async function createPost(post: NewPostType) {
-    post = { ...post, picture: fotoUrl, userId: user.id, coordinates };
-    await createActivePost(post);
-    if (error) {
-      return;
+  async function registerPost(post: NewPostType) {
+    //New post
+    if (!edit) {
+      post = { ...post, picture: fotoUrl, userId: user.id, coordinates };
+      await createActivePost(post);
+      if (error) {
+        return;
+      }
+    } else {
+      //editing existing post
+      //creating object with changed values
+      const editedPost: Partial<NewPostType> = {};
+
+      for (const prop of Object.keys(edit) as Array<keyof Partial<NewPostType> >) {
+        if (post[prop] !== edit[prop]  && post[prop] !== undefined) {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          editedPost[prop] = post[prop] as any;
+        }
+        console.log("-------------", editedPost);
+      }
     }
     if (!error) {
       reset();
       setFotoUrl("");
       setSelectedFile(null);
-
       navigate("/map");
     }
   }
@@ -51,8 +65,6 @@ export default function NewPost() {
       setValue("title", edit!.title);
     }
   }, [edit, setValue]);
-
-  function editPost() {}
 
   return (
     <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
@@ -130,7 +142,10 @@ export default function NewPost() {
                   type="text"
                   {...register("title", {
                     required: "Title is required",
-                    maxLength: { value: 15, message: "Maximal 15 characters" },
+                    maxLength: {
+                      value: 15,
+                      message: "Maximal 15 characters",
+                    },
                   })}
                 />
                 {errors.title && <Error> {errors.title?.message} </Error>}
@@ -162,8 +177,13 @@ export default function NewPost() {
               </div>
             </section>
 
-            {edit && <img src={edit.picture } className="w-[40px] h-[40px] object-cover mx-auto"/>}
-            <FotoUploader text={edit? "Change Picture" : "Upload a Picture" } />
+            {edit && (
+              <img
+                src={edit.picture}
+                className="w-[40px] h-[40px] object-cover mx-auto"
+              />
+            )}
+            <FotoUploader text={edit ? "Change Picture" : "Upload a Picture"} />
 
             <div className=" flex flex-col justify-center items-center w-[100%] my-3">
               {!edit ? (
@@ -172,7 +192,7 @@ export default function NewPost() {
                   disabled={selectedFile && !fotoUrl ? true : false}
                   mode={1}
                   link=""
-                  onClick={handleSubmit(createPost)}
+                  onClick={handleSubmit(registerPost)}
                 />
               ) : (
                 <BtnMain
@@ -180,7 +200,7 @@ export default function NewPost() {
                   disabled={selectedFile && !fotoUrl ? true : false}
                   mode={1}
                   link=""
-                  onClick={handleSubmit(editPost)}
+                  onClick={handleSubmit(registerPost)}
                 />
               )}
               <span className="text-red-600 text-sm uppercase ">{error}</span>
