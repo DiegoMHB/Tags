@@ -54,17 +54,40 @@ export const getPosts = async (req: Request, res: Response): Promise<any> => {
 
 export const deletePost = async (req: Request, res: Response): Promise<any> => {
     try {
-        const {id} = req.body;    
+        const { id } = req.body;
         const postToDelete = await Post.findByPk(id);
-        if(!postToDelete){
-            throw({ message: "'No such ID" })
+        if (!postToDelete) {
+            throw ({ message: "'No such ID" })
         }
         const deleted = await postToDelete.destroy();
-        if(! await Post.findByPk(id)){
+        if (! await Post.findByPk(id)) {
             return res
                 .status(200)
                 .send({ message: "Post deleted" })
-         }else throw({ message: "Delete didn't work. Try later" })
+        } else throw ({ message: "Delete didn't work. Try later" })
+
+    } catch (error) {
+        if (error.message) {
+            return res.status(400).send({ error: error.message });
+        }
+        return res.status(500).send({ error: "Something happened: try again" });
+    }
+}
+
+export const editPost = async (req: Request, res: Response): Promise<any> => {
+    try {
+        const { id, ...changes } = req.body;
+        console.log(changes, id)
+        const [updatedRows] = await Post.update(changes, { where: { id } });
+        if (updatedRows === 0) {
+            return res.status(404).json({ error: "Post not found, or no changes made" });
+        }
+       
+        const post = await Post.findByPk(id);
+        res.send({ message: "Post edited" , post});
+
+
+
 
     } catch (error) {
         if (error.message) {
@@ -76,9 +99,8 @@ export const deletePost = async (req: Request, res: Response): Promise<any> => {
 
 export const getActivePost = async (req: Request, res: Response): Promise<any> => {
     try {
-        const {userId} = req.body;    
-        console.log('------------->',userId)
-        const response = await Post.findOne({where: {userId}})
+        const { userId } = req.body;
+        const response = await Post.findOne({ where: { userId } })
         if (response) {
             return res
                 .status(200)

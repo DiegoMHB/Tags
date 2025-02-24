@@ -1,6 +1,6 @@
 import express from "express";
 import { register, login, logout, getUser } from "./controllers/users";
-import { newPost, getPosts, deletePost, getActivePost } from "./controllers/posts";
+import { newPost, getPosts, deletePost, getActivePost,editPost } from "./controllers/posts";
 
 
 const router = express.Router();
@@ -18,6 +18,7 @@ router.get("/getPosts", getPosts);
 router.post("/newPost", newPost);
 router.post("/getPost", getActivePost);
 router.delete("/deletePost", deletePost);
+router.patch("/editPost", editPost);
 
 
 export default router;
