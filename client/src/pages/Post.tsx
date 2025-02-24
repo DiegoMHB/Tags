@@ -1,20 +1,33 @@
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import Error from "../components/Error";
+import { useNavigate } from "react-router-dom";
+import { appStore } from "../zustand/appStore";
+import { userStore } from "../zustand/userStore";
+import { mapStore } from "../zustand/mapStore";
 import { NewPostType } from "../types/postTypes";
 import { categories } from "../data/listUtilities";
 import BtnMain from "../components/buttons/BtnMain";
+import Error from "../components/Error";
 import FotoUploader from "../components/buttons/FotoUploader";
-import { appStore } from "../zustand/appStore";
-import { useNavigate } from "react-router-dom";
-import { userStore } from "../zustand/userStore";
-import { mapStore } from "../zustand/mapStore";
 import PostComponent from "../components/PostComponent";
-import { useEffect, useState } from "react";
 
-export default function NewPost() {
-  const { fotoUrl, selectedFile, setFotoUrl, setSelectedFile, error } =
+export default function Post() {
+
+    //TODO: need obligatorio!!
+    //TODO: editing: doesnt refresh the posts array, so overlapping from old and new post
+
+  const { fotoUrl, selectedFile, setFotoUrl, setSelectedFile, error, getPosts } =
     appStore();
-  const { activePost, createActivePost, user, deleteActivePost } = userStore();
+
+  const {
+    activePost,
+    
+    createActivePost,
+    user,
+    deleteActivePost,
+    editActivePost,
+  } = userStore();
+
   const { coordinates } = mapStore();
   const [edit, setEdit] = useState<null | NewPostType>(null);
   const navigate = useNavigate();
@@ -35,18 +48,22 @@ export default function NewPost() {
       if (error) {
         return;
       }
-    } else {
-      //editing existing post
+    } else {//editing existing post
+      
       //creating object with changed values
-      const editedPost: Partial<NewPostType> = {};
+      const changes: Partial<NewPostType> = {};
+      console.log(edit);
 
-      for (const prop of Object.keys(edit) as Array<keyof Partial<NewPostType> >) {
-        if (post[prop] !== edit[prop]  && post[prop] !== undefined) {
+      for (const prop of Object.keys(edit) as Array<
+        keyof Partial<NewPostType>
+      >) {
+        if (post[prop] !== edit[prop] && edit[prop]) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          editedPost[prop] = post[prop] as any;
+          changes[prop] = post[prop] as any;
         }
-        console.log("-------------", editedPost);
       }
+      editActivePost(changes);
+      getPosts()
     }
     if (!error) {
       reset();
@@ -67,12 +84,11 @@ export default function NewPost() {
   }, [edit, setValue]);
 
   return (
+    //ACTIVE POST:
     <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
       {activePost && !edit ? (
         <div>
-          <h3 className="text-2xl text-center m-3">
-            You have an active post:{" "}
-          </h3>
+          <h3 className="text-2xl text-center m-3">You have an active post:</h3>
           <div className="  w-[300px] bg-gradient-to-t from-[#FFFFFF]/20 to-[#FFFFFF]/30 border-gray-500 rounded-3xl">
             <PostComponent activePost={activePost}></PostComponent>
             <div className="flex flex-col justify-between items-center w-[90%] pb-5">
@@ -97,6 +113,7 @@ export default function NewPost() {
           </div>
         </div>
       ) : (
+        //FORM:
         <div>
           <h3 className="text-2xl text-center mt-4">New Post :</h3>
           <form className=" w-[300px] bg-gradient-to-t from-[#FFFFFF]/20 to-[#FFFFFF]/30 border-gray-500 rounded-3xl">
@@ -113,6 +130,8 @@ export default function NewPost() {
               </fieldset>
 
               <div className="relative w-full">
+                <span className=" text-xs  uppercase">category</span>
+                {errors.category && <Error> {errors.category?.message} </Error>}
                 <select
                   className="w-[100%] text-gray-500"
                   {...register("category", {
@@ -132,54 +151,60 @@ export default function NewPost() {
                     </option>
                   ))}
                 </select>
-                {errors.category && <Error> {errors.category?.message} </Error>}
               </div>
 
               <div className="relative w-full">
+                <span className=" text-xs  uppercase">title</span>
+                {errors.title && <Error> {errors.title?.message} </Error>}
                 <input
-                  placeholder="...title*"
+                  placeholder="your tag*"
                   className="w-[100%]"
                   type="text"
                   {...register("title", {
-                    required: "Title is required",
+                    required: " is required",
                     maxLength: {
                       value: 15,
-                      message: "Maximal 15 characters",
+                      message: ": Maximal 15 characters",
                     },
                   })}
                 />
-                {errors.title && <Error> {errors.title?.message} </Error>}
               </div>
 
               <div className="relative w-full">
+                <span className=" text-xs  uppercase">Duration</span>{" "}
+                {edit && <span className=" text-xs  uppercase"> from now</span>}
+                {errors.duration && <Error> {errors.duration?.message} </Error>}
                 <input
-                  placeholder="...duration*"
+                  placeholder="minutes*"
                   className="w-[100%]"
                   type="number"
                   step={15}
                   min={15}
                   {...register("duration", {
-                    required: "Duration is required",
+                    required: " is required",
                   })}
                 />
-                {errors.duration && <Error> {errors.duration?.message} </Error>}
               </div>
 
               <div className="relative w-full h-20 ">
+                <span className=" text-xs  uppercase">description</span>
+                {errors.description && (
+                  <Error> {errors.description?.message} </Error>
+                )}
                 <textarea
-                  placeholder="...description (max 80 characters)"
+                  placeholder=" 80 characters max"
                   className="w-[100%] resize-none"
                   maxLength={80}
                   {...register("description", {
-                    required: "A description is required",
+                    required: " is required",
                   })}
                 />
               </div>
             </section>
 
-            {edit && (
+            {activePost?.picture && (
               <img
-                src={edit.picture}
+                src={activePost!.picture}
                 className="w-[40px] h-[40px] object-cover mx-auto"
               />
             )}

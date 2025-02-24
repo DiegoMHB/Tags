@@ -15,6 +15,7 @@ export type UserStoreType = {
     createActivePost: (post: NewPostType) => void
     getActivePost: (id: string) => void
     deleteActivePost: (id: string) => void
+    editActivePost: (changes : Partial<NewPostType>) => void
     
     signIn: (user: NewUser) => void
     logIn: (user: LoginForm) => void
@@ -34,7 +35,7 @@ const initialUser: User = {
 
 };
 
-export const userStore = create<UserStoreType>()((set) => ({
+export const userStore = create<UserStoreType>()((set,get) => ({
 
     user: initialUser,
     auth: false,
@@ -103,9 +104,38 @@ export const userStore = create<UserStoreType>()((set) => ({
         }
     },
 
+    editActivePost: async ( changes) => {
+        set({ loading: true });
+        const id = get().activePost?.id;
+
+        try{
+            const response = await fetch(`${url}editPost`, {
+                method: "PATCH",
+                body: JSON.stringify({...changes,id}),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            if (!response.ok) {
+                const data = await response.json();
+                set({ error: data.error });
+                throw (data) //advertir al usuario
+            }
+            const data = await response.json();
+            set({ error: data.message });
+            set({activePost: data.post})
+            
+
+        }catch (e) {
+            console.log("Error", e)
+        } finally {
+            set({ loading: false });
+        }
+    },
+
+//TODO: error when no activepost
     getActivePost: async (userId : string)=> {
         set({ loading: true });
-        console.log(userId)
         try {
             const response = await fetch(`${url}getPost`, {
                 method: "POST",

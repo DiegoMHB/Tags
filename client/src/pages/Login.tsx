@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import BtnMain from "../components/buttons/BtnMain";
+import { useNavigate } from "react-router-dom";
 import { LoginForm } from "../types/appTypes";
 import { userStore } from "../zustand/userStore";
-import { useNavigate } from "react-router-dom";
 import { appStore } from "../zustand/appStore";
+import BtnMain from "../components/buttons/BtnMain";
 
 export default function Login() {
   const { logIn, error, auth, getActivePost, user } = userStore();

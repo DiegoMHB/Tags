@@ -1,10 +1,10 @@
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
-import { mapUtilities } from "../data/mapUtilities";
 import "leaflet/dist/leaflet.css";
-import { mapStore } from "../zustand/mapStore";
 import {  LatLngTuple } from "leaflet";
-import { appStore } from "../zustand/appStore";
+import { mapStore } from "../zustand/mapStore";
 import { userStore } from "../zustand/userStore";
+import { appStore } from "../zustand/appStore";
+import { mapUtilities } from "../data/mapUtilities";
 import PostMarker from "../components/PostMarker";
 
 //TODO: show on the marker the time (color? wheel? minutes left?)
@@ -15,6 +15,8 @@ export default function Map() {
   const { posts } = appStore();
   const { activePost } = userStore();
 
+//   useEffect(()=>getPosts(),[getPosts])
+
   return (
     <>
       <main className="w-screen h-[100%]">
@@ -24,11 +26,7 @@ export default function Map() {
             attribution={mapUtilities.attribution}
             id="map"
           />
-          {!activePost ? (
-            <Marker position={coordinates as LatLngTuple}></Marker>
-          ) : (
-            <PostMarker post={activePost} />
-          )}
+          {!activePost && <Marker position={coordinates as LatLngTuple}></Marker> }
 
           {posts.map((post) => (
             <PostMarker post={post} />
