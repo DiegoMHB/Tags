@@ -59,8 +59,6 @@ export const userStore = create<UserStoreType>()((set,get) => ({
                 throw (data)
             }
             const data = await response.json();
-            
-            
             set({ activePost: data.post });
             set({ error: "" });
             //deleting the activePost after duration
@@ -123,7 +121,7 @@ export const userStore = create<UserStoreType>()((set,get) => ({
             }
             const data = await response.json();
             set({ error: data.message });
-            set({activePost: data.post})
+            set({activePost: data.post});
             
 
         }catch (e) {
@@ -136,6 +134,7 @@ export const userStore = create<UserStoreType>()((set,get) => ({
 //TODO: error when no activepost
     getActivePost: async (userId : string)=> {
         set({ loading: true });
+        console.log('getting active POst')
         try {
             const response = await fetch(`${url}getPost`, {
                 method: "POST",

@@ -20,12 +20,10 @@ export type AppStoreType = {
     setFotoUrl: (url: string) => void,
     setSelectedFile: (file: File | null) => void,
     setSelecttedUser: (user: User) => void
-
-
-
 }
 
-export const appStore = create<AppStoreType>()((set) => ({
+
+export const appStore = create<AppStoreType>()((set,get) => ({
     error: "",
     mapRender: false,
     fotoUrl: "",
@@ -42,6 +40,10 @@ export const appStore = create<AppStoreType>()((set) => ({
 
     getPosts: async () => {
         set({ loading: true });
+        console.log('EN GETPOSTSSSS')
+        if(get().posts){
+            set({posts: []})
+        }
         const response = await fetch(`${url}getPosts`, {
             method: "GET",
         })

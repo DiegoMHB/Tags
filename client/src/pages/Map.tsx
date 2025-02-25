@@ -1,21 +1,21 @@
 import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
-import {  LatLngTuple } from "leaflet";
+import { LatLngTuple } from "leaflet";
 import { mapStore } from "../zustand/mapStore";
 import { userStore } from "../zustand/userStore";
 import { appStore } from "../zustand/appStore";
 import { mapUtilities } from "../data/mapUtilities";
 import PostMarker from "../components/PostMarker";
 
-//TODO: show on the marker the time (color? wheel? minutes left?)
 
+//TODO: show on the marker the time (color? wheel? minutes left?)
 
 export default function Map() {
   const { coordinates } = mapStore();
   const { posts } = appStore();
   const { activePost } = userStore();
 
-//   useEffect(()=>getPosts(),[getPosts])
+
 
   return (
     <>
@@ -26,10 +26,12 @@ export default function Map() {
             attribution={mapUtilities.attribution}
             id="map"
           />
-          {!activePost && <Marker position={coordinates as LatLngTuple}></Marker> }
+          {!activePost && (
+            <Marker position={coordinates as LatLngTuple}></Marker>
+          )}
 
           {posts.map((post) => (
-            <PostMarker post={post} />
+            <PostMarker post={post} key={post.id} />
           ))}
         </MapContainer>
       </main>

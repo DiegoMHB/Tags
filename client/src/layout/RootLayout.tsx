@@ -9,22 +9,18 @@ import { userStore } from "../zustand/userStore";
 import Populate from "../assets/--dev--/Populate";
 
 export default function RootLayout() {
-  const {  mapRender } = appStore();
-  const {  auth } = userStore();
+  const { mapRender } = appStore();
+  const { auth } = userStore();
   const url = useLocation().pathname;
   const navigate = useNavigate();
 
-  const linkRendered =
-    auth
-      ? links.online
-      : links.offline
+  const linkRendered = auth ? links.online : links.offline;
 
-//if online go to profile
+  //if online go to profile
   useEffect(() => {
     if (auth) {
       navigate("/map");
-    }
-    else  navigate("/")
+    } else navigate("/");
   }, [auth, navigate]);
 
   return (
@@ -33,7 +29,6 @@ export default function RootLayout() {
         <main className="flex flex-col justify-between items-center h-screen max-w-[400px]  bg-[#00061A] ">
           <section className="flex justify-evenly bg-gradient-to-b from-[#00062A] to-[#00061A] h-10 w-full items-center ">
             <Populate></Populate>
-           
           </section>
 
           <section

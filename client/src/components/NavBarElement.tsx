@@ -7,22 +7,21 @@ type NavBarElementProps = {
 };
 
 export default function NavBarElement({ text, link }: NavBarElementProps) {
+  const { setMapRender, mapRender, getPosts } = appStore();
 
-    const {setMapRender ,mapRender} = appStore()
+  const navigate = useNavigate();
+  const url = useLocation().pathname;
 
-    const navigate = useNavigate();
-    const url = useLocation().pathname;
-
-
-    function handleClick () {
-        if( url === "/"  && mapRender || url === "/map"  &&  mapRender) {
-            setMapRender();
-            navigate(`${link}`)
-        }
-        navigate(`${link}`)
-        
+  function handleClick() {
+    if(text === "Map"){
+        getPosts()
     }
-
+    if ((url === "/" && mapRender) || (url === "/map" && mapRender)) {
+      setMapRender();
+      navigate(`${link}`);
+    }
+    navigate(`${link}`);
+  }
 
   return (
     <div className=" w-15 h-5 flex justify-center items-center bg-[#c6eef7] rounded-full">

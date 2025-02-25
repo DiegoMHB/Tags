@@ -45,6 +45,7 @@ export default function Post() {
     if (!edit) {
       post = { ...post, picture: fotoUrl, userId: user.id, coordinates };
       await createActivePost(post);
+      await getPosts()
       if (error) {
         return;
       }
@@ -52,7 +53,6 @@ export default function Post() {
       
       //creating object with changed values
       const changes: Partial<NewPostType> = {};
-      console.log(edit);
 
       for (const prop of Object.keys(edit) as Array<
         keyof Partial<NewPostType>
