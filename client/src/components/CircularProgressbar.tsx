@@ -1,26 +1,26 @@
-// import {  buildStyles } from "react-circular-progressbar";
-// import "react-circular-progressbar/dist/styles.css"
+import {  buildStyles,CircularProgressbar } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css"
+import { TimeLeft } from "../types/appTypes";
 
-// type CircularProgressbarProps = {
-//     title:string,
-//     timeLeft:number
-//     createdAt:number
-// }
+type CircularProgressbarProps = {
+    timeLeft:TimeLeft
+}
 
-// export default function CircularProgressbar({title, timeLeft, createdAt}: CircularProgressbarProps) {
+export default function CircularProgressbarComp({ timeLeft}: CircularProgressbarProps) {
 
+    const {percentage, minutes} = timeLeft;
 
-
-//   return (
-//     <CircularProgressbar
-//     value={percentage}
-//     styles={buildStyles({
-//       pathColor: percentage > 80? "#e60f06":"#3B8FF6",
-//       trailColor: "#F5F5F5",
-//       textSize:6,
-//       textColor:percentage > 80? "#e60f06":"#3B8FF6" 
-//     })}
-//     text={`${percentage}% gastado`}
-//   />
-//   )
-// }
+  return (
+    <CircularProgressbar
+    value={percentage}
+    styles={buildStyles({
+      pathColor: percentage < 20? "#E63946":"#1D8348",    
+      trailColor: "#CCCCCC",
+      textColor: "#000000",
+      textSize:44
+  
+    })}
+    text={`${minutes}` + `'` }
+  />
+  )
+}
