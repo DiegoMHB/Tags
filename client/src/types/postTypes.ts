@@ -14,7 +14,7 @@ export type NewPostType = {
 
 export type PostType = NewPostType & {
     id: string,
-    createdAt: string | null,
+    createdAt: string,
     destroyAt : string
 
 }
