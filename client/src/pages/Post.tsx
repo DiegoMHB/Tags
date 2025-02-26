@@ -12,16 +12,21 @@ import FotoUploader from "../components/buttons/FotoUploader";
 import PostComponent from "../components/PostComponent";
 
 export default function Post() {
+  //TODO: need obligatorio!!
+  //TODO: editing: doesnt refresh the posts array, so overlapping from old and new post
 
-    //TODO: need obligatorio!!
-    //TODO: editing: doesnt refresh the posts array, so overlapping from old and new post
-
-  const { fotoUrl, selectedFile, setFotoUrl, setSelectedFile, error, getPosts } =
-    appStore();
+  const {
+    fotoUrl,
+    selectedFile,
+    setFotoUrl,
+    setSelectedFile,
+    error,
+    getPosts,
+  } = appStore();
 
   const {
     activePost,
-    
+
     createActivePost,
     user,
     deleteActivePost,
@@ -45,12 +50,13 @@ export default function Post() {
     if (!edit) {
       post = { ...post, picture: fotoUrl, userId: user.id, coordinates };
       await createActivePost(post);
-      await getPosts()
+      await getPosts();
       if (error) {
         return;
       }
-    } else {//editing existing post
-      
+    } else {
+      //editing existing post
+
       //creating object with changed values
       const changes: Partial<NewPostType> = {};
 
@@ -63,7 +69,7 @@ export default function Post() {
         }
       }
       editActivePost(changes);
-      getPosts()
+      getPosts();
     }
     if (!error) {
       reset();
@@ -117,28 +123,47 @@ export default function Post() {
         <div>
           <h3 className="text-2xl text-center mt-4">New Post :</h3>
           <form className=" w-[300px] bg-gradient-to-t from-[#FFFFFF]/20 to-[#FFFFFF]/30 border-gray-500 rounded-3xl">
-            <section className=" flex flex-col justify-center items-start gap-7 p-5 ">
-              <fieldset className=" flex justify-around items-center text-sm mb-2 relative w-full">
-                <div className="flex gap-2 items-center">
-                  <label htmlFor="need">NEED: </label>
-                  <input {...register("need")} type="radio" value="NEED" />
+            <section className=" flex flex-col justify-center items-start gap-5 p-5 ">
+
+              <fieldset className="flex flex-col justify-center items-center w-full relative">
+                <div className=" flex justify-stretch text-sm gap-5">
+                  <div className="flex gap-2 items-center">
+                    <label htmlFor="need">NEED: </label>
+                    <input
+                      {...register("need", {
+                        required: "required",
+                      })}
+                      type="radio"
+                      value="NEED"
+                      id="need"
+                    />
+                  </div>
+                  <div className="flex gap-2 items-center">
+                    <label htmlFor="offer">OFFER: </label>
+                    <input
+                      {...register("need", {
+                        required: "required",
+                      })}
+                      type="radio"
+                      value="OFFER"
+                      id="offer"
+                    />
+                  </div>
                 </div>
-                <div className="flex gap-2 items-center">
-                  <label htmlFor="offer">OFFER: </label>
-                  <input {...register("need")} type="radio" value="OFFER" />
-                </div>
+                {errors.need && <Error> {errors.need?.message} </Error>}
               </fieldset>
 
               <div className="relative w-full">
-                <span className=" text-xs  uppercase">category</span>
+                <span className={errors.category? "text-red-600 text-xs  uppercase " : " text-xs  uppercase "}>category</span>
                 {errors.category && <Error> {errors.category?.message} </Error>}
                 <select
                   className="w-[100%] text-gray-500"
                   {...register("category", {
-                    required: "category is required",
+                    required: " is required",
                   })}
+                  defaultValue=""
                 >
-                  <option value="" className=" text-gray-500" disabled>
+                  <option value="" className=" text-gray-500" disabled >
                     -- Select a Category --
                   </option>
                   {categories.map((cat) => (
@@ -154,7 +179,7 @@ export default function Post() {
               </div>
 
               <div className="relative w-full">
-                <span className=" text-xs  uppercase">title</span>
+                <span className={errors.title? "text-red-600 text-xs  uppercase " : " text-xs  uppercase "}>title</span>
                 {errors.title && <Error> {errors.title?.message} </Error>}
                 <input
                   placeholder="your tag*"
@@ -171,7 +196,7 @@ export default function Post() {
               </div>
 
               <div className="relative w-full">
-                <span className=" text-xs  uppercase">Duration</span>{" "}
+                <span className={errors.duration? "text-red-600 text-xs  uppercase " : " text-xs  uppercase "}>Duration</span>{" "}
                 {edit && <span className=" text-xs  uppercase"> from now</span>}
                 {errors.duration && <Error> {errors.duration?.message} </Error>}
                 <input
@@ -187,7 +212,7 @@ export default function Post() {
               </div>
 
               <div className="relative w-full h-20 ">
-                <span className=" text-xs  uppercase">description</span>
+                <span className={errors.description? "text-red-600 text-xs  uppercase " : " text-xs  uppercase "}>description</span>
                 {errors.description && (
                   <Error> {errors.description?.message} </Error>
                 )}
