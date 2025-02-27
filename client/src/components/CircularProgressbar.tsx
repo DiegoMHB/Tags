@@ -14,7 +14,7 @@ export default function CircularProgressbarComp({ timeLeft}: CircularProgressbar
     <CircularProgressbar
     value={percentage}
     styles={buildStyles({
-      pathColor: percentage < 20? "#E63946":"#1D8348",    
+      pathColor: minutes < 15? "#E63946":"#1D8348",    
       trailColor: "#CCCCCC",
       textColor: "#000000",
       textSize:44

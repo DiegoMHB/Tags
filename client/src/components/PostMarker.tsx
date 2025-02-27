@@ -26,7 +26,7 @@ export default function PostMarker({ post }: postMarkerProps) {
     html: ReactDOMServer.renderToString(
       <div className="flex flex-col justify-center items-center">
         <CircularProgressbarComp timeLeft={timeLeft} />
-        <span className="uppercase font-bold text-[12px]">
+        <span className="uppercase font-bold text-[10px]">
           #{`${post.title}`}
         </span>
       </div>

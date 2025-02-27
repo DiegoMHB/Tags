@@ -12,8 +12,6 @@ import FotoUploader from "../components/buttons/FotoUploader";
 import PostComponent from "../components/PostComponent";
 
 export default function Post() {
-  //TODO: need obligatorio!!
-  //TODO: editing: doesnt refresh the posts array, so overlapping from old and new post
 
   const {
     fotoUrl,
@@ -83,7 +81,6 @@ export default function Post() {
     if (edit) {
       setValue("category", edit!.category);
       setValue("duration", edit!.duration);
-      setValue("need", edit!.need);
       setValue("description", edit!.description);
       setValue("title", edit!.title);
     }
@@ -125,33 +122,6 @@ export default function Post() {
           <form className=" w-[300px] bg-gradient-to-t from-[#FFFFFF]/20 to-[#FFFFFF]/30 border-gray-500 rounded-3xl">
             <section className=" flex flex-col justify-center items-start gap-5 p-5 ">
 
-              <fieldset className="flex flex-col justify-center items-center w-full relative">
-                <div className=" flex justify-stretch text-sm gap-5">
-                  <div className="flex gap-2 items-center">
-                    <label htmlFor="need">NEED: </label>
-                    <input
-                      {...register("need", {
-                        required: "required",
-                      })}
-                      type="radio"
-                      value="NEED"
-                      id="need"
-                    />
-                  </div>
-                  <div className="flex gap-2 items-center">
-                    <label htmlFor="offer">OFFER: </label>
-                    <input
-                      {...register("need", {
-                        required: "required",
-                      })}
-                      type="radio"
-                      value="OFFER"
-                      id="offer"
-                    />
-                  </div>
-                </div>
-                {errors.need && <Error> {errors.need?.message} </Error>}
-              </fieldset>
 
               <div className="relative w-full">
                 <span className={errors.category? "text-red-600 text-xs  uppercase " : " text-xs  uppercase "}>category</span>

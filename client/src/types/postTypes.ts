@@ -1,7 +1,6 @@
 import { LatLngTuple } from "leaflet"
 
 export type NewPostType = {
-    need : "NEED" | "OFFER",
     category : string,
     duration: number,
     title: string,
