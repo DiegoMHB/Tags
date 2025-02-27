@@ -6,7 +6,6 @@ import { links } from "../data/listUtilities";
 import { appStore } from "../zustand/appStore";
 import { useEffect } from "react";
 import { userStore } from "../zustand/userStore";
-import Populate from "../assets/--dev--/Populate";
 
 export default function RootLayout() {
   const { mapRender } = appStore();
@@ -16,7 +15,7 @@ export default function RootLayout() {
 
   const linkRendered = auth ? links.online : links.offline;
 
-  //if online go to profile
+  //if online: go to profile
   useEffect(() => {
     if (auth) {
       navigate("/map");
@@ -28,7 +27,7 @@ export default function RootLayout() {
       <main className="flex justify-center items-center]">
         <main className="flex flex-col justify-between items-center h-screen max-w-[400px]  bg-[#00061A] ">
           <section className="flex justify-evenly bg-gradient-to-b from-[#00062A] to-[#00061A] h-10 w-full items-center ">
-            <Populate></Populate>
+           
           </section>
 
           <section

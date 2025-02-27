@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import User from "../models/User.model";
 import bcrypt from "bcrypt";
-const jwt = require('jsonwebtoken');
+import  jwt from 'jsonwebtoken';
 
 const jsonToken = process.env.JSON_TOKEN
 

@@ -6,6 +6,7 @@ import db from "./config/db";
 import router from "./router";
 import { createPosts, deleteExpiredPosts } from "./dev/helperFuncions";
 import { deleteDefaultPosts } from "./dev/helperFuncions";
+import { Populate } from "./dev/helperFuncions";
 
 
 
@@ -24,12 +25,13 @@ async function connectDB() {
     try {
         await db.authenticate();
         await db.sync()
-            .then(() => {//-- DEV --
+            .then(() => Populate())//-- DEV --
+            .then(() => {
                 deleteExpiredPosts();
                 deleteDefaultPosts();
                 console.log("Database:::: deleted expired and default Posts")
             })
-            .then(()=>{
+            .then(() => {
                 createPosts();
                 console.log("Database::: new default Posts created")
             })

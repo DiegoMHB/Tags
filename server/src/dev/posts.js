@@ -16,7 +16,7 @@ exports.postsArray = [{
         13.40317094176599
     ],
     description: "Im in the museum with a spare Ticket",
-    duration: "90",
+    duration: "15",
     picture: "",
     title: "AltesMuseum",
     userId: ""

@@ -1,7 +1,12 @@
 import { Op } from "sequelize";
+import jwt from 'jsonwebtoken';
+import bcrypt from "bcrypt";
 import Post from "../models/Post.model";
 import User from "../models/User.model";
 import { postsArray } from "./posts"
+import { usersArray } from "./users"
+
+const jsonToken = process.env.JSON_TOKEN
 
 export const deleteExpiredPosts = async () => {
     const now = new Date();
@@ -27,7 +32,7 @@ export const deleteDefaultPosts = async () => {
                     title: el.title,
                 },
             });
-            console.log('Deleted:',el.title);
+            console.log('Deleted:', el.title);
         }
     } catch (error) {
         console.error("Error deleting expired Posts", error);
@@ -51,7 +56,7 @@ export const createPosts = async () => {
                 const newPost = await Post.create(el);
                 console.log(`Post ${index + 1} created`);
 
-                // Schedule deletion after `el.duration` minutes
+                // Delete after `el.duration` minutes
                 setTimeout(async () => {
                     try {
                         const postToDelete = await Post.findByPk(newPost.id);
@@ -71,3 +76,27 @@ export const createPosts = async () => {
         console.error("Error in createPosts:", error);
     }
 };
+
+
+export const Populate = async () => {
+    try {
+        for (const [index, el] of usersArray.entries()) {
+
+            el.password = "1234" //always 123 --DEV--
+            el.password = await bcrypt.hash(el.password, 10);
+            const newUser = new User(el);
+
+            //Verifying if userName or Email already exists
+            if (await User.findOne({ where: { email: newUser.email } })) throw ({ message: "Email already registered" })
+            if (await User.findOne({ where: { userName: newUser.userName } })) throw ({ message: "Username already registered" })
+
+            const response = await newUser.save();
+
+            if (response.dataValues) {
+                console.log(`Saved ${index} default user in DB`)
+            } else throw ({ message: `Couldnt save ${index} default user in DB` })
+        }
+    } catch (e) {
+        console.log(e)
+    }
+}
