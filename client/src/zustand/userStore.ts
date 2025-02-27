@@ -45,6 +45,7 @@ export const userStore = create<UserStoreType>()((set,get) => ({
 
     createActivePost: async (post: NewPostType) => {
         set({ loading: true });
+        console.log(post)
         try {
             const response = await fetch(`${url}newPost`, {
                 method: "POST",

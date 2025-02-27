@@ -55,7 +55,7 @@ export default function Signin() {
               type="text"
               {...register("userName", {
                 required: "User Name is required",
-                maxLength: { value: 15, message: "Maximal 15 characters" },
+                maxLength: { value: 18, message: "Maximal 18 characters" },
               })}
             />
             {errors.userName && <Error> {errors.userName?.message} </Error>}

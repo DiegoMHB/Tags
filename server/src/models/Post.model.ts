@@ -15,10 +15,6 @@ class Post extends Model {
     })
     id!: string;
 
-    @Column({
-        type: DataType.STRING(100), allowNull: false
-    })
-    need!: string
 
     @Column({
         type: DataType.STRING(100), allowNull: false

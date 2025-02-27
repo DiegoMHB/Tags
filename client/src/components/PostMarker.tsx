@@ -38,7 +38,6 @@ export default function PostMarker({ post }: postMarkerProps) {
   });
 
   useEffect(() => {
-    console.log("en useEffect", timeLeft.percentage);
     if (timeLeft.percentage <= 0) {
       setVisible(false);
     } else {

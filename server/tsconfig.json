@@ -19,6 +19,6 @@
     // "resolveJsonModule": true,
     // "moduleResolution": "node"
   },
-  "include": ["src/**/*.ts", "src/controllers/users.ts"],
+  "include": ["src/**/*.ts", "src/controllers/users.ts", "src/dev/helperFuncions.ts"],
   "exclude": ["node_modules"]
 }

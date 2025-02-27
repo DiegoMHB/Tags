@@ -23,7 +23,7 @@ const users = [
     {
         name: "Scott Soto",
         userName: "moorejames",
-        email: "dmhb3@gmail.net",
+        email: "dmhb3@gmail.com",
         password: "1234",
         city: "Berlin",
         profilePicture: '',

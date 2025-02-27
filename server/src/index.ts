@@ -4,7 +4,8 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import db from "./config/db";
 import router from "./router";
-import { deleteExpiredPosts } from "./dev/helperFuncions";
+import { createPosts, deleteExpiredPosts } from "./dev/helperFuncions";
+import { deleteDefaultPosts } from "./dev/helperFuncions";
 
 
 
@@ -22,10 +23,16 @@ app.use(router)
 async function connectDB() {
     try {
         await db.authenticate();
-        await db.sync().then(()=>{
-            deleteExpiredPosts();
-            console.log("Database Actualized")
-        });
+        await db.sync()
+            .then(() => {//-- DEV --
+                deleteExpiredPosts();
+                deleteDefaultPosts();
+                console.log("Database:::: deleted expired and default Posts")
+            })
+            .then(()=>{
+                createPosts();
+                console.log("Database::: new default Posts created")
+            })
         console.log("Connected with DB")
     } catch (e) {
         console.log("Connection with DB not succeeded: ", e)
