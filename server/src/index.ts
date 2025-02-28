@@ -4,9 +4,9 @@ import cookieParser from "cookie-parser";
 import cors from "cors";
 import db from "./config/db";
 import router from "./router";
-import { createPosts, deleteExpiredPosts } from "./dev/helperFuncions";
-import { deleteDefaultPosts } from "./dev/helperFuncions";
-import { Populate } from "./dev/helperFuncions";
+import { createPosts, deleteExpiredPosts } from "./dev/InitializersFunctions";
+import { deleteDefaultPosts } from "./dev/InitializersFunctions";
+import { Populate } from "./dev/InitializersFunctions";
 
 
 

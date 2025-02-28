@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import Post from "../models/Post.model";
-import User from "../models/User.model";
+
 
 
 
@@ -14,11 +14,10 @@ export const newPost = async (req: Request, res: Response): Promise<void> => {
 
         if (response.dataValues) {
 
-            //to delete post once saved
-            //This doesnt send voidthing to the user, so TO-DO
+            //to deactivate post once saved
             setTimeout(async () => {
-                const postToDelete = await Post.findByPk(response.dataValues.id);
-                await postToDelete.destroy();
+                const postToDeactivate = await Post.findByPk(response.dataValues.id);
+                await postToDeactivate.update({isActive:false});
             }, post.duration * 60 * 1000);
              res
                 .status(200)
@@ -35,7 +34,7 @@ export const newPost = async (req: Request, res: Response): Promise<void> => {
 
 export const getPosts = async (req: Request, res: Response): Promise<void> => {
     try {
-        const response = await Post.findAll({});
+        const response = await Post.findAll({where:{isActive: true}});
 
         if (response) {
              res

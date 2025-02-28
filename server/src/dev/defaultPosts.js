@@ -4,9 +4,9 @@ exports.postsArray = [{
         52.45894807145169,
         13.474041477284421
     ],
-    description: "Im in my Kanoe, and my oar is broken... I cant move!! HELP!!",
+    description: "We need someone to paddel with us.",
     duration: "30",
-    picture: "",
+    picture: "https://firebasestorage.googleapis.com/v0/b/taxi-39e95.firebasestorage.app/o/Post_pics%2F877c058e-da0d-4295-94b5-e0e30d5759c9JPG?alt=media&token=d542d24d-ea17-4b2e-bbe8-93736678f919",
     title: "OarNeeded",
     userId: ""
 }, {
@@ -25,7 +25,7 @@ exports.postsArray = [{
     coordinates: [52.43607975188115, 13.458421030380258],
     description: "Im gonna be here for a while. I have a loot of tomatoes from garten to present",
     duration: "90",
-    picture: "",
+    picture: "https://firebasestorage.googleapis.com/v0/b/taxi-39e95.firebasestorage.app/o/Post_pics%2F543f2802-30ef-4c53-a360-102645b2906bJPG?alt=media&token=4209b56b-3158-4058-a86c-d88e115d268c",
     title: "Tomatoes",
     userId: ""
 }, {

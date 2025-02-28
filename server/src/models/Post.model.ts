@@ -60,6 +60,13 @@ class Post extends Model {
         type: DataType.DATE, allowNull: true
     })
     destroyAt: Date
+   
+    @Default(true) 
+    @Column({
+        type: DataType.BOOLEAN,
+        allowNull: false,
+    })
+    isActive!: boolean;
 
 
     @ForeignKey(() => User)

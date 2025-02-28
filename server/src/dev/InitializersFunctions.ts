@@ -3,17 +3,20 @@ import jwt from 'jsonwebtoken';
 import bcrypt from "bcrypt";
 import Post from "../models/Post.model";
 import User from "../models/User.model";
-import { postsArray } from "./posts"
-import { usersArray } from "./users"
+import { postsArray } from "./defaultPosts"
+import { usersArray } from "./defaultUsers"
 
 const jsonToken = process.env.JSON_TOKEN
 
+//deletes ONLY old post by th Users by EMAIL:
 export const deleteExpiredPosts = async () => {
     const now = new Date();
     try {
         const deletedCount = await Post.destroy({
             where: {
                 destroyAt: { [Op.lt]: now },
+                email: { [Op.or]: [//EMAIL or EMAILS here
+                    ] }
             },
         });
 
@@ -23,6 +26,7 @@ export const deleteExpiredPosts = async () => {
     }
 };
 
+//deletes the default Posts:
 export const deleteDefaultPosts = async () => {
 
     try {
@@ -39,6 +43,7 @@ export const deleteDefaultPosts = async () => {
     }
 };
 
+//Creates default Posts:
 export const createPosts = async () => {
     try {
         for (const [index, el] of postsArray.entries()) {
@@ -77,7 +82,7 @@ export const createPosts = async () => {
     }
 };
 
-
+//Populates the DB with default users:
 export const Populate = async () => {
     try {
         for (const [index, el] of usersArray.entries()) {
