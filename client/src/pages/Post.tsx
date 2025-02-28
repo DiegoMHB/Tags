@@ -90,9 +90,9 @@ export default function Post() {
       {activePost && !edit ? (
         <div>
           <h3 className="text-2xl text-center m-3">You have an active post:</h3>
-          <div className="  w-[300px] bg-gradient-to-t from-[#FFFFFF]/20 to-[#FFFFFF]/30 border-gray-500 rounded-3xl">
-            <PostComponent activePost={activePost}></PostComponent>
-            <div className="flex flex-col justify-between items-center w-[90%] pb-5">
+          <div className=" flex flex-col items-center w-[300px] bg-gradient-to-t from-[#FFFFFF]/20 to-[#FFFFFF]/30 border-gray-500 rounded-3xl">
+            <PostComponent post={activePost}></PostComponent>
+            <div className="flex flex-col justify-between items-center w-[100%] pb-5">
               <BtnMain
                 text="Edit Post"
                 disabled={selectedFile && !fotoUrl ? true : false}

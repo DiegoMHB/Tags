@@ -43,7 +43,7 @@ export default function PostMarker({ post }: postMarkerProps) {
     } else {
       const interval = setInterval(() => {
         setTimeLeft(calculateTimeLeft(post.destroyAt, post.createdAt));
-      }, 4000);
+      }, 8000);
       return () => clearInterval(interval);
     }
 
