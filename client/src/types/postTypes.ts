@@ -15,5 +15,6 @@ export type PostType = NewPostType & {
     id: string,
     createdAt: string,
     destroyAt : string
+    isActive:boolean
 
 }

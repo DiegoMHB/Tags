@@ -58,7 +58,7 @@ export default function PostMarker({ post }: postMarkerProps) {
         icon={customIcon}
       >
         <Popup>
-          <PopUpPost post={post}></PopUpPost>
+          <PopUpPost post={post} timeLeft={timeLeft}></PopUpPost>
         </Popup>
       </Marker>
     )

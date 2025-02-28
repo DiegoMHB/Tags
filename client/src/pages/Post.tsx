@@ -12,7 +12,6 @@ import FotoUploader from "../components/buttons/FotoUploader";
 import PostComponent from "../components/PostComponent";
 
 export default function Post() {
-
   const {
     fotoUrl,
     selectedFile,
@@ -24,7 +23,6 @@ export default function Post() {
 
   const {
     activePost,
-
     createActivePost,
     user,
     deleteActivePost,
@@ -121,10 +119,16 @@ export default function Post() {
           <h3 className="text-2xl text-center mt-4">New Post :</h3>
           <form className=" w-[300px] bg-gradient-to-t from-[#FFFFFF]/20 to-[#FFFFFF]/30 border-gray-500 rounded-3xl">
             <section className=" flex flex-col justify-center items-start gap-5 p-5 ">
-
-
               <div className="relative w-full">
-                <span className={errors.category? "text-red-600 text-xs  uppercase " : " text-xs  uppercase "}>category</span>
+                <span
+                  className={
+                    errors.category
+                      ? "text-red-600 text-xs  uppercase "
+                      : " text-xs  uppercase "
+                  }
+                >
+                  category
+                </span>
                 {errors.category && <Error> {errors.category?.message} </Error>}
                 <select
                   className="w-[100%] text-gray-500"
@@ -133,7 +137,7 @@ export default function Post() {
                   })}
                   defaultValue=""
                 >
-                  <option value="" className=" text-gray-500" disabled >
+                  <option value="" className=" text-gray-500" disabled>
                     -- Select a Category --
                   </option>
                   {categories.map((cat) => (
@@ -149,7 +153,15 @@ export default function Post() {
               </div>
 
               <div className="relative w-full">
-                <span className={errors.title? "text-red-600 text-xs  uppercase " : " text-xs  uppercase "}>title</span>
+                <span
+                  className={
+                    errors.title
+                      ? "text-red-600 text-xs  uppercase "
+                      : " text-xs  uppercase "
+                  }
+                >
+                  title
+                </span>
                 {errors.title && <Error> {errors.title?.message} </Error>}
                 <input
                   placeholder="your tag*"
@@ -166,7 +178,15 @@ export default function Post() {
               </div>
 
               <div className="relative w-full">
-                <span className={errors.duration? "text-red-600 text-xs  uppercase " : " text-xs  uppercase "}>Duration</span>{" "}
+                <span
+                  className={
+                    errors.duration
+                      ? "text-red-600 text-xs  uppercase "
+                      : " text-xs  uppercase "
+                  }
+                >
+                  Duration
+                </span>{" "}
                 {edit && <span className=" text-xs  uppercase"> from now</span>}
                 {errors.duration && <Error> {errors.duration?.message} </Error>}
                 <input
@@ -182,7 +202,15 @@ export default function Post() {
               </div>
 
               <div className="relative w-full h-20 ">
-                <span className={errors.description? "text-red-600 text-xs  uppercase " : " text-xs  uppercase "}>description</span>
+                <span
+                  className={
+                    errors.description
+                      ? "text-red-600 text-xs  uppercase "
+                      : " text-xs  uppercase "
+                  }
+                >
+                  description
+                </span>
                 {errors.description && (
                   <Error> {errors.description?.message} </Error>
                 )}
@@ -203,7 +231,10 @@ export default function Post() {
                 className="w-[40px] h-[40px] object-cover mx-auto"
               />
             )}
-            <FotoUploader text={edit ? "Change Picture" : "Upload a Picture"} />
+            <FotoUploader
+              text={edit ? "Change Picture" : "Upload a Picture"}
+              location="/Post_pics/"
+            />
 
             <div className=" flex flex-col justify-center items-center w-[100%] my-3">
               {!edit ? (

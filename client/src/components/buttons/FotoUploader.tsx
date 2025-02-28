@@ -4,10 +4,11 @@ import { uploadFile } from "../../assets/firebase/firebase";
 import BtnMain from "./BtnMain";
 
 type fotoUploaderProps = {
-    text:string
+    text:string,
+    location:string
 }
 
-export default function FotoUploader({text}: fotoUploaderProps) {
+export default function FotoUploader({text, location}: fotoUploaderProps) {
 
   const {fotoUrl,setFotoUrl,selectedFile,setSelectedFile,setError, error } = appStore()
   const fileInputRef = useRef<HTMLInputElement>(null!);
@@ -23,7 +24,7 @@ export default function FotoUploader({text}: fotoUploaderProps) {
       if (selectedFile) {
         const upload = async () => {
           try {
-            const urlPic = await uploadFile(selectedFile, "/Profile_pics/");
+            const urlPic = await uploadFile(selectedFile, location);
             if (!urlPic) {
               setError("Failed uploading");
               return;
