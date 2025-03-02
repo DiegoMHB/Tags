@@ -1,10 +1,6 @@
 import { Request, Response } from "express";
 import Post from "../models/Post.model";
-
-
-
-
-
+import User from "../models/User.model";
 
 export const newPost = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -17,36 +13,42 @@ export const newPost = async (req: Request, res: Response): Promise<void> => {
             //to deactivate post once saved
             setTimeout(async () => {
                 const postToDeactivate = await Post.findByPk(response.dataValues.id);
-                await postToDeactivate.update({isActive:false});
+                await postToDeactivate.update({ isActive: false });
             }, post.duration * 60 * 1000);
-             res
+            res
                 .status(200)
                 .send({ post: response.dataValues, message: "Post succesfully created" })
+            return
         } else throw ({ message: "Couldnt save POST in DB" })
 
     } catch (error) {
         if (error.message) {
-             res.status(400).send({ error: error.message });
+            res.status(400).send({ error: error.message });
         }
-         res.status(500).send({ error: "Something happened: try again" });
+        res.status(500).send({ error: "Something happened: try again" });
+        return
     }
 }
 
 export const getPosts = async (req: Request, res: Response): Promise<void> => {
     try {
-        const response = await Post.findAll({where:{isActive: true}});
+        const response = await Post.findAll({ where: { isActive: true } });
 
         if (response) {
-             res
+            res
                 .status(200)
                 .send({ posts: response, message: "Posts get" })
+            return
         } else throw ({ message: "Couldnt get POST from DB" })
+        
 
     } catch (error) {
         if (error.message) {
-             res.status(400).send({ error: error.message });
+            res.status(400).send({ error: error.message });
+            return
         }
-         res.status(500).send({ error: "Something happened: try again" });
+        res.status(500).send({ error: "Something happened: try again" });
+        return
     }
 }
 
@@ -59,16 +61,19 @@ export const deletePost = async (req: Request, res: Response): Promise<void> => 
         }
         const deleted = await postToDelete.destroy();
         if (! await Post.findByPk(id)) {
-             res
+            res
                 .status(200)
                 .send({ message: "Post deleted" })
+                return
         } else throw ({ message: "Delete didn't work. Try later" })
 
     } catch (error) {
         if (error.message) {
-             res.status(400).send({ error: error.message });
+            res.status(400).send({ error: error.message });
+            return
         }
-         res.status(500).send({ error: "Something happened: try again" });
+        res.status(500).send({ error: "Something happened: try again" });
+        return
     }
 }
 
@@ -78,20 +83,22 @@ export const editPost = async (req: Request, res: Response): Promise<void> => {
         console.log(changes, id)
         const [updatedRows] = await Post.update(changes, { where: { id } });
         if (updatedRows === 0) {
-             res.status(404).json({ error: "Post not found, or no changes made" });
+            res.status(404).json({ error: "Post not found, or no changes made" });
         }
-       
+
         const post = await Post.findByPk(id);
-        res.send({ message: "Post edited" , post});
+        res.send({ message: "Post edited", post });
+        return
 
 
 
 
     } catch (error) {
         if (error.message) {
-             res.status(400).send({ error: error.message });
+            res.status(400).send({ error: error.message });
         }
-         res.status(500).send({ error: "Something happened: try again" });
+        res.status(500).send({ error: "Something happened: try again" });
+        return
     }
 }
 
@@ -100,16 +107,40 @@ export const getActivePost = async (req: Request, res: Response): Promise<void> 
         const { userId } = req.body;
         const response = await Post.findOne({ where: { userId } })
         if (response) {
-             res
+            res
                 .status(200)
                 .send({ post: response, message: "Post get" })
+                return
         } else throw ({ message: "Couldnt get POST from DB" })
 
     } catch (error) {
         if (error.message) {
-             res.status(400).send({ error: error.message });
+            res.status(400).send({ error: error.message });
+            return
         }
-         res.status(500).send({ error: "Something happened: try again" });
+        res.status(500).send({ error: "Something happened: try again" });
+        return
+    }
+}
+
+export const getUsersPosts = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const { userId } = req.body;
+        const response = await Post.findAll({ where: { userId } })
+        if (response) {
+            res
+                .status(200)
+                .send({ posts: response, message: "Post get" })
+                return
+        } else throw ({ message: "Couldnt get POST from DB" })
+
+    } catch (error) {
+        if (error.message) {
+            res.status(400).send({ error: error.message });
+            return
+        }
+        res.status(500).send({ error: "Something happened: try again" });
+        return
     }
 }
 

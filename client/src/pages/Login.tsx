@@ -6,8 +6,8 @@ import { appStore } from "../zustand/appStore";
 import BtnMain from "../components/buttons/BtnMain";
 
 export default function Login() {
-  const { logIn, error, auth, getActivePost, user } = userStore();
-  const { getPosts } = appStore();
+  const { logIn, error, auth, getActivePost, user,getAllUsersPosts } = userStore();
+  const { getPosts} = appStore();
   const navigate = useNavigate();
 
   const [loginForm, setLoginForm] = useState<LoginForm>({
@@ -38,6 +38,7 @@ export default function Login() {
       return;
     } else {
       getPosts();
+      getAllUsersPosts(user.id);
       getActivePost(user.id);
       navigate("/map");
     }

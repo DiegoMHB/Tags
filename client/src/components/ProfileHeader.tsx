@@ -4,7 +4,7 @@ import { userStore } from "../zustand/userStore";
 import image from "../assets/processed_cv_photo.jpg"
 
 export default function ProfileHeader() {
-  const { user, activePost } = userStore();
+  const { user, activePost, allUserPosts } = userStore();
   const { auth } = userStore();
   const [date, setDate] = useState<string | null>(null);
 
@@ -39,7 +39,7 @@ export default function ProfileHeader() {
           </div>
           <div className="flex justify-between items-baseline ">
             <p className="text-xs">Posts:</p>
-            <p className="text-xs">0</p>
+            <p className="text-xs">{allUserPosts.length}</p>
           </div>
           <div className="flex justify-between items-baseline ">
             <p className="text-xs">City:</p>

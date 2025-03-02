@@ -11,12 +11,14 @@ export type UserStoreType = {
     loading: boolean
     error: string
     activePost: PostType | null
+    allUserPosts: PostType[] | []
 
     createActivePost: (post: NewPostType) => void
     getActivePost: (id: string) => void
+    getAllUsersPosts : (id: string) => void
     deleteActivePost: (id: string) => void
-    editActivePost: (changes : Partial<NewPostType>) => void
-    
+    editActivePost: (changes: Partial<NewPostType>) => void
+
     signIn: (user: NewUser) => void
     logIn: (user: LoginForm) => void
     logOut: () => void
@@ -31,17 +33,18 @@ const initialUser: User = {
     profilePicture: null,
     id: "",
     createdAt: null,
-    post: ""
+    posts: []
 
 };
 
-export const userStore = create<UserStoreType>()((set,get) => ({
+export const userStore = create<UserStoreType>()((set, get) => ({
 
     user: initialUser,
     auth: false,
     loading: false,
     error: "",
     activePost: null,
+    allUserPosts: [],
 
     createActivePost: async (post: NewPostType) => {
         set({ loading: true });
@@ -62,10 +65,11 @@ export const userStore = create<UserStoreType>()((set,get) => ({
             const data = await response.json();
             set({ activePost: data.post });
             set({ error: "" });
-            //deleting the activePost after duration
-            setTimeout(()=>{
-                set({activePost:null})
-            },data.post.duration* 60 * 1000 );
+            //adding the 
+            setTimeout(() => {
+                set({ activePost: null });
+             
+            }, data.post.duration * 60 * 1000);
 
         } catch (e) {
             console.log("Error", e)
@@ -76,12 +80,12 @@ export const userStore = create<UserStoreType>()((set,get) => ({
 
     },
 
-    deleteActivePost: async (id:string) => {
+    deleteActivePost: async (id: string) => {
         set({ loading: true });
-        try{
+        try {
             const response = await fetch(`${url}deletePost`, {
                 method: "DELETE",
-                body: JSON.stringify({id}),
+                body: JSON.stringify({ id }),
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -93,24 +97,24 @@ export const userStore = create<UserStoreType>()((set,get) => ({
             }
             const data = await response.json();
             set({ error: data.message });
-            set({activePost: null})
-            
+            set({ activePost: null })
 
-        }catch (e) {
+
+        } catch (e) {
             console.log("Error", e)
         } finally {
             set({ loading: false });
         }
     },
 
-    editActivePost: async ( changes) => {
+    editActivePost: async (changes) => {
         set({ loading: true });
         const id = get().activePost?.id;
 
-        try{
+        try {
             const response = await fetch(`${url}editPost`, {
                 method: "PATCH",
-                body: JSON.stringify({...changes,id}),
+                body: JSON.stringify({ ...changes, id }),
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -122,24 +126,23 @@ export const userStore = create<UserStoreType>()((set,get) => ({
             }
             const data = await response.json();
             set({ error: data.message });
-            set({activePost: data.post});
-            
+            set({ activePost: data.post });
 
-        }catch (e) {
+
+        } catch (e) {
             console.log("Error", e)
         } finally {
             set({ loading: false });
         }
     },
 
-//TODO: error when no activepost
-    getActivePost: async (userId : string)=> {
+    //TODO: error when no activepost
+    getActivePost: async (userId: string) => {
         set({ loading: true });
-        console.log('getting active POst')
         try {
             const response = await fetch(`${url}getPost`, {
                 method: "POST",
-                body: JSON.stringify({userId}),
+                body: JSON.stringify({ userId }),
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -150,9 +153,33 @@ export const userStore = create<UserStoreType>()((set,get) => ({
                 throw (data)
             }
             const data = await response.json();
-            console.log(data)
             set({ activePost: data.post });
             set({ error: "" });
+
+        } catch (e) {
+            console.log("Error", e)
+        } finally {
+            set({ loading: false });
+        }
+    },
+
+    getAllUsersPosts: async (userId: string) => {
+        set({ loading: true });
+        try {
+            const response = await fetch(`${url}getUsersPosts`, {
+                method: "POST",
+                body: JSON.stringify({ userId }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            if (!response.ok) {
+                const data = await response.json();
+                set({ error: data.error });
+                throw (data)
+            }
+            const data = await response.json();
+            set({allUserPosts: data.posts})
 
         } catch (e) {
             console.log("Error", e)

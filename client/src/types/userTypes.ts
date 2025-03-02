@@ -5,11 +5,11 @@ export type NewUser = {
     password : string
     city : string
     profilePicture?:  string | null
-    post : string
 }
 
 export type User = NewUser	& {
     id: string
     createdAt: string | null
+    posts: string[]
 
 }

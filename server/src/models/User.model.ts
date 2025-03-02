@@ -48,20 +48,19 @@ class User extends Model {
         type: DataType.STRING(255), allowNull: false
     })
     profilePicture: string
-
-    @HasOne(() => Post, {
-        foreignKey: 'userId',
-        onDelete: 'CASCADE',
-        hooks: true,
-    })
-    post: Post
-
+    
     @CreatedAt
     @Column({
         type: DataType.DATE, allowNull: false
     })
     createdAt: Date
-
+    
+    @HasMany(() => Post, {
+        foreignKey: 'userId',
+        onDelete: 'CASCADE',
+        hooks: true,
+    })
+    post: Post
 
 
 }

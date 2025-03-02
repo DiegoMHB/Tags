@@ -3,17 +3,20 @@ import { PostType } from "../types/postTypes";
 import { TimeLeft } from "../types/appTypes";
 import calculateTimeLeft from "../assets/helperFunctions/calculateTimeLeft";
 import { useNavigate } from "react-router-dom";
+import { userStore } from "../zustand/userStore";
 
 type PostComponentProps = {
   post: PostType;
 };
 export default function PostComponent({ post }: PostComponentProps) {
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const navigate = useNavigate();
 
+    const{activePost , user} = userStore();
+  const [imageLoaded, setImageLoaded] = useState(false);
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(() =>
     calculateTimeLeft(post.destroyAt, post.createdAt)
   );
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (timeLeft.percentage <= 0) {
@@ -21,21 +24,21 @@ export default function PostComponent({ post }: PostComponentProps) {
     } else {
       const interval = setInterval(() => {
         setTimeLeft(calculateTimeLeft(post.destroyAt, post.createdAt));
-      }, 8000);
+      }, 15000);
       return () => clearInterval(interval);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeLeft]);
 
   return (
-    <section className="flex flex-col justify-between h-full w-full">
-      <div className="flex m-5 gap-5 ">
-        {!imageLoaded && (
-          <div className="w-25 h-25 bg-indigo-200 animate-pulse"></div>
+    <section className="flex flex-col w-full p-3">
+      <div className="flex flex-row gap-3">
+        {!imageLoaded && post.picture && (
+          <div className="w-20 h-20 bg-indigo-200 animate-pulse"></div>
         )}
         {post.picture && (
           <img
-            className={`w-25 h-25 object-cover transition-opacity duration-500 ${
+            className={`w-20 h-20 object-cover transition-opacity duration-500 ${
               imageLoaded ? "opacity-100" : "opacity-0"
             }`}
             src={post.picture}
@@ -44,26 +47,30 @@ export default function PostComponent({ post }: PostComponentProps) {
           />
         )}
 
-        <div className=" flex flex-col w-full h-20">
+        <div className=" flex flex-col w-full">
           <div className="flex flex-row items-center gap-3">
             <div
               className={`${
                 post.isActive ? "bg-green-500" : "bg-red-600"
               } w-3 h-3 rounded-xl`}
             ></div>
-            <h3 className="text-xl">{post.title}</h3>
+            <h3 className="text-xl font-bold">{post.title}</h3>
           </div>
           <div className="flex justify-between items-baseline ">
             <p className="text-xs">Category:</p>
-            <p className="text-xs">{post!.category}</p>
+            <p className="text-xs font-bold">{post!.category}</p>
           </div>
           <div className="flex justify-between items-baseline ">
             <p className="text-xs">Duration:</p>
-            <p className="text-xs">{timeLeft.minutes}</p>
+            <p className="text-xs font-bold">{timeLeft.minutes}'</p>
           </div>
+         { activePost?.userId && user.id ?null: <div className="flex justify-between items-baseline ">
+            <p className="text-xs">User:</p>
+            <p className="text-xs">{user.userName}</p>
+          </div>}
         </div>
       </div>
-      <div className="flex justify-between items-baseline ">
+      <div className="flex flex-col items-baseline ">
         <p className="text-xs">Description:</p>
         <p className="text-xs">{post.description}</p>
       </div>
