@@ -6,7 +6,7 @@ import { appStore } from "../zustand/appStore";
 import BtnMain from "../components/buttons/BtnMain";
 
 export default function Login() {
-  const { logIn, error, auth, getActivePost, user,getAllUsersPosts } = userStore();
+  const { logIn, error, auth,  user,getAllUsersPosts } = userStore();
   const { getPosts} = appStore();
   const navigate = useNavigate();
 
@@ -39,7 +39,6 @@ export default function Login() {
     } else {
       getPosts();
       getAllUsersPosts(user.id);
-      getActivePost(user.id);
       navigate("/map");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -16,10 +16,11 @@ export default function ProfileHeader() {
   }, [user, date,auth]);
 
   return (
-    <section className="flex flex-col justify-between h-full w-full">
-      <div className="flex m-5 gap-5 ">
+    <section className="flex flex-col justify-between h-full w-full p-2 rounded-2xl
+    bg-gradient-to-t from-[#FFFFFF]/30 to-[#FFFFFF]/40">
+      <div className="flex gap-5 ">
         
-          <img className="w-20 h-20 object-cover"
+          <img className="w-20 h-20 object-cover m-1 mr-0 rounded-[100%]"
             src={user.profilePicture? user.profilePicture : image}
             alt={"photo"}
           />

@@ -10,12 +10,11 @@ export type UserStoreType = {
     auth: boolean
     loading: boolean
     error: string
-    activePost: PostType | null
     allUserPosts: PostType[] | []
+    activePost: PostType | null
 
     createActivePost: (post: NewPostType) => void
-    getActivePost: (id: string) => void
-    getAllUsersPosts : (id: string) => void
+    getAllUsersPosts: (id: string) => void
     deleteActivePost: (id: string) => void
     editActivePost: (changes: Partial<NewPostType>) => void
 
@@ -48,7 +47,6 @@ export const userStore = create<UserStoreType>()((set, get) => ({
 
     createActivePost: async (post: NewPostType) => {
         set({ loading: true });
-        console.log(post)
         try {
             const response = await fetch(`${url}newPost`, {
                 method: "POST",
@@ -63,13 +61,9 @@ export const userStore = create<UserStoreType>()((set, get) => ({
                 throw (data)
             }
             const data = await response.json();
-            set({ activePost: data.post });
+            set((state) => ({ allUserPosts: [...state.allUserPosts, data.post] }));
             set({ error: "" });
-            //adding the 
-            setTimeout(() => {
-                set({ activePost: null });
-             
-            }, data.post.duration * 60 * 1000);
+            //eliminating it from active Post
 
         } catch (e) {
             console.log("Error", e)
@@ -97,7 +91,6 @@ export const userStore = create<UserStoreType>()((set, get) => ({
             }
             const data = await response.json();
             set({ error: data.message });
-            set({ activePost: null })
 
 
         } catch (e) {
@@ -109,7 +102,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
 
     editActivePost: async (changes) => {
         set({ loading: true });
-        const id = get().activePost?.id;
+        const id = get().allUserPosts.filter((post: PostType) => post.isActive)[0].id;
 
         try {
             const response = await fetch(`${url}editPost`, {
@@ -126,35 +119,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
             }
             const data = await response.json();
             set({ error: data.message });
-            set({ activePost: data.post });
 
-
-        } catch (e) {
-            console.log("Error", e)
-        } finally {
-            set({ loading: false });
-        }
-    },
-
-    //TODO: error when no activepost
-    getActivePost: async (userId: string) => {
-        set({ loading: true });
-        try {
-            const response = await fetch(`${url}getPost`, {
-                method: "POST",
-                body: JSON.stringify({ userId }),
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-            if (!response.ok) {
-                const data = await response.json();
-                set({ error: data.error });
-                throw (data)
-            }
-            const data = await response.json();
-            set({ activePost: data.post });
-            set({ error: "" });
 
         } catch (e) {
             console.log("Error", e)
@@ -179,7 +144,10 @@ export const userStore = create<UserStoreType>()((set, get) => ({
                 throw (data)
             }
             const data = await response.json();
-            set({allUserPosts: data.posts})
+            set({ allUserPosts: data.posts })
+            const activePost = get().allUserPosts.filter((post: PostType) =>
+                post.isActive)[0];
+            set({ activePost: activePost });
 
         } catch (e) {
             console.log("Error", e)

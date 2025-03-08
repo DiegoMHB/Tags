@@ -40,7 +40,6 @@ export const appStore = create<AppStoreType>()((set,get) => ({
 
     getPosts: async () => {
         set({ loading: true });
-        console.log('EN GETPOSTSSSS')
         if(get().posts){
             set({posts: []})
         }

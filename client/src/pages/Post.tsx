@@ -108,6 +108,7 @@ export default function Post() {
                 link=""
                 onClick={() => {
                   deleteActivePost(activePost.id);
+                  navigate("/Profile")
                 }}
               />
             </div>
