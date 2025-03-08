@@ -23,9 +23,10 @@ export default function Post() {
 
   const {
     activePost,
-    createActivePost,
     user,
+    createActivePost,
     deleteActivePost,
+    closeActivePost,
     editActivePost,
   } = userStore();
 
@@ -107,7 +108,17 @@ export default function Post() {
                 mode={0}
                 link=""
                 onClick={() => {
-                  deleteActivePost(activePost.id);
+                  deleteActivePost();
+                  navigate("/Profile")
+                }}
+              />
+              <BtnMain
+                text="Close Post"
+                disabled={selectedFile && !fotoUrl ? true : false}
+                mode={0}
+                link=""
+                onClick={() => {
+                  closeActivePost();
                   navigate("/Profile")
                 }}
               />
@@ -238,7 +249,7 @@ export default function Post() {
             />
 
             <div className=" flex flex-col justify-center items-center w-[100%] my-3">
-              {!edit ? (
+             
                 <BtnMain
                   text="Post it!"
                   disabled={selectedFile && !fotoUrl ? true : false}
@@ -246,15 +257,7 @@ export default function Post() {
                   link=""
                   onClick={handleSubmit(registerPost)}
                 />
-              ) : (
-                <BtnMain
-                  text="Edit"
-                  disabled={selectedFile && !fotoUrl ? true : false}
-                  mode={1}
-                  link=""
-                  onClick={handleSubmit(registerPost)}
-                />
-              )}
+            
               <span className="text-red-600 text-sm uppercase ">{error}</span>
             </div>
           </form>

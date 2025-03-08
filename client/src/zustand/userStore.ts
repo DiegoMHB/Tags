@@ -15,7 +15,8 @@ export type UserStoreType = {
 
     createActivePost: (post: NewPostType) => void
     getAllUsersPosts: (id: string) => void
-    deleteActivePost: (id: string) => void
+    deleteActivePost: () => void
+    closeActivePost: () => void
     editActivePost: (changes: Partial<NewPostType>) => void
 
     signIn: (user: NewUser) => void
@@ -74,11 +75,39 @@ export const userStore = create<UserStoreType>()((set, get) => ({
 
     },
 
-    deleteActivePost: async (id: string) => {
+    deleteActivePost: async () => {
         set({ loading: true });
         try {
+            const id = get().activePost!.id;
             const response = await fetch(`${url}deletePost`, {
                 method: "DELETE",
+                body: JSON.stringify({ id}),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            if (!response.ok) {
+                const data = await response.json();
+                set({ error: data.error });
+                throw (data) //advertir al usuario
+            }
+            const data = await response.json();
+            set({ error: data.message });
+
+
+        } catch (e) {
+            console.log("Error", e)
+        } finally {
+            set({ loading: false });
+        }
+    },
+
+    closeActivePost: async () => {
+        set({ loading: true });
+        try {
+            const id = get().activePost!.id;
+            const response = await fetch(`${url}closePost`, {
+                method: "POST",
                 body: JSON.stringify({ id }),
                 headers: {
                     "Content-Type": "application/json",
@@ -90,6 +119,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
                 throw (data) //advertir al usuario
             }
             const data = await response.json();
+            set({ activePost: null });
             set({ error: data.message });
 
 
