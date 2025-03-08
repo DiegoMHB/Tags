@@ -102,27 +102,6 @@ export const editPost = async (req: Request, res: Response): Promise<void> => {
     }
 }
 
-export const getActivePost = async (req: Request, res: Response): Promise<void> => {
-    try {
-        const { userId } = req.body;
-        const response = await Post.findOne({ where: { userId } })
-        if (response) {
-            res
-                .status(200)
-                .send({ post: response, message: "Post get" })
-                return
-        } else throw ({ message: "Couldnt get POST from DB" })
-
-    } catch (error) {
-        if (error.message) {
-            res.status(400).send({ error: error.message });
-            return
-        }
-        res.status(500).send({ error: "Something happened: try again" });
-        return
-    }
-}
-
 export const getUsersPosts = async (req: Request, res: Response): Promise<void> => {
     try {
         const { userId } = req.body;
