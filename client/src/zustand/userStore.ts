@@ -178,7 +178,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
             set({ allUserPosts: data.posts })
             const activePost = get().allUserPosts.filter((post: PostType) =>
                 post.isActive)[0];
-            set({ activePost: activePost });
+            set({ activePost });
 
         } catch (e) {
             console.log("Error", e)

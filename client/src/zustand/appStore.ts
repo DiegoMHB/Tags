@@ -56,6 +56,7 @@ export const appStore = create<AppStoreType>()((set,get) => ({
             posts: data.posts
         }))
     },
+    
     getUserFromPost: async (userId: string) => {
         set({ loading: true });
 

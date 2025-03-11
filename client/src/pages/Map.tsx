@@ -15,6 +15,8 @@ export default function Map() {
   const { posts } = appStore();
   const { activePost } = userStore();
 
+  const postFiltered = posts.filter((p)=> p.id !== activePost?.id)
+
 
 
   return (
@@ -26,13 +28,16 @@ export default function Map() {
             attribution={mapUtilities.attribution}
             id="map"
           />
-          {!activePost && (
-            <Marker position={coordinates as LatLngTuple}></Marker>
-          )}
+          {!activePost?
+            <Marker position={coordinates as LatLngTuple} ></Marker>
+            :
+            <PostMarker post={activePost} key={activePost.id} isUsers={true}/>
+          }
 
-          {posts.map((post) => (
-            <PostMarker post={post} key={post.id} />
+          {postFiltered.map((post) => (
+            <PostMarker post={post} key={post.id} isUsers={false}/>
           ))}
+
         </MapContainer>
       </main>
     </>

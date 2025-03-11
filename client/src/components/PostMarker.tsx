@@ -11,10 +11,12 @@ import { TimeLeft } from "../types/appTypes";
 
 type postMarkerProps = {
   post: PostType;
+  isUsers: boolean;
 };
 
-export default function PostMarker({ post }: postMarkerProps) {
+export default function PostMarker({ post, isUsers }: postMarkerProps) {
   const { getUserFromPost } = appStore();
+
   const [visible, setVisible] = useState<boolean>(true);
 
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(() =>
@@ -26,15 +28,15 @@ export default function PostMarker({ post }: postMarkerProps) {
     html: ReactDOMServer.renderToString(
       <div className="flex flex-col justify-center items-center">
         <CircularProgressbarComp timeLeft={timeLeft} />
-        <span className="uppercase font-bold text-[10px]">
-          #{`${post.title}`}
+        <span className={`uppercase font-bold text-[10px] ${isUsers ? "text-green-800" : "text-black"}`} >
+          #
+          {`${post.title}`}
         </span>
       </div>
     ),
     className: "",
-    iconSize: [20,20],
+    iconSize: [20, 20],
     iconAnchor: [5, 5],
-    
   });
 
   useEffect(() => {
