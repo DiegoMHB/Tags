@@ -1,19 +1,10 @@
-import { useEffect, useState } from "react";
 import stampToDate from "../assets/helperFunctions/stampToDate";
 import { userStore } from "../zustand/userStore";
 import image from "../assets/processed_cv_photo.jpg"
 
 export default function ProfileHeader() {
   const { user, activePost, allUserPosts } = userStore();
-  const { auth } = userStore();
-  const [date, setDate] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (user.createdAt) {
-      const formattedDate = stampToDate(user.createdAt);
-      setDate(formattedDate);
-    }
-  }, [user, date,auth]);
 
   return (
     <section className="flex flex-col justify-between h-full w-full p-2 rounded-2xl
@@ -36,7 +27,7 @@ export default function ProfileHeader() {
           </div>
           <div className="flex justify-between items-baseline ">
             <p className="text-xs">Member since:</p>
-            <p className="text-xs">{date}</p>
+            <p className="text-xs">{user && stampToDate(user.createdAt as string)}</p>
           </div>
           <div className="flex justify-between items-baseline ">
             <p className="text-xs">Posts:</p>

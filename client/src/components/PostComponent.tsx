@@ -3,6 +3,7 @@ import { PostType } from "../types/postTypes";
 import { TimeLeft } from "../types/appTypes";
 import calculateTimeLeft from "../assets/helperFunctions/calculateTimeLeft";
 import { userStore } from "../zustand/userStore";
+import stampToDate from "../assets/helperFunctions/stampToDate";
 
 type PostComponentProps = {
   post: PostType;
@@ -72,6 +73,12 @@ export default function PostComponent({ post }: PostComponentProps) {
           <div className="flex justify-between items-baseline ">
             <p className="text-xs font-bold">Duration:</p>
             <p className="text-xs mr-[60%]">{timeLeft.minutes}'</p>
+          </div>
+        )}
+        {!post.isActive && (
+          <div className="flex justify-between items-baseline ">
+            <p className="text-xs font-bold">Date:</p>
+            <p className="text-xs mr-[60%]">{post && stampToDate(post.createdAt as string)}</p>
           </div>
         )}
         {activePost?.userId && user.id ? null : (
