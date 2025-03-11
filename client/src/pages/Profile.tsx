@@ -9,9 +9,12 @@ export default function Profile() {
   const { logOut, allUserPosts, user, getAllUsersPosts,activePost } = userStore();
 
   useEffect(() => {
+    if(!activePost)
     getAllUsersPosts(user.id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activePost]);
+
+
 
   const sortedPosts = allUserPosts.sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
