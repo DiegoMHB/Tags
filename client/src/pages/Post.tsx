@@ -88,6 +88,7 @@ export default function Post() {
     }
   }, [edit, setValue]);
 
+  //TODO: separate in 2 pages or components:
   return (
     //ACTIVE POST:
     <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
@@ -111,6 +112,7 @@ export default function Post() {
               />
               <Marker position={activePost.coordinates as LatLngTuple}></Marker>
             </MapContainer>
+            
             <div className="flex flex-col justify-between items-center w-[100%] pb-5 mt-5">
               <BtnMain
                 text="Edit Post"

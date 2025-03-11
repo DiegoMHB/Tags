@@ -3,7 +3,8 @@ import { NewUser, User } from "../types/userTypes";
 import { LoginForm } from "../types/appTypes";
 import { NewPostType, PostType } from "../types/postTypes";
 
-const url = "http://localhost:3000/"
+const port = import.meta.env.VITE_PORT;
+const url = `http://localhost:${port}/`
 
 export type UserStoreType = {
     user: User

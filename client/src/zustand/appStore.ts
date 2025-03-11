@@ -2,7 +2,8 @@ import { create } from "zustand";
 import { PostType } from "../types/postTypes";
 import { User } from "../types/userTypes";
 
-const url = "http://localhost:3000/"
+const port = import.meta.env.VITE_PORT;
+const url = `http://localhost:${port}/`
 
 export type AppStoreType = {
     error: string,

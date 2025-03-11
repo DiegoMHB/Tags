@@ -76,9 +76,9 @@ export const login = async (req: Request, res: Response): Promise<any> => {
 
     } catch (error) {
         if (error.message) {
-            return res.status(400).send({ error: error.message });
+            return res.status(400).send({ error: "Something happened. Try again"});
         }
-        return res.status(500).send({ error: "Something happened: try again" });
+        return res.status(500).send({ error: "Something happened. Try again" });
     }
 
 }

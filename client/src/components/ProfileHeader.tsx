@@ -29,7 +29,7 @@ export default function ProfileHeader() {
           <div className="flex flex-row items-center gap-3">
             <div
               className={`${
-                activePost ? "bg-green-500" : "bg-red-600"
+                activePost ? "bg-green-500" : "bg-amber-300"
               } w-3 h-3 rounded-xl`}
             ></div>
             <h3 className="text-xl">{user.userName}</h3>
