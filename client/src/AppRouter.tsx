@@ -24,8 +24,8 @@ const router = createBrowserRouter(
       <Route path="/about" element={<About />} />
       <Route path="/map" element={<Map />} />
       <Route path="/profile" element={<Profile />} />
-      <Route path="/post/" element={<Post />} />
-      <Route path="/postForm/" element={<PostForm />} />
+      <Route path="/post/:id" element={<Post />} />
+      <Route path="/postForm" element={<PostForm />} />
       <Route path="/tags" element={<Tags />} />
     </Route>
   )

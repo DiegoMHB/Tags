@@ -61,7 +61,7 @@ export default function PostComponent({ post }: PostComponentProps) {
         <div className="flex flex-row justify-between gap-3">
           <h3
             className="text-xl font-bold flex items-baseline gap-3"
-            onClick={() => navigate(`/post`)}
+            onClick={() => navigate(`/post/${post.id}`)}
           >
             {post.title}
             <div
