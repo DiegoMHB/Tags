@@ -14,6 +14,7 @@ export const links: linkList = {
             { to: "/profile", text: "Profile", id: 2 },
             { to: "/tags", text: "Tags", id: 3 },
             { to: "/post", text: "Post", id: 4 },
+            { to: "/postForm", text: "New Post", id: 5 },
         ]
 
 };

@@ -12,6 +12,10 @@
   border-radius: 10px;
 }
 
+.scrollbar-hidden::-webkit-scrollbar {
+    display: none;
+  }
+
 .hs-leaflet.leaflet-touch .leaflet-control-layers,
 .hs-leaflet.leaflet-touch .leaflet-bar {
   border-width: 0px;

@@ -13,6 +13,7 @@ import Landing from "./pages/Landing";
 import Tags from "./pages/Tags";
 import About from "./pages/About";
 import Post from "./pages/Post";
+import PostForm from "./pages/PostForm";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,6 +25,7 @@ const router = createBrowserRouter(
       <Route path="/map" element={<Map />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/post/" element={<Post />} />
+      <Route path="/postForm/" element={<PostForm />} />
       <Route path="/tags" element={<Tags />} />
     </Route>
   )

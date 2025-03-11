@@ -7,7 +7,7 @@ export default function ProfileHeader() {
 
 
   return (
-    <section className="flex flex-col justify-between h-full w-full p-2 rounded-2xl
+    <section className="flex flex-col justify-between h-[100px] w-full p-2 rounded-2xl
     bg-gradient-to-t from-[#FFFFFF]/30 to-[#FFFFFF]/40">
       <div className="flex gap-5 ">
         
