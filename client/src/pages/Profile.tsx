@@ -6,12 +6,12 @@ import { PostType } from "../types/postTypes";
 import { userStore } from "../zustand/userStore";
 
 export default function Profile() {
-  const { logOut, allUserPosts, user, getAllUsersPosts } = userStore();
+  const { logOut, allUserPosts, user, getAllUsersPosts,activePost } = userStore();
 
   useEffect(() => {
-    getAllUsersPosts(user.id);
+    getAllUsersPosts(user.id)
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [allUserPosts]);
+  }, [activePost]);
 
   const sortedPosts = allUserPosts.sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()

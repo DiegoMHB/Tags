@@ -39,6 +39,7 @@ export default function Login() {
     } else {
       getPosts();
       getAllUsersPosts(user.id);
+      
       navigate("/map");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

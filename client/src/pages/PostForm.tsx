@@ -41,6 +41,7 @@ export default function PostForm() {
       post = { ...post, picture: fotoUrl, userId: user.id, coordinates };
       await createActivePost(post);
       await getAllUsersPosts(user.id);
+      
       if (error) return;
     } else { //create an object with changes, and use it to edit the post
       const changes: Partial<NewPostType> = {};
