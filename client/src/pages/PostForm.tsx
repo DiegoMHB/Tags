@@ -12,7 +12,7 @@ import { categories } from "../data/listUtilities";
 
 export default function PostForm() {
   const { fotoUrl, selectedFile, setFotoUrl, setSelectedFile, error, getPosts } = appStore();
-  const { activePost, user, createActivePost, editActivePost } = userStore();
+  const { activePost, user, createActivePost, editActivePost,getAllUsersPosts } = userStore();
   const { coordinates } = mapStore();
   const navigate = useNavigate();
 
@@ -40,7 +40,7 @@ export default function PostForm() {
     if (!edit) {
       post = { ...post, picture: fotoUrl, userId: user.id, coordinates };
       await createActivePost(post);
-      await getPosts();
+      await getAllUsersPosts(user.id);
       if (error) return;
     } else { //create an object with changes, and use it to edit the post
       const changes: Partial<NewPostType> = {};

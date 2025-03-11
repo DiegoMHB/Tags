@@ -65,7 +65,10 @@ export const userStore = create<UserStoreType>()((set, get) => ({
             const data = await response.json();
             set((state) => ({ allUserPosts: [...state.allUserPosts, data.post] }));
             set({ error: "" });
-            //eliminating it from active Post
+            //after duration activePost = null
+            setTimeout(()=>{
+                set({activePost:null})
+            },data.post.duration* 60 * 1000 );
 
         } catch (e) {
             console.log("Error", e)
