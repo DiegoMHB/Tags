@@ -4,18 +4,19 @@ import { TimeLeft } from "../types/appTypes";
 import calculateTimeLeft from "../assets/helperFunctions/calculateTimeLeft";
 import { userStore } from "../zustand/userStore";
 import stampToDate from "../assets/helperFunctions/stampToDate";
+import { useNavigate } from "react-router-dom";
 
 type PostComponentProps = {
   post: PostType;
 };
 export default function PostComponent({ post }: PostComponentProps) {
-  const { activePost, user, getAllUsersPosts } = userStore();
+  const { user, getAllUsersPosts } = userStore();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(() =>
     calculateTimeLeft(post.destroyAt, post.createdAt)
   );
 
-  //   const navigate = useNavigate();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (post.isActive) {
@@ -24,7 +25,6 @@ export default function PostComponent({ post }: PostComponentProps) {
       } else {
         const interval = setInterval(() => {
           if (post.isActive) {
-            console.log(post.title);
             setTimeLeft(calculateTimeLeft(post.destroyAt, post.createdAt));
           }
         }, 15000);
@@ -40,9 +40,12 @@ export default function PostComponent({ post }: PostComponentProps) {
   )} */
   }
   return (
-    <section className="flex flex-col w-full p-2 rounded-2xl relative">
+    <section
+      className="flex flex-col w-full p-2 mt-2 rounded-2xl relative
+    bg-gradient-to-t from-[#FFFFFF]/30 to-[#FFFFFF]/40"
+    >
       {post.picture && (
-        <div className="w-15 h-15 rounded-full overflow-hidden flex items-center justify-center absolute right-[15px] top-[15px]">
+        <div className="w-15 h-15 rounded-full overflow-hidden flex items-center justify-center absolute right-[20px] top-[35px]">
           <img
             className={`w-full h-full transition-opacity duration-500 transform ${
               imageLoaded ? "opacity-100 scale-200" : "opacity-0 scale-100"
@@ -53,9 +56,13 @@ export default function PostComponent({ post }: PostComponentProps) {
           />
         </div>
       )}
+
       <div className=" flex flex-col w-full ml-2 ">
         <div className="flex flex-row justify-between gap-3">
-          <h3 className="text-xl font-bold flex items-baseline gap-3">
+          <h3
+            className="text-xl font-bold flex items-baseline gap-3"
+            onClick={() => navigate(`/post`)}
+          >
             {post.title}
             <div
               className={`${
@@ -67,31 +74,47 @@ export default function PostComponent({ post }: PostComponentProps) {
 
         <div className="flex justify-between items-baseline ">
           <p className="text-xs font-bold">Category:</p>
-          <p className="text-xs mr-[60%]">{post!.category}</p>
+          <p className="text-xs mr-[100px]">{post!.category}</p>
         </div>
         {post.isActive && (
           <div className="flex justify-between items-baseline ">
             <p className="text-xs font-bold">Duration:</p>
-            <p className="text-xs mr-[60%]">{timeLeft.minutes}'</p>
+            <p className="text-xs mr-[100px]">{timeLeft.minutes}'</p>
           </div>
         )}
         {!post.isActive && (
           <div className="flex justify-between items-baseline ">
             <p className="text-xs font-bold">Date:</p>
-            <p className="text-xs mr-[60%]">{post && stampToDate(post.createdAt as string)}</p>
+            <p className="text-xs mr-[100px]">
+              {post && stampToDate(post.createdAt as string)}
+            </p>
           </div>
         )}
-        {activePost?.userId && user.id ? null : (
+        {post.userId == user.id ? null : (
           <div className="flex justify-between items-baseline ">
             <p className="text-xs font-bold">User:</p>
-            <p className="text-xs mr-[60%]">{user.userName}</p>
+            <p className="text-xs mr-[100px]">{user.userName}</p>
           </div>
         )}
+        <div className="flex justify-between items-baseline ">
+          <p className="text-xs font-bold">Chats:</p>
+          <p className="text-xs mr-[100px]">2</p>
+        </div>
         <div className="flex flex-col items-baseline">
           <p className="text-xs font-bold">Description:</p>
-          <p className="text-s ">{post.description}</p>
+          <p className="text-[14px] ">{post.description}</p>
         </div>
       </div>
+      {/* {post.isActive && (
+          <div className="mt-5 mx-auto w-[300px] flex justify-center">
+            <BtnMain
+              text="chats" //TODO NUMBER OF CHATS
+              mode={0}
+              link="/chat"
+              disabled={false} //IF NO CHAT TODO
+            ></BtnMain>
+          </div>
+        )} */}
     </section>
   );
 }
