@@ -104,7 +104,6 @@ export const closePost = async (req: Request, res: Response): Promise<void> => {
 export const editPost = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id, ...changes } = req.body;
-        console.log(changes, id)
         const [updatedRows] = await Post.update(changes, { where: { id } });
         if (updatedRows === 0) {
             res.status(404).json({ error: "Post not found, or no changes made" });

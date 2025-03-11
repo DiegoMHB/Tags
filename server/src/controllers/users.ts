@@ -92,7 +92,6 @@ export const logout = async (req: Request, res: Response): Promise<any> => {
 export const getUser = async (req: Request, res: Response) : Promise<any>  => {
     try {
         const {id} = req.params;    
-        console.log('ID----------------->',id)
         const response = await User.findByPk(id)
         if (response) {
             return res
