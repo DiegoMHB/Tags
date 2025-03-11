@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import Post from "../models/Post.model";
-import User from "../models/User.model";
 
 export const newPost = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -13,7 +12,9 @@ export const newPost = async (req: Request, res: Response): Promise<void> => {
             //to deactivate post once saved
             setTimeout(async () => {
                 const postToDeactivate = await Post.findByPk(response.dataValues.id);
+                if (postToDeactivate)
                 await postToDeactivate.update({ isActive: false });
+
             }, post.duration * 60 * 1000);
             res
                 .status(200)
@@ -40,7 +41,7 @@ export const getPosts = async (req: Request, res: Response): Promise<void> => {
                 .send({ posts: response, message: "Posts get" })
             return
         } else throw ({ message: "Couldnt get POST from DB" })
-        
+
 
     } catch (error) {
         if (error.message) {
@@ -64,8 +65,31 @@ export const deletePost = async (req: Request, res: Response): Promise<void> => 
             res
                 .status(200)
                 .send({ message: "Post deleted" })
-                return
+            return
         } else throw ({ message: "Delete didn't work. Try later" })
+
+    } catch (error) {
+        if (error.message) {
+            res.status(400).send({ error: error.message });
+            return
+        }
+        res.status(500).send({ error: "Something happened: try again" });
+        return
+    }
+}
+
+export const closePost = async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.body;
+    try {
+        const postToDeactivate = await Post.findByPk(id);
+        if (!postToDeactivate) {
+            throw ({ message: "'No such ID" })
+        }
+        const closedPost = await postToDeactivate.update({ isActive: false });
+        res
+            .status(200)
+            .send({ message: "Post closed", closedPost })
+        return
 
     } catch (error) {
         if (error.message) {
@@ -110,7 +134,7 @@ export const getUsersPosts = async (req: Request, res: Response): Promise<void> 
             res
                 .status(200)
                 .send({ posts: response, message: "Post get" })
-                return
+            return
         } else throw ({ message: "Couldnt get POST from DB" })
 
     } catch (error) {

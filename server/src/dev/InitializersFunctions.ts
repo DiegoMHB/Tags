@@ -61,20 +61,18 @@ export const createPosts = async () => {
                 const newPost = await Post.create(el);
                 console.log(`Post ${index + 1} created`);
 
-                // Delete after `el.duration` minutes
+                // Coose after `el.duration` minutes
                 setTimeout(async () => {
                     try {
-                        const postToDelete = await Post.findByPk(newPost.id);
-                        if (postToDelete) {
-                            await postToDelete.destroy();
-                            console.log(`Post ${newPost.id} deleted after ${el.duration} minutes.`);
-                        }
+                        const postToDeactivate = await Post.findByPk(newPost.id);
+                        if (postToDeactivate)
+                        await postToDeactivate.update({ isActive: false });
                     } catch (deleteError) {
-                        console.error(`Error deleting post ${newPost.id}:`, deleteError);
+                        console.error(`Error closing post ${newPost.id}:`, deleteError);
                     }
                 }, el.duration * 60 * 1000);
             } catch (saveError) {
-                console.error("Error saving post:", saveError);
+                console.error("Error closing post:", saveError);
             }
         }
     } catch (error) {
