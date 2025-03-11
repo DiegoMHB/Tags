@@ -15,8 +15,10 @@ export const deleteExpiredPosts = async () => {
         const deletedCount = await Post.destroy({
             where: {
                 destroyAt: { [Op.lt]: now },
-                email: { [Op.or]: [//EMAIL or EMAILS here
-                    ] }
+                email: {
+                    [Op.or]: [//EMAIL or EMAILS here
+                    ]
+                }
             },
         });
 
@@ -46,11 +48,12 @@ export const deleteDefaultPosts = async () => {
 //Creates default Posts:
 export const createPosts = async () => {
     try {
+        let userIndex = 0;
         for (const [index, el] of postsArray.entries()) {
-            const user = await User.findOne({ where: { email: `dmhb${index + 1}@gmail.com` } });
+            const user = await User.findOne({ where: { email: `dmhb${userIndex}@gmail.com` } });
 
             if (!user) {
-                console.error(`User not found for email: dmhb${index + 1}@gmail.com`);
+                console.error(`User not found for email: dmhb${userIndex}@gmail.com`);
                 continue;
             }
 
@@ -59,18 +62,21 @@ export const createPosts = async () => {
 
             try {
                 const newPost = await Post.create(el);
-                console.log(`Post ${index + 1} created`);
+                console.log(`Post ${userIndex} created`);
 
-                // Coose after `el.duration` minutes
+                // Close after `el.duration` minutes
                 setTimeout(async () => {
                     try {
                         const postToDeactivate = await Post.findByPk(newPost.id);
                         if (postToDeactivate)
-                        await postToDeactivate.update({ isActive: false });
+                            await postToDeactivate.update({ isActive: false });
                     } catch (deleteError) {
                         console.error(`Error closing post ${newPost.id}:`, deleteError);
                     }
                 }, el.duration * 60 * 1000);
+                if (el.isActive){
+                    userIndex++
+                }else continue
             } catch (saveError) {
                 console.error("Error closing post:", saveError);
             }
