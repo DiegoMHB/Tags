@@ -13,26 +13,26 @@ import { PostType } from "../types/postTypes";
 export default function Post() {
   const { fotoUrl, selectedFile } = appStore();
   const { id } = useParams();
-  const { deleteActivePost, closeActivePost , allUserPosts} = userStore();
-  const { posts} = appStore();
-  const [post, setPost ] = useState<PostType|null>(null);
+  const { deleteActivePost, closeActivePost, allUserPosts, activePost } =
+    userStore();
+  const { posts } = appStore();
+  const [post, setPost] = useState<PostType | null>(null);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const allPosts = [...posts,...allUserPosts];
-    console.log(allPosts)
-    const idPost = allPosts.filter(post => post.id == id)[0]
+    const allPosts = [...posts, ...allUserPosts];
+    console.log(allPosts);
+    const idPost = allPosts.filter((post) => post.id == id)[0];
     setPost(idPost);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [posts, allUserPosts]);
+  }, [posts, allUserPosts, id]);
 
   //TODO: component for the map with props and attributes
   return (
     <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
       <h3 className="text-2xl text-center m-3">You have an active post:</h3>
       <div className=" flex flex-col items-center w-[350px] bg-gradient-to-t from-[#FFFFFF]/20 to-[#FFFFFF]/30 border-gray-500 rounded-3xl p-2 gap-2">
-        {post &&
+        {post && (
           <div>
             <PostComponent post={post!}></PostComponent>
 
@@ -50,16 +50,18 @@ export default function Post() {
               <Marker position={post!.coordinates as LatLngTuple}></Marker>
             </MapContainer>
           </div>
-        }
+        )}
 
         <div className="flex flex-col justify-between items-center w-[100%] pb-5 mt-5">
-          <BtnMain
-            text="Edit Post"
-            disabled={selectedFile && !fotoUrl ? true : false}
-            mode={1}
-            link=""
-            onClick={() => navigate("/postForm")}
-          />
+          {post && post!.id === activePost!.id ? (
+            <BtnMain
+              text="Edit Post"
+              disabled={selectedFile && !fotoUrl ? true : false}
+              mode={1}
+              link=""
+              onClick={() => navigate("/postForm")}
+            />
+          ) : null}
           <div className="flex flex-col gap-3 w-full justify-center items-center">
             <BtnMain
               text="Delete Post"
@@ -71,16 +73,18 @@ export default function Post() {
                 navigate("/Profile");
               }}
             />
-            <BtnMain
-              text="Close Post"
-              disabled={selectedFile && !fotoUrl ? true : false}
-              mode={0}
-              link=""
-              onClick={() => {
-                closeActivePost();
-                navigate("/Profile");
-              }}
-            />
+            {post && post!.id === activePost!.id ? (
+              <BtnMain
+                text="Close Post"
+                disabled={selectedFile && !fotoUrl ? true : false}
+                mode={0}
+                link=""
+                onClick={() => {
+                  closeActivePost();
+                  navigate("/Profile");
+                }}
+              />
+            ) : null}
           </div>
         </div>
       </div>

@@ -48,7 +48,7 @@ export default function RootLayout() {
             {linkRendered.map((el) => (
                 activePost && el.text == "New Post" ? null :
                 !activePost && el.text == "Post"? null: 
-              <NavBarElement key={el.id} link={el.to} text={el.text} />
+              <NavBarElement key={el.id} link={el.to === "/post"? el.to + `/${activePost!.id}`:  el.to} text={el.text} />
             ))}
           </section>
         </main>
