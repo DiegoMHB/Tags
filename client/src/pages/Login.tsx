@@ -6,8 +6,8 @@ import { appStore } from "../zustand/appStore";
 import BtnMain from "../components/buttons/BtnMain";
 
 export default function Login() {
-  const { logIn, error, auth,  user,getAllUsersPosts } = userStore();
-  const { getPosts} = appStore();
+  const { logIn, error, auth, user, getAllUsersPosts } = userStore();
+  const { getPosts } = appStore();
   const navigate = useNavigate();
 
   const [loginForm, setLoginForm] = useState<LoginForm>({
@@ -48,7 +48,7 @@ export default function Login() {
     <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
       <h3 className="text-2xl">LOGIN :</h3>
 
-      <form className=" w-[300px] bg-gradient-to-t from-[#FFFFFF]/20 to-[#FFFFFF]/30 border-gray-500 rounded-3xl">
+      <form className=" w-[350px] bg-gradient-to-t from-[#FFFFFF]/20 to-[#FFFFFF]/30 border-gray-500 rounded-3xl">
         <section className=" flex flex-col justify-center items-start gap-2 p-5">
           <input
             placeholder="...mail*"

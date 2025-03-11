@@ -6,6 +6,12 @@
   border-radius: 10px;
 }
 
+#mapPost {
+  height: 200px;
+  width: 300px;
+  border-radius: 10px;
+}
+
 .hs-leaflet.leaflet-touch .leaflet-control-layers,
 .hs-leaflet.leaflet-touch .leaflet-bar {
   border-width: 0px;

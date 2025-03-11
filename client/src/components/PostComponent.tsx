@@ -33,8 +33,7 @@ export default function PostComponent({ post }: PostComponentProps) {
   }}, [timeLeft]);
 
   return (
-    <section className="flex flex-col w-full p-2 rounded-2xl
-    bg-gradient-to-t from-[#FFFFFF]/30 to-[#FFFFFF]/40">
+    <section className="flex flex-col w-full p-2 rounded-2xl">
       <div className="flex flex-row gap-3">
         {!imageLoaded && post.picture && (
           <div className="w-20 h-20 bg-indigo-200 animate-pulse "></div>

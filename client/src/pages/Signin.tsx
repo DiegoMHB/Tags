@@ -11,7 +11,7 @@ import FotoUploader from "../components/buttons/FotoUploader";
 
 export default function Signin() {
   const { signIn, error, auth } = userStore();
-  const { fotoUrl, selectedFile,setFotoUrl,setSelectedFile  } = appStore();
+  const { fotoUrl, selectedFile, setFotoUrl, setSelectedFile } = appStore();
 
   const navigate = useNavigate();
 
@@ -25,7 +25,7 @@ export default function Signin() {
   //creates profile->useEffect to show error or navigate to map if auth=true
   async function createProfile(user: NewUser) {
     user = { ...user, profilePicture: fotoUrl };
-    
+
     await signIn(user);
   }
 
@@ -34,19 +34,19 @@ export default function Signin() {
       return;
     } else {
       reset();
-      setFotoUrl('');
-      setSelectedFile(null)  
-      
+      setFotoUrl("");
+      setSelectedFile(null);
+
       navigate("/map");
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [auth]);
 
   return (
     <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
       <h3 className="text-2xl">CREATE AN ACCOUNT :</h3>
 
-      <form className=" w-[300px] bg-gradient-to-t from-[#FFFFFF]/20 to-[#FFFFFF]/30 border-gray-500 rounded-3xl">
+      <form className=" w-[350px] bg-gradient-to-t from-[#FFFFFF]/20 to-[#FFFFFF]/30 border-gray-500 rounded-3xl">
         <section className=" flex flex-col justify-center items-start gap-7 p-5 ">
           <div className="relative w-full">
             <input
@@ -138,11 +138,8 @@ export default function Signin() {
             onClick={handleSubmit(createProfile)}
             disabled={selectedFile && !fotoUrl ? true : false}
           />
-          <span className="text-red-600 text-sm uppercase ">
-            {error}
-          </span>
+          <span className="text-red-600 text-sm uppercase ">{error}</span>
         </div>
-
       </form>
     </main>
   );
