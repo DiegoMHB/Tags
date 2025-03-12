@@ -16,7 +16,7 @@ export type UserStoreType = {
 
     createActivePost: (post: NewPostType) => void
     getAllUsersPosts: (id: string) => void
-    deleteActivePost: () => void
+    deletePost: (id: string) => void
     closeActivePost: () => void
     editActivePost: (changes: Partial<NewPostType>) => void
 
@@ -66,9 +66,9 @@ export const userStore = create<UserStoreType>()((set, get) => ({
             set((state) => ({ allUserPosts: [...state.allUserPosts, data.post] }));
             set({ error: "" });
             //after duration activePost = null
-            setTimeout(()=>{
-                set({activePost:null})
-            },data.post.duration* 60 * 1000 );
+            setTimeout(() => {
+                set({ activePost: null })
+            }, data.post.duration * 60 * 1000);
 
         } catch (e) {
             console.log("Error", e)
@@ -79,13 +79,12 @@ export const userStore = create<UserStoreType>()((set, get) => ({
 
     },
 
-    deleteActivePost: async () => {
+    deletePost: async (id:string) => {
         set({ loading: true });
         try {
-            const id = get().activePost!.id;
             const response = await fetch(`${url}deletePost`, {
                 method: "DELETE",
-                body: JSON.stringify({ id}),
+                body: JSON.stringify( {id} ),
                 headers: {
                     "Content-Type": "application/json",
                 },

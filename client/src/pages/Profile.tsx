@@ -14,6 +14,10 @@ export default function Profile() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activePost]);
 
+  useEffect(()=>{
+    getAllUsersPosts(user.id)
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  },[])
 
 
   const sortedPosts = allUserPosts.sort(

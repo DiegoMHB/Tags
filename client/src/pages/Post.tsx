@@ -13,16 +13,15 @@ import { PostType } from "../types/postTypes";
 export default function Post() {
   const { fotoUrl, selectedFile } = appStore();
   const { id } = useParams();
-  const { deleteActivePost, closeActivePost, allUserPosts, activePost } =
-    userStore();
+  const { deletePost, closeActivePost, allUserPosts, activePost } = userStore();
   const { posts } = appStore();
   const [post, setPost] = useState<PostType | null>(null);
+
 
   const navigate = useNavigate();
 
   useEffect(() => {
     const allPosts = [...posts, ...allUserPosts];
-    console.log(allPosts);
     const idPost = allPosts.filter((post) => post.id == id)[0];
     setPost(idPost);
   }, [posts, allUserPosts, id]);
@@ -53,7 +52,7 @@ export default function Post() {
         )}
 
         <div className="flex flex-col justify-between items-center w-[100%] pb-5 mt-5">
-          {post && post!.id === activePost!.id ? (
+          {activePost && post && post.id === activePost.id ? (
             <BtnMain
               text="Edit Post"
               disabled={selectedFile && !fotoUrl ? true : false}
@@ -69,11 +68,11 @@ export default function Post() {
               mode={0}
               link=""
               onClick={() => {
-                deleteActivePost();
+                deletePost(post!.id);
                 navigate("/Profile");
               }}
             />
-            {post && post!.id === activePost!.id ? (
+            {activePost && post && post.id === activePost.id ? (
               <BtnMain
                 text="Close Post"
                 disabled={selectedFile && !fotoUrl ? true : false}
