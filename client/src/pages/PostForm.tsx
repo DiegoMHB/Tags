@@ -128,7 +128,7 @@ export default function PostForm() {
         {activePost?.picture && (
           <img src={activePost.picture} className="w-[40px] h-[40px] object-cover mx-auto" />
         )}
-        <FotoUploader text={edit ? "Change Picture" : "Upload a Picture"} location="/Post_pics/" />
+        <FotoUploader text={edit ? "Change Picture" : "Upload a Picture"} location="/Post_pics/" /> {/*TODO: change picture*/}
 
         <div className="flex flex-col justify-center items-center w-full my-3">
           <BtnMain

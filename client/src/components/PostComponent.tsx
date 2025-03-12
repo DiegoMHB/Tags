@@ -18,7 +18,7 @@ export default function PostComponent({ post }: PostComponentProps) {
 
   const navigate = useNavigate();
 
-  useEffect(() => {
+  useEffect(() => {//green/red not changing when closing before expiration time
     if (post.isActive) {
       if (timeLeft.percentage <= 0) {
         getAllUsersPosts(user.id);
