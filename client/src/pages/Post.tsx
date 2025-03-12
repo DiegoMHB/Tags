@@ -21,6 +21,7 @@ export default function Post() {
   const navigate = useNavigate();
   const [post, setPost] = useState<PostType | null>(null);
   const [postUser, setPostUser] = useState<User | null>(null);
+  const [chatActive, setChatActive] = useState<boolean>(false);
 
   useEffect(() => {
     const allPosts = [...posts, ...allUserPosts];
@@ -32,17 +33,19 @@ export default function Post() {
     getUserFromPost(id!);
     setPostUser(selectedUser);
     console.log(postUser);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //TODO: component for the map with props and attributes
+  //TODO: Profileheader of the user 
   return (
     <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
+      {/*POST HEADER*/}
       {activePost && post && post.id === activePost.id && (
         <h3 className="text-2xl text-center m-3">You have an active post:</h3>
       )}
 
-      { post && post.userId == user.id && post.id !== activePost?.id &&(
+      {post && post.userId == user.id && post.id !== activePost?.id && (
         <h3 className="text-2xl text-center m-3">Closed post:</h3>
       )}
       {postUser && post && post.userId !== user.id && (
@@ -109,7 +112,19 @@ export default function Post() {
             </div>
           </div>
         )}
+        {postUser && post && post.userId !== user.id && !chatActive &&(
+          <BtnMain
+            text="GO TO THE CHAT"
+            disabled={selectedFile && !fotoUrl ? true : false}
+            mode={0}
+            link=""
+            onClick={() => {
+                setChatActive(true)
+            }}
+          />
+        )}
       </div>
+      {chatActive && <div className="h-[50%]">CHAT</div>}
     </main>
   );
 }

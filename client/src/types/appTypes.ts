@@ -20,6 +20,7 @@ export type Selection = {
     value:string
 }
 
+
 export type TimeLeft = {
     minutes: number,
     percentage: number
