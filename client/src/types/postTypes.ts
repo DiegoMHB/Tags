@@ -8,7 +8,6 @@ export type NewPostType = {
     picture?: string
     userId: string,
     coordinates: LatLngTuple,
-    chats: ChatType[]
 }
 
 
@@ -17,18 +16,21 @@ export type PostType = NewPostType & {
     createdAt: string,
     destroyAt: string
     isActive: boolean
+    chatList: string[]
 
+}
+
+
+export type ChatType = {
+    id: string,
+    notOwnerId: string,
+    ownerId: string,
+    messages: Message[],
+    postId: string
 }
 
 export type Message = {
     userName: string,
     date: string,
     content: string,
-}
-export type ChatType = {
-    id: string,
-    senderId: string,
-    posterId: string,
-    messages: Message[],
-    postId: string
 }

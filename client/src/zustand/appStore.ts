@@ -15,16 +15,16 @@ export type AppStoreType = {
     selectedUser: User | null
 
     getPosts: () => void,
-    getUserFromPost: (postId: string) => void,
+    getUserFromId: (postId: string) => void,
     setError: (error: string) => void,
     setMapRender: () => void,
     setFotoUrl: (url: string) => void,
     setSelectedFile: (file: File | null) => void,
-    setSelecttedUser: (user: User) => void
+    getNotOwnedChat: (userId: string, postUserId: string, postId: string) => void
 }
 
 
-export const appStore = create<AppStoreType>()((set,get) => ({
+export const appStore = create<AppStoreType>()((set, get) => ({
     error: "",
     mapRender: false,
     fotoUrl: "",
@@ -37,12 +37,11 @@ export const appStore = create<AppStoreType>()((set,get) => ({
     setMapRender: () => set((state) => ({ mapRender: !state.mapRender })),
     setFotoUrl: (newUrl) => set({ fotoUrl: newUrl }),
     setSelectedFile: (file) => set({ selectedFile: file }),
-    setSelecttedUser: (user) => set({ selectedUser: user }),
 
     getPosts: async () => {
         set({ loading: true });
-        if(get().posts){
-            set({posts: []})
+        if (get().posts) {
+            set({ posts: [] })
         }
         const response = await fetch(`${url}getPosts`, {
             method: "GET",
@@ -56,8 +55,8 @@ export const appStore = create<AppStoreType>()((set,get) => ({
             posts: data.posts
         }))
     },
-    
-    getUserFromPost: async (userId: string) => {
+
+    getUserFromId: async (userId: string) => {
         set({ loading: true });
 
         try {
@@ -78,5 +77,30 @@ export const appStore = create<AppStoreType>()((set,get) => ({
         }
     },
 
+    getNotOwnedChat: async (userId, postId, postUserId) => {
+        set({ loading: true });
 
+        try {
+            const response = await fetch(`${url}notOwnedChat`, {
+                method: "Post",
+                body: JSON.stringify({ userId, postId, postUserId }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            if (!response.ok) {
+                const data = await response.json();
+                set({ error: data.error });
+                throw (data)
+            }
+            const data = await response.json();
+            set({ error: data.message });
+
+
+        } catch (e) {
+            console.log("Error", e)
+        } finally {
+            set({ loading: false });
+        }
+    }
 }))

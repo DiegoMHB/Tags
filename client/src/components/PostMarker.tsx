@@ -15,7 +15,7 @@ type postMarkerProps = {
 };
 
 export default function PostMarker({ post, isUsers }: postMarkerProps) {
-  const { getUserFromPost } = appStore();
+  const { getUserFromId } = appStore();
 
   const [visible, setVisible] = useState<boolean>(true);
 
@@ -28,9 +28,12 @@ export default function PostMarker({ post, isUsers }: postMarkerProps) {
     html: ReactDOMServer.renderToString(
       <div className="flex flex-col justify-center items-center">
         <CircularProgressbarComp timeLeft={timeLeft} />
-        <span className={`uppercase font-bold text-[10px] ${isUsers ? "text-green-800" : "text-black"}`} >
-          #
-          {`${post.title}`}
+        <span
+          className={`uppercase font-bold text-[10px] ${
+            isUsers ? "text-green-800" : "text-black"
+          }`}
+        >
+          #{`${post.title}`}
         </span>
       </div>
     ),
@@ -55,7 +58,7 @@ export default function PostMarker({ post, isUsers }: postMarkerProps) {
   return (
     visible && (
       <Marker
-        eventHandlers={{ click: () => getUserFromPost(post.userId) }}
+        eventHandlers={{ click: () => getUserFromId(post.userId) }}
         position={post.coordinates}
         icon={customIcon}
       >

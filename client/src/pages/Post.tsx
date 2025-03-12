@@ -10,9 +10,10 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { PostType } from "../types/postTypes";
 import { User } from "../types/userTypes";
+import Chat from "../components/Chat";
 
 export default function Post() {
-  const { fotoUrl, selectedFile, posts, getUserFromPost, selectedUser } =
+  const { fotoUrl, selectedFile, posts, getUserFromId, selectedUser } =
     appStore();
   const { deletePost, closeActivePost, allUserPosts, activePost, user } =
     userStore();
@@ -30,14 +31,13 @@ export default function Post() {
   }, [posts, allUserPosts, id]);
 
   useEffect(() => {
-    getUserFromPost(id!);
+    getUserFromId(id!); //in case not coming the Map
     setPostUser(selectedUser);
-    console.log(postUser);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   //TODO: component for the map with props and attributes
-  //TODO: Profileheader of the user 
+  //TODO: Profileheader of the user
   return (
     <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
       {/*POST HEADER*/}
@@ -112,19 +112,23 @@ export default function Post() {
             </div>
           </div>
         )}
-        {postUser && post && post.userId !== user.id && !chatActive &&(
+        {postUser && post && post.userId !== user.id && !chatActive && (
           <BtnMain
             text="GO TO THE CHAT"
-            disabled={selectedFile && !fotoUrl ? true : false}
+            disabled={false}
             mode={0}
             link=""
             onClick={() => {
-                setChatActive(true)
+              setChatActive(true);
             }}
           />
         )}
       </div>
-      {chatActive && <div className="h-[50%]">CHAT</div>}
+      {chatActive && (//Case: not Owned Post
+        <div className="h-[50%]">
+          <Chat post={post!} />
+        </div>
+      )}
     </main>
   );
 }
