@@ -14,18 +14,20 @@ import Tags from "./pages/Tags";
 import About from "./pages/About";
 import Post from "./pages/Post";
 import PostForm from "./pages/PostForm";
+import Chat from "./pages/Chat";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<RootLayout />}>
-      <Route path="/login" element={<Login />} />
-      <Route path="/signin" element={<Signin />} />
-      <Route path="/home" element={<Landing />} />
       <Route path="/about" element={<About />} />
+      <Route path="/chat/:postId" element={<Chat />} />
+      <Route path="/home" element={<Landing />} />
       <Route path="/map" element={<Map />} />
+      <Route path="/login" element={<Login />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/post/:id" element={<Post />} />
       <Route path="/postForm" element={<PostForm />} />
+      <Route path="/signin" element={<Signin />} />
       <Route path="/tags" element={<Tags />} />
     </Route>
   )

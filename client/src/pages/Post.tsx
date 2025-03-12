@@ -10,7 +10,6 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { PostType } from "../types/postTypes";
 import { User } from "../types/userTypes";
-import Chat from "../components/Chat";
 
 export default function Post() {
   const { fotoUrl, selectedFile, posts, getUserFromId, selectedUser } =
@@ -22,7 +21,6 @@ export default function Post() {
   const navigate = useNavigate();
   const [post, setPost] = useState<PostType | null>(null);
   const [postUser, setPostUser] = useState<User | null>(null);
-  const [chatActive, setChatActive] = useState<boolean>(false);
 
   useEffect(() => {
     const allPosts = [...posts, ...allUserPosts];
@@ -112,23 +110,18 @@ export default function Post() {
             </div>
           </div>
         )}
-        {postUser && post && post.userId !== user.id && !chatActive && (
+        
           <BtnMain
             text="GO TO THE CHAT"
             disabled={false}
             mode={0}
             link=""
             onClick={() => {
-              setChatActive(true);
+              navigate(`/chat/${id}`)
             }}
           />
-        )}
+        
       </div>
-      {chatActive && (//Case: not Owned Post
-        <div className="h-[50%]">
-          <Chat post={post!} />
-        </div>
-      )}
     </main>
   );
 }

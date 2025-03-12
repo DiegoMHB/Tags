@@ -1,6 +1,7 @@
 import { create } from "zustand";
-import { PostType } from "../types/postTypes";
-import { User } from "../types/userTypes";
+import { ChatType, PostType } from "../types/postTypes";
+import {  User } from "../types/userTypes";
+import { ChatByOwner } from "../types/appTypes";
 
 const port = import.meta.env.VITE_PORT;
 const url = `http://localhost:${port}/`
@@ -13,6 +14,8 @@ export type AppStoreType = {
     posts: PostType[],
     loading: boolean,
     selectedUser: User | null
+    chats: ChatByOwner
+    notOwnedChat: ChatType
 
     getPosts: () => void,
     getUserFromId: (postId: string) => void,
@@ -20,7 +23,8 @@ export type AppStoreType = {
     setMapRender: () => void,
     setFotoUrl: (url: string) => void,
     setSelectedFile: (file: File | null) => void,
-    getNotOwnedChat: (userId: string, postUserId: string, postId: string) => void
+    getChatById: (chatId:string) => void,
+    getChatsByIdList: (chatIds:string[]) => void,
 }
 
 
@@ -32,6 +36,7 @@ export const appStore = create<AppStoreType>()((set, get) => ({
     posts: [],
     loading: false,
     selectedUser: null,
+    chats:{owned:null, notOwned:null},
 
     setError: (err: string) => set({ error: err }),
     setMapRender: () => set((state) => ({ mapRender: !state.mapRender })),
@@ -77,13 +82,12 @@ export const appStore = create<AppStoreType>()((set, get) => ({
         }
     },
 
-    getNotOwnedChat: async (userId, postId, postUserId) => {
+    getChatById: async (chatId) =>{
         set({ loading: true });
-
         try {
-            const response = await fetch(`${url}notOwnedChat`, {
-                method: "Post",
-                body: JSON.stringify({ userId, postId, postUserId }),
+            const response = await fetch(`${url}getChatById`, {
+                method: "POST",
+                body: JSON.stringify( {chatId} ),
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -94,13 +98,14 @@ export const appStore = create<AppStoreType>()((set, get) => ({
                 throw (data)
             }
             const data = await response.json();
-            set({ error: data.message });
-
+            set({ notOwnedChat: data.chat });
+            set({ error: "" });
 
         } catch (e) {
             console.log("Error", e)
         } finally {
             set({ loading: false });
         }
-    }
+    },
+    getChatsByIdList: (chatIds) => {},
 }))

@@ -1,6 +1,7 @@
 import { Table, Column, Model, DataType, PrimaryKey, Default, CreatedAt, HasMany, HasOne } from "sequelize-typescript";
 import Post from "./Post.model";
 import { NonAttribute } from "sequelize";
+import { ChatsType } from "../types";
 
 @Table({
     tableName: "users",
@@ -48,13 +49,18 @@ class User extends Model {
         type: DataType.STRING(255), allowNull: false
     })
     profilePicture: string
-    
+
+    @Column({
+        type: DataType.JSONB, allowNull: false
+    })
+    chats: ChatsType
+
     @CreatedAt
     @Column({
         type: DataType.DATE, allowNull: false
     })
     createdAt: Date
-    
+
     @HasMany(() => Post, {
         foreignKey: 'userId',
         onDelete: 'CASCADE',

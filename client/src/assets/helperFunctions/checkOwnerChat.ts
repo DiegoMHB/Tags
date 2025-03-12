@@ -1,18 +1,20 @@
-import { ChatByOwner, ChatPostNotOwned, ChatPostOwned } from "../../types/userTypes";
+import { ChatByOwner ,ChatPostNotOwned, ChatPostOwned } from "../../types/appTypes";
 
-export function checkOwnerChat(chats: ChatByOwner, postId: string): { postId: string | string[] } | null {
+// searches in user.chats if theres an open chat for the post
+
+export function checkOwnerChat(chats: ChatByOwner, postId: string):string | string[] | null {
     const notOwned = chats.notOwned;
     const owned = chats.owned;
 
     for (const post in notOwned as ChatPostNotOwned) {
-        if (post == postId){
-            return {postId: notOwned![post]}
+        if (post == postId) {
+            return notOwned![post] 
         }
     }
-    for (const post in owned as  ChatPostOwned) {
-        if (post != null && post == postId){
-            
-            return {postId: owned![post]}
+    for (const post in owned as ChatPostOwned) {
+        if (post != null && post == postId) {
+
+            return owned![post] 
         }
     }
 
