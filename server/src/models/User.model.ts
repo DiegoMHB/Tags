@@ -1,7 +1,7 @@
 import { Table, Column, Model, DataType, PrimaryKey, Default, CreatedAt, HasMany, HasOne } from "sequelize-typescript";
 import Post from "./Post.model";
 import { NonAttribute } from "sequelize";
-import { ChatsType } from "../types";
+// import { ChatsType } from "../types";
 
 @Table({
     tableName: "users",
@@ -51,9 +51,10 @@ class User extends Model {
     profilePicture: string
 
     @Column({
-        type: DataType.JSONB, allowNull: false
+        type: DataType.ARRAY(DataType.UUID), allowNull: true
     })
-    chats: ChatsType
+    posts: string[]
+
 
     @CreatedAt
     @Column({
@@ -70,5 +71,6 @@ class User extends Model {
 
 
 }
+
 
 export default User;

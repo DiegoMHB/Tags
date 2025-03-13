@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Post from "../models/Post.model";
+import User from "../models/User.model";
 
 export const newPost = async (req: Request, res: Response): Promise<void> => {
     try {
@@ -8,12 +9,15 @@ export const newPost = async (req: Request, res: Response): Promise<void> => {
         const response = await newPost.save();
 
         if (response.dataValues) {
-
+            //save the postId in user.posts
+            const user = await User.findByPk(newPost.id);
+            user.posts = user.posts ? [...user.posts, newPost.id] : [newPost.id];
+            await user.save();
             //to deactivate post once saved
             setTimeout(async () => {
                 const postToDeactivate = await Post.findByPk(response.dataValues.id);
                 if (postToDeactivate)
-                await postToDeactivate.update({ isActive: false });
+                    await postToDeactivate.update({ isActive: false });
 
             }, post.duration * 60 * 1000);
             res

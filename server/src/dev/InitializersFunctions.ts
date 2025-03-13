@@ -60,8 +60,16 @@ export const createPosts = async () => {
             console.log('Found User ID:', user.id);
             el.userId = user.id;
 
+
             try {
                 const newPost = await Post.create(el);
+                if (index == 3) 
+                    user.posts = [...user.posts, newPost.id]
+                else {
+                    user.posts = [];
+                    user.posts = [newPost.id]; }               
+                await user.save();
+                console.log(user.posts, '------------------------')
                 console.log(`Post ${userIndex} created`);
 
                 // Close after `el.duration` minutes
@@ -74,9 +82,9 @@ export const createPosts = async () => {
                         console.error(`Error closing post ${newPost.id}:`, deleteError);
                     }
                 }, el.duration * 60 * 1000);
-                if (el.isActive){
+                if (el.isActive) {
                     userIndex++
-                }else continue
+                } else continue
             } catch (saveError) {
                 console.error("Error closing post:", saveError);
             }
@@ -94,6 +102,7 @@ export const Populate = async () => {
             el.password = "1234" //always 123 --DEV--
             el.password = await bcrypt.hash(el.password, 10);
             const newUser = new User(el);
+
 
             //Verifying if userName or Email already exists
             if (await User.findOne({ where: { email: newUser.email } })) throw ({ message: "Email already registered" })
