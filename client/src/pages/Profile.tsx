@@ -30,9 +30,10 @@ export default function Profile() {
         <ProfileHeader />
       </div>
       <div className="w-full flex-grow overflow-y-auto scrollbar-hidden rounded-2xl h-[300px]">
-        {sortedPosts.map((post: PostType) => (
+        <div className="flex flex-col justify-between items-center gap-3">{sortedPosts.map((post: PostType) => (
           <PostComponent key={post.id} post={post} />
         ))}
+        </div>
       </div>
 
       <div className=" w-full flex justify-center mb-5 h-[5%]">

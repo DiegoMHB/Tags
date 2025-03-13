@@ -26,7 +26,7 @@ export default function Chat() {
   }, [postId, chats]);
 
   return (
-    <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
+    <main className="flex flex-col justify-end w-[100%] space-y-4 ">
       {!owner && (
         <div>
           <ChatComponent ></ChatComponent>

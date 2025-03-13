@@ -8,7 +8,7 @@ import { mapUtilities } from "../data/mapUtilities";
 import PostMarker from "../components/PostMarker";
 
 
-//TODO: show on the marker the time (color? wheel? minutes left?)
+
 
 export default function Map() {
   const { coordinates } = mapStore();

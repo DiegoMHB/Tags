@@ -9,7 +9,7 @@ import { userStore } from "../zustand/userStore";
 
 export default function RootLayout() {
   const { mapRender } = appStore();
-  const { auth , activePost} = userStore();
+  const { auth, activePost } = userStore();
   const url = useLocation().pathname;
   const navigate = useNavigate();
 
@@ -21,37 +21,43 @@ export default function RootLayout() {
       navigate("/map");
     } else navigate("/");
   }, [auth, navigate]);
-
+//w-full flex-1 
   return (
     <>
-      <main className="flex justify-center items-center]">
-        <main className="flex flex-col justify-between items-center h-screen max-w-[400px]  bg-[#00061A] ">
-          <section className="flex justify-evenly bg-gradient-to-b from-[#00062A] to-[#00061A] h-10 w-full items-center ">
-           
-          </section>
+      <main className="flex flex-col justify-center items-center h-screen max-w-[400px]  bg-[#00061A] m-auto ">
 
-          <section
-            className="flex-1 flex align-middle justify-center 
+        <section
+          className="
+        flex justify-evenly bg-gradient-to-b from-[#00062A] to-[#00061A] h-10 w-full items-center "
+        ></section>
+
+        <section
+          className="flex-1 flex align-middle justify-center 
         bg-gradient-to-r from-[#c6eef7] to-[#e0f5e6] 
-        h-[100%] w-[100%] rounded-2xl"
-          >
-            {url === "/" && !mapRender ? (
-              <Landing />
-            ) : url === "/" && mapRender ? (
-              <Map />
-            ) : (
-              <Outlet />
-            )}
-          </section>
+        h-[100%] w-[100%] rounded-2xl
+        overflow-y-auto scrollbar-hidden"
+        >
+          {url === "/" && !mapRender ? (
+            <Landing />
+          ) : url === "/" && mapRender ? (
+            <Map />
+          ) : (
+            <Outlet />
+          )}
+        </section>
 
-          <section className="flex justify-evenly bg-gradient-to-t from-[#00062A] to-[#00061A]  h-12 w-full  items-center max-w-[400px] ">
-            {linkRendered.map((el) => (
-                activePost && el.text == "New Post" ? null :
-                !activePost && el.text == "Post"? null: 
-              <NavBarElement key={el.id} link={el.to === "/post"? el.to + `/${activePost!.id}`:  el.to} text={el.text} />
-            ))}
-          </section>
-        </main>
+        <section className="flex justify-evenly bg-gradient-to-t from-[#00062A] to-[#00061A]  h-12 min-h-12 w-full  items-center max-w-[400px] ">
+          {linkRendered.map((el) =>
+            activePost && el.text == "New Post" ? null : !activePost &&
+              el.text == "Post" ? null : (
+              <NavBarElement
+                key={el.id}
+                link={el.to === "/post" ? el.to + `/${activePost!.id}` : el.to}
+                text={el.text}
+              />
+            )
+          )}
+        </section>
       </main>
     </>
   );

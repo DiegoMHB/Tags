@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 type PostComponentProps = {
   post: PostType;
 };
+
 export default function PostComponent({ post }: PostComponentProps) {
   const { user, getAllUsersPosts } = userStore();
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -41,7 +42,7 @@ export default function PostComponent({ post }: PostComponentProps) {
   }
   return (
     <section
-      className="flex flex-col w-full p-2 mt-2 rounded-2xl relative
+      className="flex flex-col w-full p-2 mt-0 rounded-2xl relative
     bg-gradient-to-t from-[#FFFFFF]/30 to-[#FFFFFF]/40"
     >
       {post.picture && (

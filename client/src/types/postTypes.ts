@@ -16,7 +16,7 @@ export type PostType = NewPostType & {
     createdAt: string,
     destroyAt: string
     isActive: boolean
-    chatList: string[]
+    chatList: string[]//ids de los chats
 
 }
 

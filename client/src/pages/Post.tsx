@@ -40,21 +40,21 @@ export default function Post() {
     <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
       {/*POST HEADER*/}
       {activePost && post && post.id === activePost.id && (
-        <h3 className="text-2xl text-center m-3">You have an active post:</h3>
+        <h3 className="text-xl text-center m-0">You have an active post:</h3>
       )}
 
       {post && post.userId == user.id && post.id !== activePost?.id && (
         <h3 className="text-2xl text-center m-3">Closed post:</h3>
       )}
       {postUser && post && post.userId !== user.id && (
-        <h3 className="text-2xl text-center m-3">
+        <h3 className="text-xl text-center m-1">
           Active post from: {postUser.name}
         </h3>
       )}
 
-      <div className=" flex flex-col items-center w-[350px] bg-gradient-to-t from-[#FFFFFF]/20 to-[#FFFFFF]/30 border-gray-500 rounded-3xl p-2 gap-2">
+      <div >
         {post && (
-          <div>
+          <div className=" flex flex-col items-center w-[350px] mt-0 p-2 gap-2">
             <PostComponent post={post!}></PostComponent>
 
             <MapContainer
@@ -107,19 +107,19 @@ export default function Post() {
                   }}
                 />
               )}
+            <BtnMain
+              text="GO TO THE CHAT"
+              disabled={false}
+              mode={0}
+              link=""
+              onClick={() => {
+                navigate(`/chat/${id}`)
+              }}
+            />
             </div>
           </div>
         )}
         
-          <BtnMain
-            text="GO TO THE CHAT"
-            disabled={false}
-            mode={0}
-            link=""
-            onClick={() => {
-              navigate(`/chat/${id}`)
-            }}
-          />
         
       </div>
     </main>
