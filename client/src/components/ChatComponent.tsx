@@ -6,22 +6,7 @@ export default function ChatComponent({ chatId }: ChatComponentProps) {
     <main className="flex flex-col justify-end items-center  w-[100%] space-y-4 p-2  h-max-[800px]">
       <section className="w-full flex-1 overflow-y-auto scrollbar-hidden rounded-2xl bg-sky-200 p-5 flex flex-col-reverse">
         <div className="p-5 flex flex-col-reverse h-[100%]">
-          <p>afrag argarg arg</p>
-          <p>arg arg arg arg </p>
-          <p>arg arg arg </p>
-          <p>arg arg arg </p>
-          <p>arg arg arg </p>
-          <p>arg arg arg </p>
-          <p>arg arg arg </p>
-          <p>arg arg elena.mlamata@gmail.com </p>
-          <p>arg arg arg </p>
-          <p>
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Unde culpa
-            iure, dolores eius eaque porro velit reiciendis laborum quia dicta
-            temporibus veritatis quas eveniet suscipit ducimus laboriosam.
-            Similique, iusto ea.
-          </p>
-          <p>arg arg a rg</p>
+       
         </div>
       </section>
       <section className="w-full flex items-center gap-2 p-2">

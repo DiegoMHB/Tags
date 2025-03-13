@@ -11,7 +11,5 @@ export type User = NewUser & {
     id: string
     createdAt: string | null
     posts: string[]
-    
-
 };
 

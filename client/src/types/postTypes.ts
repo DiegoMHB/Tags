@@ -1,36 +1,40 @@
 import { LatLngTuple } from "leaflet"
 
 export type NewPostType = {
-    category: string,
-    duration: number,
-    title: string,
-    description: string,
+    category: string
+    duration: number
+    title: string
+    description: string
     picture?: string
-    userId: string,
-    coordinates: LatLngTuple,
+    userId: string
+    coordinates: LatLngTuple
 }
 
 
 export type PostType = NewPostType & {
-    id: string,
-    createdAt: string,
+    id: string
+    createdAt: string
     destroyAt: string
     isActive: boolean
-    chatList: string[]//ids de los chats
+    chatList: ChatListElement[]//ids de los chats
 
 }
 
+export type ChatListElement = {
+    userB : string
+    chatId : string
+}
 
 export type ChatType = {
-    id: string,
-    notOwnerId: string,
-    ownerId: string,
-    messages: Message[],
+    id: string
+    notOwnerId: string
+    ownerId: string
+    messages: Message[]
     postId: string
 }
 
 export type Message = {
-    userName: string,
-    date: string,
-    content: string,
+    userName: string
+    date: string
+    content: string
 }

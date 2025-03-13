@@ -15,7 +15,7 @@ export type UserStoreType = {
     activePost: PostType | null
 
     createActivePost: (post: NewPostType) => void
-    getAllUsersPosts: (id: string) => void
+    getAllUsersPosts: (id: string) => void 
     deletePost: (id: string) => void
     closeActivePost: () => void
     editActivePost: (changes: Partial<NewPostType>) => void
@@ -34,7 +34,7 @@ const initialUser: User = {
     profilePicture: null,
     id: "",
     createdAt: null,
-    posts: []
+    posts: [] //
 
 };
 

@@ -4,9 +4,10 @@ import { checkOwnerChat } from "../assets/helperFunctions/checkOwnerChat";
 import { useParams } from "react-router-dom";
 import ChatComponent from "../components/ChatComponent";
 import ChatListComponent from "../components/ChatListComponent";
+import { userStore } from "../zustand/userStore";
 
 export default function Chat() {
-  const { chats } = appStore();
+  const { chats } = userStore();
   const [owner, setOwner] = useState<number>(0);
   const [chatIds, setChatIds] = useState<string | string[]>("");
 
@@ -23,17 +24,22 @@ export default function Chat() {
       setOwner(2);
       setChatIds(idList);
     }
-  }, [postId, chats]);
+  }, [postId, chats, chatIds]);
 
   return (
     <main className="flex flex-col justify-end w-[100%] space-y-4 ">
       {!owner && (
-        <div>
-          <ChatComponent ></ChatComponent>
+          <div>
+            {/* CASE NO CHAT */}
+          <ChatComponent></ChatComponent>
         </div>
       )}
+      {/* CASE NOT OWNER POST CHAT:SHOWS THE CHAT */}
       {owner == 1 && <ChatComponent chatId={chatIds as string}></ChatComponent>}
-      {owner == 2 && <ChatListComponent chatIds={chatIds as string[]}></ChatListComponent>}
+      {/* CASE OWNER POST CHAT: SHOWS A LIST OF CHATS */}
+      {owner == 2 && (
+        <ChatListComponent chatIds={chatIds as string[]}></ChatListComponent>
+      )}
     </main>
   );
 }
