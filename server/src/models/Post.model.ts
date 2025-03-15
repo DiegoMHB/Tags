@@ -61,6 +61,11 @@ class Post extends Model {
         type: DataType.DATE, allowNull: true
     })
     destroyAt: Date
+    
+    @Column({
+        type: DataType.ARRAY(DataType.UUID), allowNull: false, defaultValue: []
+    })
+    chatList: string[]
 
     @Default(true)
     @Column({

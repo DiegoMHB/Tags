@@ -1,23 +1,34 @@
 import Chat from "../models/Chat.model";
 import { Request, Response } from "express";
+import Post from "../models/Post.model";
 
 
 
 
 export const newChat = async (req: Request, res: Response): Promise<void> => {
     try {
-        const {postId, ownerId, notOwnerId} = req.body;
-        const newChat= new Chat({postId, ownerId,notOwnerId, messages:[]});
-        const response = await newChat.save();
-        if(response.dataValues){
-            res
-            .status(200)
-            .send({ post: response.dataValues, message: "Chat succesfully created" })
-        return
-        }else throw ({ message: "Couldnt create Chat in DB" })
-       
+        const { postId, ownerId, notOwnerId } = req.body;
+        const newChat = new Chat({ postId, ownerId, notOwnerId, messages: [] });
+        const responseChat = await newChat.save();
+        if (responseChat.dataValues) {
 
-    }catch(e){
+            // //returning the post with the chatList updated
+            // const post = await Post.findByPk(postId)
+            // post.chatList = [...post.chatList, newChat.id];
+            // const responsePost = await post.save()
+
+            res
+                .status(200)
+                .send({
+                    chat: responseChat.dataValues,
+                    // post: responsePost.dataValues,
+                    message: "Chat succesfully created"
+                })
+            return
+        } else throw ({ message: "Couldnt create Chat in DB" })
+
+
+    } catch (e) {
         if (e.message) {
             res.status(400).send({ error: e.message });
         }
@@ -59,9 +70,9 @@ export const newMessage = async (req: Request, res: Response): Promise<void> => 
             res.status(404).json({ error: "Chat not found" });
             return;
         }
-       
+
         const newMsg = {
-            owner: chat.ownerId == userId? true:false, 
+            owner: chat.ownerId == userId ? true : false,
             date: new Date().toISOString(),
             content: message,
         };
