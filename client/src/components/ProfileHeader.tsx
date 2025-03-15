@@ -2,19 +2,20 @@ import stampToDate from "../assets/helperFunctions/stampToDate";
 import { userStore } from "../zustand/userStore";
 
 export default function ProfileHeader() {
-  const { user, activePost, allUserPosts } = userStore();
-
+  const { user, activePost, userPostsList } = userStore();
 
   return (
-    <section className="flex flex-col justify-between h-[100px] w-full p-2 rounded-2xl
-    bg-gradient-to-t from-[#FFFFFF]/30 to-[#FFFFFF]/40">
+    <section
+      className="flex flex-col justify-between h-[100px] w-full p-2 rounded-2xl
+    bg-gradient-to-t from-[#FFFFFF]/30 to-[#FFFFFF]/40"
+    >
       <div className="flex gap-5 ">
-        
-          <img className="w-20 h-20 object-cover m-1 mr-0 rounded-[100%]"
-            src={user.profilePicture!}
-            alt={"photo"}
-          />
-        
+        <img
+          className="w-20 h-20 object-cover m-1 mr-0 rounded-[100%]"
+          src={user.profilePicture!}
+          alt={"photo"}
+        />
+
         <div className=" flex flex-col w-full h-20">
           <div className="flex flex-row items-center gap-3">
             <div
@@ -26,11 +27,13 @@ export default function ProfileHeader() {
           </div>
           <div className="flex justify-between items-baseline ">
             <p className="text-xs">Member since:</p>
-            <p className="text-xs">{user && stampToDate(user.createdAt as string)}</p>
+            <p className="text-xs">
+              {user && stampToDate(user.createdAt as string)}
+            </p>
           </div>
           <div className="flex justify-between items-baseline ">
             <p className="text-xs">Posts:</p>
-            <p className="text-xs">{allUserPosts.length}</p>
+            <p className="text-xs">{userPostsList.length}</p>
           </div>
           <div className="flex justify-between items-baseline ">
             <p className="text-xs">City:</p>
@@ -38,8 +41,6 @@ export default function ProfileHeader() {
           </div>
         </div>
       </div>
-
-      
     </section>
   );
 }

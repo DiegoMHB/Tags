@@ -7,14 +7,14 @@ type NavBarElementProps = {
 };
 
 export default function NavBarElement({ text, link }: NavBarElementProps) {
-  const { setMapRender, mapRender, getPosts } = appStore();
+  const { setMapRender, mapRender, getAllPosts } = appStore();
 
   const navigate = useNavigate();
   const url = useLocation().pathname;
 
   function handleClick() {
-    if(text === "Map"){
-        getPosts()
+    if (text === "Map") {
+      getAllPosts();
     }
     if ((url === "/" && mapRender) || (url === "/map" && mapRender)) {
       setMapRender();

@@ -4,14 +4,13 @@ import { appStore } from "../zustand/appStore";
 import { mapStore } from "../zustand/mapStore";
 
 export default function Landing() {
-  const { setMapRender, getPosts } = appStore();
+  const { setMapRender, getAllPosts } = appStore();
   const { getCoords } = mapStore();
 
- 
   useEffect(() => {
     getCoords();
-    getPosts();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    getAllPosts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

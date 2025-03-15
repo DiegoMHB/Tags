@@ -1,5 +1,6 @@
 import { PostType } from "../types/postTypes";
 import { appStore } from "../zustand/appStore";
+import defaultUser from "../assets/processed_cv_photo.jpg";
 import { TimeLeft } from "../types/appTypes";
 import { useNavigate } from "react-router-dom";
 import { userStore } from "../zustand/userStore";
@@ -23,7 +24,13 @@ export default function PopUpPost({ post, timeLeft }: PopUpPostProps) {
         ) : (
           <img
             className="w-15 h-15 object-cover rounded-full items-center"
-            src={post.picture}
+            src={
+              post.picture
+                ? post.picture
+                : selectedUser?.profilePicture
+                ? selectedUser?.profilePicture // TODO: icon depending on category
+                : defaultUser
+            }
             alt={"photo"}
           />
         )}

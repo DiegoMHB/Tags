@@ -6,21 +6,19 @@ import { PostType } from "../types/postTypes";
 import { userStore } from "../zustand/userStore";
 
 export default function Profile() {
-  const { logOut, allUserPosts, user, getAllUsersPosts,activePost } = userStore();
+  const { logOut, userPostsList, user, getUserPosts, activePost } = userStore();
 
   useEffect(() => {
-    if(!activePost)
-    getAllUsersPosts(user.id)
+    if (!activePost) getUserPosts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activePost]);
 
-  useEffect(()=>{
-    getAllUsersPosts(user.id)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  },[])
+  useEffect(() => {
+    getUserPosts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-
-  const sortedPosts = allUserPosts.sort(
+  const sortedPosts = userPostsList.sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
 
@@ -30,9 +28,10 @@ export default function Profile() {
         <ProfileHeader />
       </div>
       <div className="w-full flex-grow overflow-y-auto scrollbar-hidden rounded-2xl h-[300px]">
-        <div className="flex flex-col justify-between items-center gap-3">{sortedPosts.map((post: PostType) => (
-          <PostComponent key={post.id} post={post} />
-        ))}
+        <div className="flex flex-col justify-between items-center gap-3">
+          {sortedPosts.map((post: PostType) => (
+            <PostComponent key={post.id} post={post} />
+          ))}
         </div>
       </div>
 

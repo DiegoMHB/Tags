@@ -12,9 +12,9 @@ import { PostType } from "../types/postTypes";
 import { User } from "../types/userTypes";
 
 export default function Post() {
-  const { fotoUrl, selectedFile, posts, getUserFromId, selectedUser } =
+  const { fotoUrl, selectedFile, posts, selectedUser } =
     appStore();
-  const { deletePost, closeActivePost, allUserPosts, activePost, user } =
+  const { deletePost, closeActivePost, userPostsList, activePost, user } =
     userStore();
 
   const { id } = useParams();
@@ -23,13 +23,12 @@ export default function Post() {
   const [postUser, setPostUser] = useState<User | null>(null);
 
   useEffect(() => {
-    const allPosts = [...posts, ...allUserPosts];
+    const allPosts = [...posts, ...userPostsList];
     const idPost = allPosts.filter((post) => post.id == id)[0];
     setPost(idPost);
-  }, [posts, allUserPosts, id]);
+  }, [posts, userPostsList, id]);
 
   useEffect(() => {
-    getUserFromId(id!); //in case not coming the Map
     setPostUser(selectedUser);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -52,7 +51,7 @@ export default function Post() {
         </h3>
       )}
 
-      <div >
+      <div>
         {post && (
           <div className=" flex flex-col items-center w-[350px] mt-0 p-2 gap-2">
             <PostComponent post={post!}></PostComponent>
@@ -107,21 +106,19 @@ export default function Post() {
                   }}
                 />
               )}
-            <BtnMain
-              text="GO TO THE CHAT"
-              disabled={false}
-              mode={0}
-              link=""
-              onClick={() => {
-                navigate(`/chat/${id}`)
-              }}
-            />
             </div>
           </div>
         )}
-        
-        
       </div>
+      <BtnMain
+        text="GO TO THE CHAT"
+        disabled={false}
+        mode={0}
+        link=""
+        onClick={() => {
+          //   navigate(`/chat/${id}`);
+        }}
+      />
     </main>
   );
 }

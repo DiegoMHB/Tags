@@ -15,7 +15,7 @@ type postMarkerProps = {
 };
 
 export default function PostMarker({ post, isUsers }: postMarkerProps) {
-  const { getUserFromId } = appStore();
+  const { getUserById } = appStore();
 
   const [visible, setVisible] = useState<boolean>(true);
 
@@ -58,7 +58,8 @@ export default function PostMarker({ post, isUsers }: postMarkerProps) {
   return (
     visible && (
       <Marker
-        eventHandlers={{ click: () => getUserFromId(post.userId) }}
+        eventHandlers={{ click: () =>{
+            getUserById(post.userId) }}}
         position={post.coordinates}
         icon={customIcon}
       >

@@ -11,8 +11,21 @@ import Error from "../components/Error";
 import { categories } from "../data/listUtilities";
 
 export default function PostForm() {
-  const { fotoUrl, selectedFile, setFotoUrl, setSelectedFile, error, getPosts } = appStore();
-  const { activePost, user, createActivePost, editActivePost,getAllUsersPosts } = userStore();
+  const {
+    fotoUrl,
+    selectedFile,
+    setFotoUrl,
+    setSelectedFile,
+    error,
+    getAllPosts,
+  } = appStore();
+  const {
+    activePost,
+    user,
+    createActivePost,
+    editActivePost,
+    getUserPosts,
+  } = userStore();
   const { coordinates } = mapStore();
   const navigate = useNavigate();
 
@@ -26,35 +39,39 @@ export default function PostForm() {
 
   const [edit, setEdit] = useState<null | NewPostType>(null);
 
-  useEffect(() => {//if theres an activePost put the data in the form
+  useEffect(() => {
+    //if theres an activePost put the data in the form
     if (activePost) {
       setValue("category", activePost.category);
       setValue("duration", activePost.duration);
       setValue("description", activePost.description);
       setValue("title", activePost.title);
-      setEdit(activePost); 
+      setEdit(activePost);
     }
-  }, [activePost, setValue]); 
+  }, [activePost, setValue]);
 
   async function registerPost(post: NewPostType) {
     if (!edit) {
       post = { ...post, picture: fotoUrl, userId: user.id, coordinates };
       await createActivePost(post);
-      await getAllUsersPosts(user.id);
-      
+      await getUserPosts();
+
       if (error) return;
-    } else { //create an object with changes, and use it to edit the post
+    } else {
+      //create an object with changes, and use it to edit the post
       const changes: Partial<NewPostType> = {};
-      for (const prop of Object.keys(edit) as Array<keyof Partial<NewPostType>>) {
+      for (const prop of Object.keys(edit) as Array<
+        keyof Partial<NewPostType>
+      >) {
         if (post[prop] !== edit[prop] && edit[prop]) {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           changes[prop] = post[prop] as any;
         }
       }
       editActivePost(changes);
-      getPosts();
+      getAllPosts();
     }
-    
+
     if (!error) {
       reset();
       setFotoUrl("");
@@ -69,16 +86,30 @@ export default function PostForm() {
       <form className="w-[350px] bg-gradient-to-t from-[#FFFFFF]/20 to-[#FFFFFF]/30 border-gray-500 rounded-3xl">
         <section className="flex flex-col justify-center items-start gap-5 p-5">
           <div className="relative w-full">
-            <span className={errors.category ? "text-red-600 text-xs uppercase" : "text-xs uppercase"}>Category</span>
+            <span
+              className={
+                errors.category
+                  ? "text-red-600 text-xs uppercase"
+                  : "text-xs uppercase"
+              }
+            >
+              Category
+            </span>
             {errors.category && <Error>{errors.category?.message}</Error>}
             <select
               className="w-full text-gray-500"
               {...register("category", { required: " is required" })}
               defaultValue=""
             >
-              <option value="" className="text-gray-500" disabled>-- Select a Category --</option>
+              <option value="" className="text-gray-500" disabled>
+                -- Select a Category --
+              </option>
               {categories.map((cat) => (
-                <option value={cat.value} key={cat.id} className="text-gray-500">
+                <option
+                  value={cat.value}
+                  key={cat.id}
+                  className="text-gray-500"
+                >
                   {cat.label}
                 </option>
               ))}
@@ -86,7 +117,15 @@ export default function PostForm() {
           </div>
 
           <div className="relative w-full">
-            <span className={errors.title ? "text-red-600 text-xs uppercase" : "text-xs uppercase"}>Title</span>
+            <span
+              className={
+                errors.title
+                  ? "text-red-600 text-xs uppercase"
+                  : "text-xs uppercase"
+              }
+            >
+              Title
+            </span>
             {errors.title && <Error>{errors.title?.message}</Error>}
             <input
               placeholder="your tag*"
@@ -100,7 +139,15 @@ export default function PostForm() {
           </div>
 
           <div className="relative w-full">
-            <span className={errors.duration ? "text-red-600 text-xs uppercase" : "text-xs uppercase"}>Duration</span>
+            <span
+              className={
+                errors.duration
+                  ? "text-red-600 text-xs uppercase"
+                  : "text-xs uppercase"
+              }
+            >
+              Duration
+            </span>
             {edit && <span className="text-xs uppercase"> from now</span>}
             {errors.duration && <Error>{errors.duration?.message}</Error>}
             <input
@@ -114,7 +161,15 @@ export default function PostForm() {
           </div>
 
           <div className="relative w-full h-20">
-            <span className={errors.description ? "text-red-600 text-xs uppercase" : "text-xs uppercase"}>Description</span>
+            <span
+              className={
+                errors.description
+                  ? "text-red-600 text-xs uppercase"
+                  : "text-xs uppercase"
+              }
+            >
+              Description
+            </span>
             {errors.description && <Error>{errors.description?.message}</Error>}
             <textarea
               placeholder="80 characters max"
@@ -124,12 +179,17 @@ export default function PostForm() {
             />
           </div>
         </section>
-
         {activePost?.picture && (
-          <img src={activePost.picture} className="w-[40px] h-[40px] object-cover mx-auto" />
+          <img
+            src={activePost.picture}
+            className="w-[40px] h-[40px] object-cover mx-auto"
+          />
         )}
-        <FotoUploader text={edit ? "Change Picture" : "Upload a Picture"} location="/Post_pics/" /> {/*TODO: change picture*/}
-
+        <FotoUploader
+          text={edit ? "Change Picture" : "Upload a Picture"}
+          location="/Post_pics/"
+        />{" "}
+        {/*TODO: change picture*/}
         <div className="flex flex-col justify-center items-center w-full my-3">
           <BtnMain
             text="Post it!"

@@ -6,8 +6,8 @@ import { appStore } from "../zustand/appStore";
 import BtnMain from "../components/buttons/BtnMain";
 
 export default function Login() {
-  const { logIn, error, auth, user, getAllUsersPosts } = userStore();
-  const { getPosts } = appStore();
+  const { logIn, error, auth, getUserPosts } = userStore();
+  const { getAllPosts } = appStore();
   const navigate = useNavigate();
 
   const [loginForm, setLoginForm] = useState<LoginForm>({
@@ -25,7 +25,6 @@ export default function Login() {
     });
   }
 
-  //execute login -> useEffect to show error or navigate to map if auth=true
   async function handelSubmit(
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) {
@@ -33,13 +32,14 @@ export default function Login() {
     await logIn(loginForm);
   }
 
+  //execute login -> useEffect to show error or navigate to map if auth=true
   useEffect(() => {
     if (!auth) {
       return;
     } else {
-      getPosts();
-      getAllUsersPosts(user.id);
-      
+      getAllPosts();
+      getUserPosts();
+
       navigate("/map");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

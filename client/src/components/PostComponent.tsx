@@ -11,7 +11,7 @@ type PostComponentProps = {
 };
 
 export default function PostComponent({ post }: PostComponentProps) {
-  const { user, getAllUsersPosts } = userStore();
+  const { user, getUserPosts } = userStore();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(() =>
     calculateTimeLeft(post.destroyAt, post.createdAt)
@@ -19,10 +19,11 @@ export default function PostComponent({ post }: PostComponentProps) {
 
   const navigate = useNavigate();
 
-  useEffect(() => {//green/red not changing when closing before expiration time
+  useEffect(() => {
+    //green/red not changing when closing before expiration time
     if (post.isActive) {
       if (timeLeft.percentage <= 0) {
-        getAllUsersPosts(user.id);
+        getUserPosts();
       } else {
         const interval = setInterval(() => {
           if (post.isActive) {
@@ -106,7 +107,6 @@ export default function PostComponent({ post }: PostComponentProps) {
           <p className="text-[14px] ">{post.description}</p>
         </div>
       </div>
-    
     </section>
   );
 }

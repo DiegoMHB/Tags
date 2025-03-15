@@ -11,11 +11,11 @@ export type UserStoreType = {
     auth: boolean
     loading: boolean
     error: string
-    allUserPosts: PostType[] | []
+    userPostsList: PostType[] | [] //My posts
     activePost: PostType | null
 
     createActivePost: (post: NewPostType) => void
-    getAllUsersPosts: (id: string) => void 
+    getUserPosts: () => void
     deletePost: (id: string) => void
     closeActivePost: () => void
     editActivePost: (changes: Partial<NewPostType>) => void
@@ -45,7 +45,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
     loading: false,
     error: "",
     activePost: null,
-    allUserPosts: [],
+    userPostsList: [],
 
     createActivePost: async (post: NewPostType) => {
         set({ loading: true });
@@ -63,7 +63,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
                 throw (data)
             }
             const data = await response.json();
-            set((state) => ({ allUserPosts: [...state.allUserPosts, data.post] }));
+            set((state) => ({ userPostsList: [...state.userPostsList, data.post] }));
             set({ error: "" });
             //after duration activePost = null
             setTimeout(() => {
@@ -79,12 +79,12 @@ export const userStore = create<UserStoreType>()((set, get) => ({
 
     },
 
-    deletePost: async (id:string) => {
+    deletePost: async (id: string) => {
         set({ loading: true });
         try {
             const response = await fetch(`${url}deletePost`, {
                 method: "DELETE",
-                body: JSON.stringify( {id} ),
+                body: JSON.stringify({ id }),
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -107,11 +107,11 @@ export const userStore = create<UserStoreType>()((set, get) => ({
 
     closeActivePost: async () => {
         set({ loading: true });
+
         try {
-            const id = get().activePost!.id;
-            const response = await fetch(`${url}closePost`, {
-                method: "POST",
-                body: JSON.stringify({ id }),
+            const postId = get().activePost!.id;
+            const response = await fetch(`${url}closePost/${postId}`, {
+                method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
                 },
@@ -124,6 +124,11 @@ export const userStore = create<UserStoreType>()((set, get) => ({
             const data = await response.json();
             set({ activePost: null });
             set({ error: data.message });
+            set((state) => ({
+                userPostsList: state.userPostsList.map((post) =>
+                    post.id === postId ? { ...post, active: false } : post
+                )
+            }));
 
 
         } catch (e) {
@@ -135,7 +140,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
 
     editActivePost: async (changes) => {
         set({ loading: true });
-        const id = get().allUserPosts.filter((post: PostType) => post.isActive)[0].id;
+        const id = get().userPostsList.filter((post: PostType) => post.isActive)[0].id;
 
         try {
             const response = await fetch(`${url}editPost`, {
@@ -161,24 +166,19 @@ export const userStore = create<UserStoreType>()((set, get) => ({
         }
     },
 
-    getAllUsersPosts: async (userId: string) => {
+    getUserPosts: async () => {
         set({ loading: true });
+        const id = get().user.id
         try {
-            const response = await fetch(`${url}getUsersPosts`, {
-                method: "POST",
-                body: JSON.stringify({ userId }),
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
+            const response = await fetch(`${url}getAllPosts/${id}`);
             if (!response.ok) {
                 const data = await response.json();
                 set({ error: data.error });
                 throw (data)
             }
             const data = await response.json();
-            set({ allUserPosts: data.posts })
-            const activePost = get().allUserPosts.filter((post: PostType) =>
+            set({ userPostsList: data.posts })
+            const activePost = get().userPostsList.filter((post: PostType) =>
                 post.isActive)[0];
             set({ activePost });
 

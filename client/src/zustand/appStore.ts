@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import {  PostType } from "../types/postTypes";
+import { PostType } from "../types/postTypes";
 import { User } from "../types/userTypes";
 
 const port = import.meta.env.VITE_PORT;
@@ -14,13 +14,13 @@ export type AppStoreType = {
     loading: boolean,
     selectedUser: User | null
 
-    getPosts: () => void,
-    getUserFromId: (postId: string) => void,
+    getAllPosts: () => void,
+    getUserById: (userId: string) => void,
     setError: (error: string) => void,
     setMapRender: () => void,
     setFotoUrl: (url: string) => void,
     setSelectedFile: (file: File | null) => void,
-   
+
 }
 
 
@@ -32,19 +32,18 @@ export const appStore = create<AppStoreType>()((set, get) => ({
     posts: [],
     loading: false,
     selectedUser: null,
-    chatList: { owned: null, notOwned: null },
 
     setError: (err: string) => set({ error: err }),
     setMapRender: () => set((state) => ({ mapRender: !state.mapRender })),
     setFotoUrl: (newUrl) => set({ fotoUrl: newUrl }),
     setSelectedFile: (file) => set({ selectedFile: file }),
 
-    getPosts: async () => {
+    getAllPosts: async () => {
         set({ loading: true });
         if (get().posts) {
             set({ posts: [] })
         }
-        const response = await fetch(`${url}getPosts`, {
+        const response = await fetch(`${url}getAllPosts`, {
             method: "GET",
         })
         if (!response.ok) {
@@ -57,7 +56,7 @@ export const appStore = create<AppStoreType>()((set, get) => ({
         }))
     },
 
-    getUserFromId: async (userId: string) => {
+    getUserById: async (userId: string) => {
         set({ loading: true });
 
         try {
