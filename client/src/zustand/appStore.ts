@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { PostType } from "../types/postTypes";
+import { ChatType, PostType } from "../types/postTypes";
 import { User } from "../types/userTypes";
 
 const port = import.meta.env.VITE_PORT;
@@ -12,7 +12,8 @@ export type AppStoreType = {
     fotoUrl: string,
     posts: PostType[],
     loading: boolean,
-    selectedUser: User | null
+    selectedUser: User | null,
+    currentChat: ChatType | null,
 
     getAllPosts: () => void,
     getUserById: (userId: string) => void,
@@ -20,7 +21,8 @@ export type AppStoreType = {
     setMapRender: () => void,
     setFotoUrl: (url: string) => void,
     setSelectedFile: (file: File | null) => void,
-
+    getChatById: (id: string) => void,
+    createChat: (postId: string, owner: string, notOwner: string) => void
 }
 
 
@@ -32,6 +34,7 @@ export const appStore = create<AppStoreType>()((set, get) => ({
     posts: [],
     loading: false,
     selectedUser: null,
+    currentChat: null,
 
     setError: (err: string) => set({ error: err }),
     setMapRender: () => set((state) => ({ mapRender: !state.mapRender })),
@@ -40,6 +43,7 @@ export const appStore = create<AppStoreType>()((set, get) => ({
 
     getAllPosts: async () => {
         set({ loading: true });
+        console.log("getAllPosts")
         if (get().posts) {
             set({ posts: [] })
         }
@@ -58,6 +62,7 @@ export const appStore = create<AppStoreType>()((set, get) => ({
 
     getUserById: async (userId: string) => {
         set({ loading: true });
+        console.log("getUserById")
 
         try {
             const response = await fetch(`${url}user/${userId}`);
@@ -76,5 +81,60 @@ export const appStore = create<AppStoreType>()((set, get) => ({
             set({ loading: false });
         }
     },
+    getChatById: async (id) => {
+        set({ loading: true });
+        console.log("getChatById")
+        try {
+            const response = await fetch(`${url}chat/${id}`);
+            if (!response.ok) {
+                const data = await response.json();
+                set({ error: data.error });
+                throw (data)
+            }
+            const data = await response.json();
+            set({ currentChat: data.chat });
+            set({ error: "" });
+
+        } catch (e) {
+            console.log("Error", e)
+        } finally {
+            set({ loading: false });
+        }
+    },
+    createChat: async (postId, ownerId, notOwnerId) => {
+        set({ loading: true });
+        console.log("createChat")
+        try {
+            const response = await fetch(`${url}newChat`, {
+                method: "POST",
+                body: JSON.stringify({ postId, ownerId, notOwnerId }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                set({ error: data.error });
+                throw (data)
+            }
+            const data = await response.json();
+            set({ currentChat: data.chat });
+            //chatId in post.chatList
+            const chatId = data.chat.id;
+            const posts = get().posts;
+            const updatedPosts = posts.map((post) =>
+                post.id === postId 
+                    ? { ...post, chatList: [...post.chatList, chatId] }
+                    : post
+            );
+            set({ posts: updatedPosts, error: "" });
+
+        } catch (e) {
+            console.log("Error", e)
+        } finally {
+            set({ loading: false });
+        }
+    }
 
 }))

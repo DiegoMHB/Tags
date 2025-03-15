@@ -16,6 +16,7 @@ export const mapStore = create<MapStoreType>()((set) => ({
 
     getCoords: ()=> {
         set({loading:true})
+        console.log("getCoords")
         navigator.geolocation.getCurrentPosition( (position) => {
             const res = [position.coords.latitude, position.coords.longitude];
             let [lat, long] = res;

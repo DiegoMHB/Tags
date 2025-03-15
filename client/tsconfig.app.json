@@ -22,5 +22,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "src/assets/helperFunctions/checkOwnerChat.ts"]
+  "include": ["src", "src/assets/helperFunctions/checkExistingChat.ts"]
 }

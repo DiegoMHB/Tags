@@ -49,6 +49,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
 
     createActivePost: async (post: NewPostType) => {
         set({ loading: true });
+        console.log('createActivePost')
         try {
             const response = await fetch(`${url}newPost`, {
                 method: "POST",
@@ -80,6 +81,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
     },
 
     deletePost: async (id: string) => {
+        console.log('deletePost')
         set({ loading: true });
         try {
             const response = await fetch(`${url}deletePost`, {
@@ -107,6 +109,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
 
     closeActivePost: async () => {
         set({ loading: true });
+        console.log("closeActivePost")
 
         try {
             const postId = get().activePost!.id;
@@ -139,6 +142,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
     },
 
     editActivePost: async (changes) => {
+        console.log("editActivePost")
         set({ loading: true });
         const id = get().userPostsList.filter((post: PostType) => post.isActive)[0].id;
 
@@ -167,6 +171,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
     },
 
     getUserPosts: async () => {
+        console.log("getUserPosts")
         set({ loading: true });
         const id = get().user.id
         try {
@@ -194,6 +199,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
 
     signIn: async (user: NewUser): Promise<void> => {
         set({ loading: true });
+        console.log("signIn")
 
         try {
             const response = await fetch(`${url}register`, {
@@ -225,6 +231,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
 
     logIn: async (form: LoginForm): Promise<void> => {
         set({ loading: true });
+        console.log("logIn")
         try {
             const response = await fetch(`${url}login`, {
                 method: "POST",
@@ -252,6 +259,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
     },
 
     logOut: async (): Promise<void> => {
+        console.log("logOut")
         try {
             const response = await fetch(`${url}logout`, {
                 method: "GET",

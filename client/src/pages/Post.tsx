@@ -10,9 +10,10 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { PostType } from "../types/postTypes";
 import { User } from "../types/userTypes";
+import { checkExistingChat } from "../assets/helperFunctions/checkExistingChat";
 
 export default function Post() {
-  const { fotoUrl, selectedFile, posts, selectedUser } =
+  const { fotoUrl, selectedFile, posts, selectedUser,getChatById,createChat } =
     appStore();
   const { deletePost, closeActivePost, userPostsList, activePost, user } =
     userStore();
@@ -32,6 +33,17 @@ export default function Post() {
     setPostUser(selectedUser);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+ async function handleChatClick () {
+        let chatId = checkExistingChat(user.id, post!)
+        if(chatId){
+           await getChatById(chatId)
+        }else {
+            const newChat = createChat(post!.id, post!.userId, user.id);
+            chatId = newChat!
+        }
+        navigate(`/chat/${chatId}`);
+  }
 
   //TODO: component for the map with props and attributes
   //TODO: Profileheader of the user
@@ -115,9 +127,7 @@ export default function Post() {
         disabled={false}
         mode={0}
         link=""
-        onClick={() => {
-          //   navigate(`/chat/${id}`);
-        }}
+        onClick={handleChatClick}
       />
     </main>
   );

@@ -6,18 +6,22 @@ import { userStore } from "../zustand/userStore";
 import { appStore } from "../zustand/appStore";
 import { mapUtilities } from "../data/mapUtilities";
 import PostMarker from "../components/PostMarker";
+import { useEffect } from "react";
 
 
 
 
 export default function Map() {
-  const { coordinates } = mapStore();
+  const { coordinates, getCoords } = mapStore();
   const { posts } = appStore();
   const { activePost } = userStore();
 
   const postFiltered = posts.filter((p)=> p.id !== activePost?.id)
 
-
+  useEffect(() => {
+    getCoords();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <>

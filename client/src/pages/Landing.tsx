@@ -1,17 +1,10 @@
-import { useEffect } from "react";
 import BtnMain from "../components/buttons/BtnMain";
 import { appStore } from "../zustand/appStore";
-import { mapStore } from "../zustand/mapStore";
 
 export default function Landing() {
-  const { setMapRender, getAllPosts } = appStore();
-  const { getCoords } = mapStore();
+  const { setMapRender } = appStore();
 
-  useEffect(() => {
-    getCoords();
-    getAllPosts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+
 
   return (
     <div className="flex flex-col justify-center items-center w-screen space-y-4">
