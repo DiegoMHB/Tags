@@ -23,6 +23,7 @@ export type AppStoreType = {
     setSelectedFile: (file: File | null) => void,
     getChatById: (id: string) => void,
     createChat: (postId: string, owner: string, notOwner: string) => void
+    createMessage: (message: string, userId: string) => void
 }
 
 
@@ -120,15 +121,42 @@ export const appStore = create<AppStoreType>()((set, get) => ({
             }
             const data = await response.json();
             set({ currentChat: data.chat });
+
             //chatId in post.chatList
             const chatId = data.chat.id;
             const posts = get().posts;
             const updatedPosts = posts.map((post) =>
-                post.id === postId 
+                post.id === postId
                     ? { ...post, chatList: [...post.chatList, chatId] }
                     : post
             );
             set({ posts: updatedPosts, error: "" });
+
+        } catch (e) {
+            console.log("Error", e)
+        } finally {
+            set({ loading: false });
+        }
+    },
+    createMessage: async (message, userId) => {
+        set({ loading: true });
+        console.log("createChat")
+        try {
+            const response = await fetch(`${url}newChat`, {
+                method: "POST",
+                body: JSON.stringify({ message, userId }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                set({ error: data.error });
+                throw (data)
+            }
+            const data = await response.json();
+            set({ currentChat: data.chat });
 
         } catch (e) {
             console.log("Error", e)
