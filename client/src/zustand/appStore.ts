@@ -82,26 +82,7 @@ export const appStore = create<AppStoreType>()((set, get) => ({
             set({ loading: false });
         }
     },
-    getChatById: async (id) => {
-        set({ loading: true });
-        console.log("getChatById")
-        try {
-            const response = await fetch(`${url}chat/${id}`);
-            if (!response.ok) {
-                const data = await response.json();
-                set({ error: data.error });
-                throw (data)
-            }
-            const data = await response.json();
-            set({ currentChat: data.chat });
-            set({ error: "" });
 
-        } catch (e) {
-            console.log("Error", e)
-        } finally {
-            set({ loading: false });
-        }
-    },
     createChat: async (postId, ownerId, notOwnerId) => {
         set({ loading: true });
         console.log("createChat")
@@ -125,12 +106,14 @@ export const appStore = create<AppStoreType>()((set, get) => ({
             //chatId in post.chatList
             const chatId = data.chat.id;
             const posts = get().posts;
+            console.log(posts)
             const updatedPosts = posts.map((post) =>
                 post.id === postId
                     ? { ...post, chatList: [...post.chatList, chatId] }
                     : post
             );
             set({ posts: updatedPosts, error: "" });
+            console.log(updatedPosts)
 
         } catch (e) {
             console.log("Error", e)
@@ -138,11 +121,33 @@ export const appStore = create<AppStoreType>()((set, get) => ({
             set({ loading: false });
         }
     },
+
+    getChatById: async (id) => {
+        set({ loading: true });
+        console.log("getChatById")
+        try {
+            const response = await fetch(`${url}chat/${id}`);
+            if (!response.ok) {
+                const data = await response.json();
+                set({ error: data.error });
+                throw (data)
+            }
+            const data = await response.json();
+            set({ currentChat: data.chat });
+            set({ error: "" });
+
+        } catch (e) {
+            console.log("Error", e)
+        } finally {
+            set({ loading: false });
+        }
+    },
+
     createMessage: async (message, userId) => {
         set({ loading: true });
-        console.log("createChat")
+        console.log("createMessage")
         try {
-            const response = await fetch(`${url}newChat`, {
+            const response = await fetch(`${url}newMessage`, {
                 method: "POST",
                 body: JSON.stringify({ message, userId }),
                 headers: {

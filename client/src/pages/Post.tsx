@@ -13,7 +13,7 @@ import { User } from "../types/userTypes";
 import { checkExistingChat } from "../assets/helperFunctions/checkExistingChat";
 
 export default function Post() {
-  const { fotoUrl, selectedFile, posts, selectedUser,getChatById,createChat } =
+  const { fotoUrl, selectedFile, posts, selectedUser,getChatById,createChat,currentChat } =
     appStore();
   const { deletePost, closeActivePost, userPostsList, activePost, user } =
     userStore();
@@ -25,8 +25,8 @@ export default function Post() {
 
   useEffect(() => {
     const allPosts = [...posts, ...userPostsList];
-    const idPost = allPosts.filter((post) => post.id == id)[0];
-    setPost(idPost);
+    const postById = allPosts.filter((post) => post.id == id)[0];
+    setPost(postById);
   }, [posts, userPostsList, id]);
 
   useEffect(() => {
@@ -39,8 +39,8 @@ export default function Post() {
         if(chatId){
            await getChatById(chatId)
         }else {
-            const newChat = createChat(post!.id, post!.userId, user.id);
-            chatId = newChat!
+            await createChat(post!.id, post!.userId, user.id);
+            chatId = currentChat!.id
         }
         navigate(`/chat/${chatId}`);
   }
