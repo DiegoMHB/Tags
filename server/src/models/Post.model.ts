@@ -1,5 +1,6 @@
-import { Table, Column, Model, DataType, PrimaryKey, Default, CreatedAt, ForeignKey, BelongsTo, BeforeCreate, AllowNull } from "sequelize-typescript";
+import { Table, Column, Model, DataType, PrimaryKey, Default, CreatedAt, ForeignKey, BelongsTo, BeforeCreate, AllowNull, HasMany } from "sequelize-typescript";
 import User from "./User.model";
+import Chat from "./Chat.model";
 
 @Table({
     tableName: "posts",
@@ -60,8 +61,8 @@ class Post extends Model {
         type: DataType.DATE, allowNull: true
     })
     destroyAt: Date
-   
-    @Default(true) 
+
+    @Default(true)
     @Column({
         type: DataType.BOOLEAN,
         allowNull: false,
@@ -78,6 +79,13 @@ class Post extends Model {
     @BelongsTo(() => User)
     user!: User;
 
+
+    @HasMany(() => Chat, {
+        foreignKey: 'postId',
+        onDelete: 'CASCADE',
+        hooks: true,
+    })
+    chats!: Chat
 
 
 

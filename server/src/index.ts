@@ -14,7 +14,7 @@ const app = express();
 const port = process.env.PORT || 5000
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: "https://localhost:5173",
     credentials: true,
 }));
 app.use(bodyParser.json());
@@ -24,7 +24,7 @@ app.use(router)
 async function connectDB() {
     try {
         await db.authenticate();
-        await db.sync()
+        await db.sync({force:true})
             .then(() => Populate())//-- DEV --
             .then(() => {
                 deleteExpiredPosts();
@@ -45,5 +45,5 @@ async function connectDB() {
 connectDB()
 
 app.listen(port, () => {
-    console.log(`Example app listening on port  http://localhost:${port}`)
+    console.log(`Example app listening on port  https://localhost:${port}`)
 });

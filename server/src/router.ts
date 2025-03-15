@@ -1,17 +1,16 @@
 import express from "express";
 import { register, login, logout, getUser } from "./controllers/users";
 import { newPost, getAllPosts, deletePost, closePost, editPost, getUserPosts } from "./controllers/posts";
+import { newChat,getChatById,newMessage } from "./controllers/chats";
 
 
 const router = express.Router();
 
 //user
-//TODO: post no con gets... poner :params
 
 router.post("/register", register);
 router.post("/login", login);
 router.get("/logout", logout);
-router.get("/user/:id", getUser);
 
 //user post (auth)
 router.get("/getAllPosts/:id", getUserPosts);
@@ -22,7 +21,13 @@ router.patch("/editPost", editPost);
 
 
 //users post (others)
+router.get("/user/:id", getUser);
 router.get("/getAllPosts", getAllPosts);
+
+//chats
+router.post("/newChat", newChat);
+router.get("/getChatById/:id", getChatById);
+router.post("/newMessage", newMessage)
 
 
 export default router;

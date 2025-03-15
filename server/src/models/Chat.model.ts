@@ -1,8 +1,9 @@
 import { Table, Column, Model, DataType, PrimaryKey, Default, CreatedAt, ForeignKey, BelongsTo, BeforeCreate, AllowNull } from "sequelize-typescript";
 import User from "./User.model";
+import Post from "./Post.model";
 
 type Message = {
-    userName: string,
+    owner: boolean,
     date: string,
     content: string,
 }
@@ -21,29 +22,17 @@ class Chat extends Model {
     })
     id!: string
 
-    @ForeignKey(() => User)
+    
     @Column({
         type: DataType.UUID, allowNull: false
     })
-    ownerID!: string
-
-    @BelongsTo(() => User, "ownerID")
-    owner!: User;
-
-    @ForeignKey(() => User)
-    @Column({
-        type: DataType.UUID, allowNull: false
-    })
-    notOwnerID!: string
-
-    @BelongsTo(() => User, "notOwnerID")
-    notOwner!: User;
+    ownerId!: string
 
 
     @Column({
         type: DataType.UUID, allowNull: false
     })
-    post!: string
+    notOwnerId!: string
 
 
     @Column({
@@ -51,13 +40,16 @@ class Chat extends Model {
     })
     messages: Message[]
 
-
-    @Default(true)
+    
+    @ForeignKey(() => Post)
     @Column({
-        type: DataType.BOOLEAN,
-        allowNull: false,
+        type: DataType.UUID, allowNull: false
     })
-    isActive!: boolean;
+    postId!: string
+
+
+    @BelongsTo(()=>Post)
+    post!: Post
 
 
 
