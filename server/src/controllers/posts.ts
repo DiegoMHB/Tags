@@ -8,9 +8,10 @@ export const newPost = async (req: Request, res: Response): Promise<void> => {
         const newPost = new Post(post);
         const response = await newPost.save();
 
+
         if (response.dataValues) {
             //save the postId in user.posts
-            const user = await User.findByPk(newPost.id);
+            const user = await User.findByPk(newPost.userId);
             user.posts = user.posts ? [...user.posts, newPost.id] : [newPost.id];
             await user.save();
             //to deactivate post once saved
@@ -65,6 +66,12 @@ export const deletePost = async (req: Request, res: Response): Promise<void> => 
             throw ({ message: "'No such ID" })
         }
         const deleted = await postToDelete.destroy();
+
+        //delete in User.posts 
+        const user = await User.findByPk(postToDelete.userId);
+        user.posts = user.posts.filter(post => post !== postToDelete.id)
+        await user.save();
+
         if (! await Post.findByPk(id)) {
             res
                 .status(200)
@@ -83,7 +90,7 @@ export const deletePost = async (req: Request, res: Response): Promise<void> => 
 }
 
 export const closePost = async (req: Request, res: Response): Promise<void> => {
-    const  id  = req.params.id;
+    const id = req.params.id;
     try {
         const postToDeactivate = await Post.findByPk(id);
         if (!postToDeactivate) {
@@ -131,7 +138,7 @@ export const editPost = async (req: Request, res: Response): Promise<void> => {
 
 export const getUserPosts = async (req: Request, res: Response): Promise<void> => {
     try {
-        const  userId  = req.params.id;
+        const userId = req.params.id;
         const response = await Post.findAll({ where: { userId } })
         if (response) {
             res
