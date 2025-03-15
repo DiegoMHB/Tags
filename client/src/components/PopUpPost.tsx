@@ -1,6 +1,5 @@
 import { PostType } from "../types/postTypes";
 import { appStore } from "../zustand/appStore";
-import defaultUser from "../assets/processed_cv_photo.jpg";
 import { TimeLeft } from "../types/appTypes";
 import { useNavigate } from "react-router-dom";
 import { userStore } from "../zustand/userStore";
@@ -11,10 +10,9 @@ type PopUpPostProps = {
 };
 
 export default function PopUpPost({ post, timeLeft }: PopUpPostProps) {
-
   const { selectedUser, loading } = appStore();
-  const { auth} = userStore();
-  const navigate = useNavigate()
+  const { auth } = userStore();
+  const navigate = useNavigate();
   const { minutes } = timeLeft;
 
   return (
@@ -25,13 +23,7 @@ export default function PopUpPost({ post, timeLeft }: PopUpPostProps) {
         ) : (
           <img
             className="w-15 h-15 object-cover rounded-full items-center"
-            src={
-              post.picture
-                ? post.picture
-                : selectedUser?.profilePicture
-                ? selectedUser?.profilePicture
-                : defaultUser
-            }
+            src={post.picture}
             alt={"photo"}
           />
         )}
@@ -50,10 +42,14 @@ export default function PopUpPost({ post, timeLeft }: PopUpPostProps) {
         </div>
       </div>
       <span className="text-xs">{post.description}</span>
-      {auth && <button className=" w-15 h-5 m-auto bg-[#c6eef7] rounded-full"
-      onClick={()=>navigate(`/post/${post.id}`)}>
-        View
-      </button>}
+      {auth && (
+        <button
+          className=" w-15 h-5 m-auto bg-[#c6eef7] rounded-full"
+          onClick={() => navigate(`/post/${post.id}`)}
+        >
+          View
+        </button>
+      )}
     </main>
   );
 }

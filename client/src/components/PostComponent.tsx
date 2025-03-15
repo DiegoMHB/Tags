@@ -106,16 +106,7 @@ export default function PostComponent({ post }: PostComponentProps) {
           <p className="text-[14px] ">{post.description}</p>
         </div>
       </div>
-      {/* {post.isActive && (
-          <div className="mt-5 mx-auto w-[300px] flex justify-center">
-            <BtnMain
-              text="chats" //TODO NUMBER OF CHATS
-              mode={0}
-              link="/chat"
-              disabled={false} //IF NO CHAT TODO
-            ></BtnMain>
-          </div>
-        )} */}
+    
     </section>
   );
 }

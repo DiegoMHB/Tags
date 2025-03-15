@@ -1,6 +1,5 @@
 import stampToDate from "../assets/helperFunctions/stampToDate";
 import { userStore } from "../zustand/userStore";
-import image from "../assets/processed_cv_photo.jpg"
 
 export default function ProfileHeader() {
   const { user, activePost, allUserPosts } = userStore();
@@ -12,7 +11,7 @@ export default function ProfileHeader() {
       <div className="flex gap-5 ">
         
           <img className="w-20 h-20 object-cover m-1 mr-0 rounded-[100%]"
-            src={user.profilePicture? user.profilePicture : image}
+            src={user.profilePicture!}
             alt={"photo"}
           />
         
