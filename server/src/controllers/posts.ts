@@ -35,7 +35,7 @@ export const newPost = async (req: Request, res: Response): Promise<void> => {
     }
 }
 
-export const getPosts = async (req: Request, res: Response): Promise<void> => {
+export const getAllPosts = async (req: Request, res: Response): Promise<void> => {
     try {
         const response = await Post.findAll({ where: { isActive: true } });
 
@@ -44,7 +44,7 @@ export const getPosts = async (req: Request, res: Response): Promise<void> => {
                 .status(200)
                 .send({ posts: response, message: "Posts get" })
             return
-        } else throw ({ message: "Couldnt get POST from DB" })
+        } else throw ({ message: "Couldnt get POSTS from DB" })
 
 
     } catch (error) {
@@ -83,7 +83,7 @@ export const deletePost = async (req: Request, res: Response): Promise<void> => 
 }
 
 export const closePost = async (req: Request, res: Response): Promise<void> => {
-    const { id } = req.body;
+    const  id  = req.params.id;
     try {
         const postToDeactivate = await Post.findByPk(id);
         if (!postToDeactivate) {
@@ -129,9 +129,9 @@ export const editPost = async (req: Request, res: Response): Promise<void> => {
     }
 }
 
-export const getUsersPosts = async (req: Request, res: Response): Promise<void> => {
+export const getUserPosts = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { userId } = req.body;
+        const  userId  = req.params.id;
         const response = await Post.findAll({ where: { userId } })
         if (response) {
             res

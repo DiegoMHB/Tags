@@ -1,6 +1,6 @@
 import express from "express";
 import { register, login, logout, getUser } from "./controllers/users";
-import { newPost, getPosts, deletePost,closePost,editPost,getUsersPosts } from "./controllers/posts";
+import { newPost, getAllPosts, deletePost, closePost, editPost, getUserPosts } from "./controllers/posts";
 
 
 const router = express.Router();
@@ -13,14 +13,16 @@ router.post("/login", login);
 router.get("/logout", logout);
 router.get("/user/:id", getUser);
 
-//post
-
-router.get("/getPosts", getPosts);
-router.post("/newPost", newPost);
-router.post("/getUsersPosts", getUsersPosts);
+//user post (auth)
+router.get("/getAllPosts/:id", getUserPosts);
 router.delete("/deletePost", deletePost);
-router.post("/closePost", closePost);
+router.post("/newPost", newPost);
+router.patch("/closePost/:id", closePost);
 router.patch("/editPost", editPost);
+
+
+//users post (others)
+router.get("/getAllPosts", getAllPosts);
 
 
 export default router;

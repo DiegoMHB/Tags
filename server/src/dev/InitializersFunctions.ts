@@ -69,7 +69,6 @@ export const createPosts = async () => {
                     user.posts = [];
                     user.posts = [newPost.id]; }               
                 await user.save();
-                console.log(user.posts, '------------------------')
                 console.log(`Post ${userIndex} created`);
 
                 // Close after `el.duration` minutes
