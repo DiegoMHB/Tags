@@ -1,3 +1,5 @@
+
+
 export type link = {
     id:number
     to:string
@@ -24,6 +26,19 @@ export type Selection = {
 export type TimeLeft = {
     minutes: number,
     percentage: number
+}
+
+export type ChatType = {
+    id: string
+    notOwnerId: string
+    ownerId: string
+    messages: Message[]
+    postId: string
+}
+export type Message = {
+    userName: string
+    date: string
+    content: string
 }
 
 // export type ChatByOwner = {

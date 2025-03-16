@@ -34,10 +34,17 @@ export default function Post() {
   }, [posts, userPostsList, id]);
 
   async function handleChatClick() {
+    //owner
     if (post!.userId === user.id) {
-        //show 
+      navigate(`/chat/${post!.id}`);
+      // const chatList : string[] =[]
+      // post!.chatList.map(el=> {
+      //     chatList?.push(el.chatId)
+      // })
     } else {
+      //not owner
       const chatIds = await checkExistingChat(user.id, post!);
+      //not owner
       if (chatIds) {
         const { chatId } = chatIds;
         await getChatById(chatId);

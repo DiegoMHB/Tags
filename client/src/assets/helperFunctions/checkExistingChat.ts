@@ -4,7 +4,7 @@
 
 import { ChatListElement, PostType } from "../../types/postTypes";
 
-export async function checkExistingChat(userId: string, post: PostType): Promise<ChatListElement | null> {
+export  function checkExistingChat(userId: string, post: PostType): ChatListElement | null {
     const chat =  post.chatList.find(chat => chat.notOwnerId === userId);
     return chat? chat : null;
 }

@@ -1,6 +1,7 @@
 import { create } from "zustand";
-import { ChatType, PostType } from "../types/postTypes";
+import {  PostType } from "../types/postTypes";
 import { User } from "../types/userTypes";
+import { ChatType } from "../types/appTypes";
 
 const port = import.meta.env.VITE_PORT;
 const url = `http://localhost:${port}/`

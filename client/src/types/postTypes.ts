@@ -25,16 +25,5 @@ export type ChatListElement = {
     chatId: string
 }
 
-export type ChatType = {
-    id: string
-    notOwnerId: string
-    ownerId: string
-    messages: Message[]
-    postId: string
-}
 
-export type Message = {
-    userName: string
-    date: string
-    content: string
-}
+
