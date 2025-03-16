@@ -5,7 +5,7 @@ import { checkIdType } from "../assets/helperFunctions/checkIdType";
 import { userStore } from "../zustand/userStore";
 
 export default function Chat() {
-  const { currentChat } = appStore();
+  const { currentChat,getChatsByPostId } = appStore();
   const { userPostsList } = userStore();
   const { postId } = useParams();
   const [isOwner, setIsOwner] = useState<boolean>(false);
@@ -13,9 +13,8 @@ export default function Chat() {
   useEffect(() => {
     if (checkIdType(postId!, userPostsList)) {
       setIsOwner(true);
-      console.log(postId, "es post",  )
+      getChatsByPostId(postId!)
     };
-    console.log(postId, )
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

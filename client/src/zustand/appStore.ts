@@ -15,6 +15,7 @@ export type AppStoreType = {
     loading: boolean,
     selectedUser: User | null,
     currentChat: ChatType | null,
+    allPostsChat: ChatType[] | null,
 
     getAllPosts: () => void,
     getUserById: (userId: string) => void,
@@ -23,6 +24,7 @@ export type AppStoreType = {
     setFotoUrl: (url: string) => void,
     setSelectedFile: (file: File | null) => void,
     getChatById: (id: string) => void,
+    getChatsByPostId: (id:string)=>void,
     createChat: (postId: string, owner: string, notOwner: string) => Promise<ChatType | void>
     createMessage: (message: string, userId: string) => void
 }
@@ -37,6 +39,7 @@ export const appStore = create<AppStoreType>()((set, get) => ({
     loading: false,
     selectedUser: null,
     currentChat: null,
+    allPostsChat:  null,
 
     setError: (err: string) => set({ error: err }),
     setMapRender: () => set((state) => ({ mapRender: !state.mapRender })),
@@ -135,6 +138,28 @@ export const appStore = create<AppStoreType>()((set, get) => ({
             }
             const data = await response.json();
             set({ currentChat: data.chat });
+            set({ error: "" });
+
+        } catch (e) {
+            console.log("Error", e)
+        } finally {
+            set({ loading: false });
+        }
+    },
+
+    getChatsByPostId:async (id)=>{
+        
+        set({ loading: true });
+        console.log("getChatsByPostId", id)
+        try {
+            const response = await fetch(`${url}getChatsByPostId/${id}`);
+            if (!response.ok) {
+                const data = await response.json();
+                set({ error: data.error });
+                throw (data)
+            }
+            const data = await response.json();
+            set({ allPostsChat: data.chats });
             set({ error: "" });
 
         } catch (e) {
