@@ -1,7 +1,7 @@
 import express from "express";
 import { register, login, logout, getUser } from "./controllers/users";
 import { newPost, getAllPosts, deletePost, closePost, editPost, getUserPosts } from "./controllers/posts";
-import { newChat,getChatById,newMessage } from "./controllers/chats";
+import { newChat,getChatById,newMessage,getChatsByPostId } from "./controllers/chats";
 
 
 const router = express.Router();
@@ -27,6 +27,7 @@ router.get("/getAllPosts", getAllPosts);
 //chats
 router.post("/newChat", newChat);
 router.get("/getChatById/:id", getChatById);
+router.get("/getChatsByPostId/:id", getChatsByPostId);
 router.post("/newMessage", newMessage)
 
 

@@ -15,9 +15,9 @@ export const newChat = async (req: Request, res: Response): Promise<void> => {
 
             //returning the post with the chatList updated
             const post = await Post.findByPk(postId);
-            const chatListElement : ChatListElement ={
+            const chatListElement: ChatListElement = {
                 notOwnerId: newChat.notOwnerId,
-                chatId : newChat.id
+                chatId: newChat.id
             }
             post.chatList = [...post.chatList, chatListElement];
             const responsePost = await post.save()
@@ -48,13 +48,34 @@ export const getChatById = async (req: Request, res: Response): Promise<void> =>
 
     try {
         const id = req.params.id;
-        console.log(id,"-----------------------")
         const response = await Chat.findByPk(id)
-        console.log("--------",response)
         if (response) {
             res
                 .status(200)
                 .send({ chat: response, message: "Chat get" })
+            return
+        } else throw ({ message: "Couldnt get CHat from DB" })
+
+    } catch (error) {
+        if (error.message) {
+            res.status(400).send({ error: error.message });
+            return
+        }
+        res.status(500).send({ error: "Something happened: try again" });
+        return
+    }
+}
+
+export const getChatsByPostId = async (req: Request, res: Response): Promise<void> => {
+
+    try {
+        const id = req.params.id;
+        const response = await Chat.findAll({where: { postId: id }})
+        console.log("-------------",response)
+        if (response) {
+            res
+                .status(200)
+                .send({ chats: response, message: "Chat get" })
             return
         } else throw ({ message: "Couldnt get CHat from DB" })
 
