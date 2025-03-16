@@ -171,11 +171,12 @@ export const appStore = create<AppStoreType>()((set, get) => ({
 
     createMessage: async (message, userId) => {
         set({ loading: true });
+        const chatId = get().currentChat!.id
         console.log("createMessage")
         try {
             const response = await fetch(`${url}newMessage`, {
                 method: "POST",
-                body: JSON.stringify({ message, userId }),
+                body: JSON.stringify({ chatId, message, userId }),
                 headers: {
                     "Content-Type": "application/json",
                 },

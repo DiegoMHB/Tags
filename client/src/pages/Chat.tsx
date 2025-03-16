@@ -27,7 +27,7 @@ export default function Chat() {
   return (
     <main className="flex flex-col justify-end w-[100%] space-y-4 ">
       {isOwner && <ChatListComponent/>}
-      {!isOwner && currentChat && <ChatComponent open={true} chat={currentChat}/>}
+      {!isOwner && currentChat && <ChatComponent open={true} owner={false} chat={currentChat}/>}
     </main>
   );
 }
