@@ -21,7 +21,7 @@ export type PostType = NewPostType & {
 }
 
 export type ChatListElement = {
-    notOwner: string
+    notOwnerId: string,
     chatId: string
 }
 

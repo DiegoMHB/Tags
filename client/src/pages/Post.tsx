@@ -9,40 +9,44 @@ import { mapUtilities } from "../data/mapUtilities";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { PostType } from "../types/postTypes";
-import { User } from "../types/userTypes";
 import { checkExistingChat } from "../assets/helperFunctions/checkExistingChat";
 
 export default function Post() {
-  const { fotoUrl, selectedFile, posts, selectedUser,getChatById,createChat,currentChat } =
-    appStore();
+  const {
+    fotoUrl,
+    selectedFile,
+    posts,
+    selectedUser,
+    getChatById,
+    createChat,
+  } = appStore();
   const { deletePost, closeActivePost, userPostsList, activePost, user } =
     userStore();
 
   const { id } = useParams();
   const navigate = useNavigate();
   const [post, setPost] = useState<PostType | null>(null);
-  const [postUser, setPostUser] = useState<User | null>(null);
 
   useEffect(() => {
     const allPosts = [...posts, ...userPostsList];
-    const postById = allPosts.filter((post) => post.id == id)[0];
-    setPost(postById);
+    const postById = allPosts.find((post) => post.id == id);
+    setPost(postById!);
   }, [posts, userPostsList, id]);
 
-  useEffect(() => {
-    setPostUser(selectedUser);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
- async function handleChatClick () {
-        let chatId = checkExistingChat(user.id, post!)
-        if(chatId){
-           await getChatById(chatId)
-        }else {
-            await createChat(post!.id, post!.userId, user.id);
-            chatId = currentChat!.id
-        }
+  async function handleChatClick() {
+    if (post!.userId === user.id) {
+        //show 
+    } else {
+      const chatIds = await checkExistingChat(user.id, post!);
+      if (chatIds) {
+        const { chatId } = chatIds;
+        await getChatById(chatId);
         navigate(`/chat/${chatId}`);
+      } else {
+        const chat = await createChat(post!.id, post!.userId, user.id);
+        navigate(`/chat/${chat!.id}`);
+      }
+    }
   }
 
   //TODO: component for the map with props and attributes
@@ -57,9 +61,9 @@ export default function Post() {
       {post && post.userId == user.id && post.id !== activePost?.id && (
         <h3 className="text-2xl text-center m-3">Closed post:</h3>
       )}
-      {postUser && post && post.userId !== user.id && (
+      {selectedUser && post && post.userId !== user.id && (
         <h3 className="text-xl text-center m-1">
-          Active post from: {postUser.name}
+          Active post from: {selectedUser.name}
         </h3>
       )}
 

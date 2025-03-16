@@ -22,7 +22,7 @@ export type AppStoreType = {
     setFotoUrl: (url: string) => void,
     setSelectedFile: (file: File | null) => void,
     getChatById: (id: string) => void,
-    createChat: (postId: string, owner: string, notOwner: string) => void
+    createChat: (postId: string, owner: string, notOwner: string) => Promise<ChatType | void>
     createMessage: (message: string, userId: string) => void
 }
 
@@ -41,6 +41,9 @@ export const appStore = create<AppStoreType>()((set, get) => ({
     setMapRender: () => set((state) => ({ mapRender: !state.mapRender })),
     setFotoUrl: (newUrl) => set({ fotoUrl: newUrl }),
     setSelectedFile: (file) => set({ selectedFile: file }),
+    deselecUser: () => {
+        set({ selectedUser: null })
+    },
 
     getAllPosts: async () => {
         set({ loading: true });
@@ -83,7 +86,7 @@ export const appStore = create<AppStoreType>()((set, get) => ({
         }
     },
 
-    createChat: async (postId, ownerId, notOwnerId) => {
+    createChat: async (postId, ownerId, notOwnerId) =>  {
         set({ loading: true });
         console.log("createChat")
         try {
@@ -103,18 +106,15 @@ export const appStore = create<AppStoreType>()((set, get) => ({
             const data = await response.json();
             set({ currentChat: data.chat });
 
-            //chatId in post.chatList
-            const chatId = data.chat.id;
+            //update the post
             const posts = get().posts;
-            console.log(posts)
             const updatedPosts = posts.map((post) =>
                 post.id === postId
-                    ? { ...post, chatList: [...post.chatList, chatId] }
+                    ? post = data.post
                     : post
             );
             set({ posts: updatedPosts, error: "" });
-            console.log(updatedPosts)
-
+            return data.chat
         } catch (e) {
             console.log("Error", e)
         } finally {
@@ -124,9 +124,9 @@ export const appStore = create<AppStoreType>()((set, get) => ({
 
     getChatById: async (id) => {
         set({ loading: true });
-        console.log("getChatById")
+        console.log("getChatById", id)
         try {
-            const response = await fetch(`${url}chat/${id}`);
+            const response = await fetch(`${url}getChatById/${id}`);
             if (!response.ok) {
                 const data = await response.json();
                 set({ error: data.error });

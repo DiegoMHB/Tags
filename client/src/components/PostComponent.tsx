@@ -5,13 +5,15 @@ import calculateTimeLeft from "../assets/helperFunctions/calculateTimeLeft";
 import { userStore } from "../zustand/userStore";
 import stampToDate from "../assets/helperFunctions/stampToDate";
 import { useNavigate } from "react-router-dom";
+import { appStore } from "../zustand/appStore";
 
 type PostComponentProps = {
   post: PostType;
 };
 
 export default function PostComponent({ post }: PostComponentProps) {
-  const { user, getUserPosts } = userStore();
+  const { user, getUserPosts, } = userStore();
+  const { selectedUser } = appStore();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(() =>
     calculateTimeLeft(post.destroyAt, post.createdAt)
@@ -95,7 +97,7 @@ export default function PostComponent({ post }: PostComponentProps) {
         {post.userId == user.id ? null : (
           <div className="flex justify-between items-baseline ">
             <p className="text-xs font-bold">User:</p>
-            <p className="text-xs mr-[100px]">{user.userName}</p>
+            <p className="text-xs mr-[100px]">{selectedUser!.userName}</p>
           </div>
         )}
         <div className="flex justify-between items-baseline ">
