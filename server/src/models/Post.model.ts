@@ -1,6 +1,7 @@
 import { Table, Column, Model, DataType, PrimaryKey, Default, CreatedAt, ForeignKey, BelongsTo, BeforeCreate, AllowNull, HasMany } from "sequelize-typescript";
 import User from "./User.model";
 import Chat from "./Chat.model";
+import {  ChatListElement } from "../types";
 
 @Table({
     tableName: "posts",
@@ -63,9 +64,9 @@ class Post extends Model {
     destroyAt: Date
     
     @Column({
-        type: DataType.ARRAY(DataType.UUID), allowNull: false, defaultValue: []
+        type: DataType.JSONB, allowNull: false, defaultValue: []
     })
-    chatList: string[]
+    chatList: ChatListElement[]
 
     @Default(true)
     @Column({

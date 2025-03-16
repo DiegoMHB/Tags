@@ -1,6 +1,7 @@
 import Chat from "../models/Chat.model";
 import { Request, Response } from "express";
 import Post from "../models/Post.model";
+import { ChatListElement } from "../types";
 
 
 
@@ -12,16 +13,20 @@ export const newChat = async (req: Request, res: Response): Promise<void> => {
         const responseChat = await newChat.save();
         if (responseChat.dataValues) {
 
-            // //returning the post with the chatList updated
-            // const post = await Post.findByPk(postId)
-            // post.chatList = [...post.chatList, newChat.id];
-            // const responsePost = await post.save()
+            //returning the post with the chatList updated
+            const post = await Post.findByPk(postId);
+            const chatListElement : ChatListElement ={
+                notOwnerId: newChat.notOwnerId,
+                chatId : newChat.id
+            }
+            post.chatList = [...post.chatList, chatListElement];
+            const responsePost = await post.save()
 
             res
                 .status(200)
                 .send({
                     chat: responseChat.dataValues,
-                    // post: responsePost.dataValues,
+                    post: responsePost.dataValues,
                     message: "Chat succesfully created"
                 })
             return
@@ -43,11 +48,13 @@ export const getChatById = async (req: Request, res: Response): Promise<void> =>
 
     try {
         const id = req.params.id;
-        const response = await Chat.findAll({ where: { id } })
+        console.log(id,"-----------------------")
+        const response = await Chat.findByPk(id)
+        console.log("--------",response)
         if (response) {
             res
                 .status(200)
-                .send({ posts: response, message: "Chat get" })
+                .send({ chat: response, message: "Chat get" })
             return
         } else throw ({ message: "Couldnt get CHat from DB" })
 
