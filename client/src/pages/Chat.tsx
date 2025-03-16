@@ -3,39 +3,31 @@ import { appStore } from "../zustand/appStore";
 import { useParams } from "react-router-dom";
 import { checkIdType } from "../assets/helperFunctions/checkIdType";
 import { userStore } from "../zustand/userStore";
+import ChatComponent from "../components/ChatComponent";
+import ChatListComponent from "../components/ChatListComponent";
 
 export default function Chat() {
-  const { currentChat,getChatsByPostId } = appStore();
+  const { currentChat, getChatsByPostId, getChatById } = appStore();
   const { userPostsList } = userStore();
-  const { postId } = useParams();
+  const { id } = useParams();
   const [isOwner, setIsOwner] = useState<boolean>(false);
 
   useEffect(() => {
-    if (checkIdType(postId!, userPostsList)) {
+    //id is a post
+    if (checkIdType(id!, userPostsList)) {
       setIsOwner(true);
-      getChatsByPostId(postId!)
-    };
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+      getChatsByPostId(id!);
+    } else {
+      //id is a chat
+      getChatById(id!);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <main className="flex flex-col justify-end w-[100%] space-y-4 ">
-      {isOwner && (
-        <div>
-          <p>ChatList :</p>
-        </div>
-      )}
-      {!isOwner && (
-        <div>
-          <p>Chat :</p>
-          <br />
-          {currentChat?.notOwnerId}
-          <br />
-          {currentChat?.ownerId}
-          <br />
-          {currentChat?.postId}
-        </div>
-      )}
+      {isOwner && <ChatListComponent/>}
+      {!isOwner && currentChat && <ChatComponent open={true} chat={currentChat}/>}
     </main>
   );
 }

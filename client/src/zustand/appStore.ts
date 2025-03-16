@@ -15,7 +15,7 @@ export type AppStoreType = {
     loading: boolean,
     selectedUser: User | null,
     currentChat: ChatType | null,
-    allPostsChat: ChatType[] | null,
+    allPostChats: ChatType[] | null,
 
     getAllPosts: () => void,
     getUserById: (userId: string) => void,
@@ -39,7 +39,7 @@ export const appStore = create<AppStoreType>()((set, get) => ({
     loading: false,
     selectedUser: null,
     currentChat: null,
-    allPostsChat:  null,
+    allPostChats:  null,
 
     setError: (err: string) => set({ error: err }),
     setMapRender: () => set((state) => ({ mapRender: !state.mapRender })),
@@ -159,7 +159,7 @@ export const appStore = create<AppStoreType>()((set, get) => ({
                 throw (data)
             }
             const data = await response.json();
-            set({ allPostsChat: data.chats });
+            set({ allPostChats: data.chats });
             set({ error: "" });
 
         } catch (e) {
