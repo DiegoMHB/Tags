@@ -36,9 +36,10 @@ export type ChatType = {
     postId: string
 }
 export type Message = {
-    owner?: string
-    date?: string
-    content: string
+    ownerId: string
+    date: string
+    content: string,
+    id: string
 }
 
 // export type ChatByOwner = {

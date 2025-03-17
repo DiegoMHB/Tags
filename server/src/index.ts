@@ -11,10 +11,10 @@ import { Populate } from "./dev/InitializersFunctions";
 
 
 const app = express();
-const port = process.env.PORT || 5000
+const port = process.env.PORT
 
 app.use(cors({
-    origin: "http://localhost:5173",
+    origin: ["http://localhost:5173", "http://localhost:5174"],
     credentials: true,
 }));
 app.use(bodyParser.json());
@@ -27,6 +27,7 @@ async function connectDB() {
         await db.sync({force:true})
             .then(() => Populate())//-- DEV --
             .then(() => {
+                if(port === "3000")
                 deleteExpiredPosts();
                 deleteDefaultPosts();
                 console.log("Database:::: deleted expired and default Posts")

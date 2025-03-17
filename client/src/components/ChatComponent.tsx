@@ -2,12 +2,23 @@ import { useEffect, useState } from "react";
 import { ChatType, Message } from "../types/appTypes";
 import { appStore } from "../zustand/appStore";
 import { userStore } from "../zustand/userStore";
+import { v4 as uuidv4 } from "uuid";
 
 type ChatComponentProps = {
   open: boolean;
   chat: ChatType;
   owner: boolean;
 };
+
+const emptyMessage: Message = {
+  id: "",
+  content: "",
+  date: "",
+  ownerId: "",
+};
+
+
+
 export default function ChatComponent({
   open,
   chat,
@@ -17,44 +28,45 @@ export default function ChatComponent({
     appStore();
   const { user } = userStore();
 
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [message, setMessage] = useState<string>("");
+  const [isOpen, setIsOpen] = useState<boolean>(false); //when opening: fullchat/header
+  const [content, setContent] = useState<string>("");
   const [messages, setMessages] = useState<Message[]>(chat.messages);
-  const [isUser, setIsUser] = useState<boolean>(true);
 
   useEffect(
     () => {
       if (!owner) {
         setIsOpen(open);
-        setMessages([...chat.messages]);
-        console.log(messages);
-      }
-      if (user.id != chat.ownerId) {
-        setIsUser(true);
       }
       const interval = setInterval(() => {
-        console.log("interval: checking if there is a new message");
-        getChatById(currentChat!.id);
+        getChatById(chat.id);
+        setMessages([...currentChat!.messages]);
       }, 5000);
 
       return () => clearInterval(interval);
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
+    [messages]
   );
 
-  const handleSendMessage = (e: React.FormEvent) => {
+  const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (message.length == 0) return;
+    if (content.length == 0) return;
     const newMessage = {
-      content: message,
+      id: uuidv4(),
+      content: content,
+      date: new Date().toLocaleDateString("en-US", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+      }),
+      ownerId: user.id,
     };
+    setMessages((prev) => [...prev, newMessage]);
+    await createMessage(newMessage, user.id);
+    await getChatById(chat.id);
 
-    setMessages((prevMessages) => [...prevMessages, newMessage]);
-    createMessage(newMessage.content, user.id);
-
-    setMessage("");
+    setContent("");
   };
 
   return (
@@ -68,9 +80,9 @@ export default function ChatComponent({
             {messages.map((mes) => (
               <div
                 className={` ${
-                  isUser ? "self-end" : "self-start"
+                  mes.ownerId === user.id ? "self-end" : "self-start"
                 } bg-amber-50 `}
-                key={mes.date}
+                key={mes.id}
               >
                 <p className="text-xs">{mes.date} </p>
                 <p>{mes.content}</p>
@@ -83,8 +95,8 @@ export default function ChatComponent({
           >
             <input
               type="text"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
               className="bg-white h-[50px] rounded-[25px] w-[90%]"
             />
             <button className="h-[50px] rounded-[100%] w-[50px] bg-white">
@@ -94,10 +106,11 @@ export default function ChatComponent({
         </div>
       ) : (
         <div>
-          { <p>{selectedUser?.userName}</p>}
-          {chat &&  <p>{chat.notOwnerId}</p>}    
+          {<p>{selectedUser?.userName}</p>}
+          {chat && <p>{chat.notOwnerId}</p>}
           <button
             onClick={() => {
+              getChatById(chat.id);
               getUserById(chat.notOwnerId);
               setIsOpen(true);
             }}

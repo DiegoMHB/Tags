@@ -6,6 +6,7 @@ import { ChatListElement } from "../types";
 
 
 
+
 export const newChat = async (req: Request, res: Response): Promise<void> => {
     try {
         const { postId, ownerId, notOwnerId } = req.body;
@@ -91,7 +92,7 @@ export const getChatsByPostId = async (req: Request, res: Response): Promise<voi
 
 export const newMessage = async (req: Request, res: Response): Promise<void> => {
     try {
-        const { chatId, message, userId } = req.body;
+        const { chatId, message } = req.body;
 
         const chat = await Chat.findByPk(chatId);
         if (!chat) {
@@ -100,9 +101,10 @@ export const newMessage = async (req: Request, res: Response): Promise<void> => 
         }
 
         const newMsg = {
-            owner: chat.ownerId == userId ? true : false,
-            date: new Date().toISOString(),
-            content: message,
+            ownerId: message.ownerId,
+            date: message.date,
+            content: message.content,
+            id: message.id
         };
 
         // Actualizar la lista de mensajes del chat

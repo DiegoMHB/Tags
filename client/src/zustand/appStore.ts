@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import {  PostType } from "../types/postTypes";
 import { User } from "../types/userTypes";
-import { ChatType } from "../types/appTypes";
+import { ChatType, Message } from "../types/appTypes";
 
 const port = import.meta.env.VITE_PORT;
 const url = `http://localhost:${port}/`
@@ -26,7 +26,7 @@ export type AppStoreType = {
     getChatById: (id: string) => void,
     getChatsByPostId: (id:string)=>void,
     createChat: (postId: string, owner: string, notOwner: string) => Promise<ChatType | void>
-    createMessage: (message: string, userId: string) => void
+    createMessage: (message: Message, userId: string) => void
 }
 
 

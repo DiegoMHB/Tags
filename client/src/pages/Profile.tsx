@@ -6,7 +6,7 @@ import { PostType } from "../types/postTypes";
 import { userStore } from "../zustand/userStore";
 
 export default function Profile() {
-  const { logOut, userPostsList, user, getUserPosts, activePost } = userStore();
+  const { logOut, userPostsList, getUserPosts, activePost } = userStore();
 
   useEffect(() => {
     if (!activePost) getUserPosts();
