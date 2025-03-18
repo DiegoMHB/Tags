@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import { appStore } from "../zustand/appStore";
 import { useParams } from "react-router-dom";
 import { checkIdType } from "../assets/helperFunctions/checkIdType";
 import { userStore } from "../zustand/userStore";
@@ -8,8 +7,8 @@ import ChatListComponent from "../components/ChatListComponent";
 import { chatStore } from "../zustand/chatStore";
 
 export default function Chat() {
-  const { currentChat } = appStore();
-  const {  getChatsByPostId, getChatById } = chatStore();
+
+  const {  getChatsByPostId, getChatById ,currentChat} = chatStore();
   const { userPostsList,user } = userStore();
   const { id } = useParams();
   const [ pageContent, setPageContent] = useState<string>("")

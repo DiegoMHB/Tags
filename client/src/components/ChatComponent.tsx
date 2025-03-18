@@ -11,8 +11,8 @@ type ChatComponentProps = {
 };
 
 export default function ChatComponent({chat}: ChatComponentProps) {
-  const { currentChat, selectedUser } = appStore();
-  const {  createMessage, getChatById } = chatStore();
+  const { selectedUser } = appStore();
+  const {  createMessage, getChatById ,currentChat} = chatStore();
 
   const { user } = userStore();
 
