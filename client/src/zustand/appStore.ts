@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import {  PostType } from "../types/postTypes";
+import { PostType } from "../types/postTypes";
 import { User } from "../types/userTypes";
 import { ChatType, Message } from "../types/appTypes";
 
@@ -18,13 +18,13 @@ export type AppStoreType = {
     allPostChats: ChatType[] | null,
 
     getAllPosts: () => void,
-    getUserById: (userId: string) => void,
+    getUserById: (userId: string, returns?: boolean) =>  Promise<void |User>,
     setError: (error: string) => void,
     setMapRender: () => void,
     setFotoUrl: (url: string) => void,
     setSelectedFile: (file: File | null) => void,
     getChatById: (id: string) => void,
-    getChatsByPostId: (id:string)=>void,
+    getChatsByPostId: (id: string) => void,
     createChat: (postId: string, owner: string, notOwner: string) => Promise<ChatType | void>
     createMessage: (message: Message, userId: string) => void
 }
@@ -39,7 +39,7 @@ export const appStore = create<AppStoreType>()((set, get) => ({
     loading: false,
     selectedUser: null,
     currentChat: null,
-    allPostChats:  null,
+    allPostChats: null,
 
     setError: (err: string) => set({ error: err }),
     setMapRender: () => set((state) => ({ mapRender: !state.mapRender })),
@@ -68,7 +68,7 @@ export const appStore = create<AppStoreType>()((set, get) => ({
         }))
     },
 
-    getUserById: async (userId: string) => {
+    getUserById: async (userId: string, returns: boolean = false ) => {
         set({ loading: true });
         console.log("getUserById")
 
@@ -80,17 +80,22 @@ export const appStore = create<AppStoreType>()((set, get) => ({
                 throw (data)
             }
             const data = await response.json();
-            set({ selectedUser: data.user });
-            set({ error: "" });
+
+            if (returns) {
+                return data.user
+            } else {
+                set({ selectedUser: data.user });
+            }
 
         } catch (e) {
             console.log("Error", e)
         } finally {
+            set({ error: "" });
             set({ loading: false });
         }
     },
 
-    createChat: async (postId, ownerId, notOwnerId) =>  {
+    createChat: async (postId, ownerId, notOwnerId) => {
         set({ loading: true });
         console.log("createChat")
         try {
@@ -147,8 +152,8 @@ export const appStore = create<AppStoreType>()((set, get) => ({
         }
     },
 
-    getChatsByPostId:async (id)=>{
-        
+    getChatsByPostId: async (id) => {
+
         set({ loading: true });
         console.log("getChatsByPostId", id)
         try {

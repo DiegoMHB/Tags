@@ -8,7 +8,7 @@ import { MapContainer, Marker, TileLayer } from "react-leaflet";
 import { mapUtilities } from "../data/mapUtilities";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { PostType } from "../types/postTypes";
+import { ChatListElement, PostType } from "../types/postTypes";
 import { checkExistingChat } from "../assets/helperFunctions/checkExistingChat";
 
 export default function Post() {
@@ -39,9 +39,10 @@ export default function Post() {
       navigate(`/chat/${post!.id}`);
     } else {
       //not owner
-      const chatIds = await checkExistingChat(user.id, post!);
-      if (chatIds) {
-        const { chatId } = chatIds;
+      const chat = checkExistingChat(user.id, post!) as ChatListElement;
+
+      if (chat) {
+        const { chatId } = chat;
         await getChatById(chatId);
         navigate(`/chat/${chatId}`);
       } else {

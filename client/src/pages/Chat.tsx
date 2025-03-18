@@ -8,26 +8,35 @@ import ChatListComponent from "../components/ChatListComponent";
 
 export default function Chat() {
   const { currentChat, getChatsByPostId, getChatById } = appStore();
-  const { userPostsList } = userStore();
+  const { userPostsList,user } = userStore();
   const { id } = useParams();
-  const [isOwner, setIsOwner] = useState<boolean>(false);
+  const [ pageContent, setPageContent] = useState<string>("")
+
 
   useEffect(() => {
+    if(id === user.id){
+        getAllChats(id);
+        setPageContent("all")
+    }
     //id is a post
-    if (checkIdType(id!, userPostsList)) {
-      setIsOwner(true);
-      getChatsByPostId(id!);
+    else if (checkIdType(id!, userPostsList)) {
+        getChatsByPostId(id!);
+        setPageContent("post")
     } else {
-      //id is a chat
-      getChatById(id!);
+        //id is a chat
+        getChatById(id!);
+        setPageContent("chat")
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
-    <main className="flex flex-col justify-end w-[100%] space-y-4 ">
-      {isOwner && <ChatListComponent/>}
-      {!isOwner && currentChat && <ChatComponent open={true} owner={false} chat={currentChat}/>}
+    <main className="flex flex-col justify-start w-[100%] space-y-4 ">
+      {pageContent =="all" && <ChatListComponent/>}
+      {pageContent =="chat" && <ChatListComponent/>}
+      {pageContent == "post" && <ChatComponent   chat={currentChat}/>}
     </main>
   );
 }
+
+{/*owner={false}*/}
