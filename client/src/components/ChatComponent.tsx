@@ -3,6 +3,7 @@ import { ChatType, Message } from "../types/appTypes";
 import { appStore } from "../zustand/appStore";
 import { userStore } from "../zustand/userStore";
 import { v4 as uuidv4 } from "uuid";
+import { chatStore } from "../zustand/chatStore";
 
 type ChatComponentProps = {
   chat: ChatType;
@@ -10,7 +11,8 @@ type ChatComponentProps = {
 };
 
 export default function ChatComponent({chat}: ChatComponentProps) {
-  const { currentChat, createMessage, getChatById, selectedUser } = appStore();
+  const { currentChat, selectedUser } = appStore();
+  const {  createMessage, getChatById } = chatStore();
 
   const { user } = userStore();
 

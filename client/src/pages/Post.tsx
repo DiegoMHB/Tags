@@ -10,16 +10,11 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ChatListElement, PostType } from "../types/postTypes";
 import { checkExistingChat } from "../assets/helperFunctions/checkExistingChat";
+import { chatStore } from "../zustand/chatStore";
 
 export default function Post() {
-  const {
-    fotoUrl,
-    selectedFile,
-    posts,
-    selectedUser,
-    getChatById,
-    createChat,
-  } = appStore();
+  const { fotoUrl, selectedFile, posts, selectedUser } = appStore();
+  const { getChatById, createChat } = chatStore();
   const { deletePost, closeActivePost, userPostsList, activePost, user } =
     userStore();
 

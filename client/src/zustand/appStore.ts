@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { PostType } from "../types/postTypes";
 import { User } from "../types/userTypes";
-import { ChatType, Message } from "../types/appTypes";
 
 const port = import.meta.env.VITE_PORT;
 const url = `http://localhost:${port}/`
@@ -14,8 +13,7 @@ export type AppStoreType = {
     posts: PostType[],
     loading: boolean,
     selectedUser: User | null,
-    currentChat: ChatType | null,
-    allPostChats: ChatType[] | null,
+   
 
     getAllPosts: () => void,
     getUserById: (userId: string, returns?: boolean) =>  Promise<void |User>,
@@ -23,10 +21,7 @@ export type AppStoreType = {
     setMapRender: () => void,
     setFotoUrl: (url: string) => void,
     setSelectedFile: (file: File | null) => void,
-    getChatById: (id: string) => void,
-    getChatsByPostId: (id: string) => void,
-    createChat: (postId: string, owner: string, notOwner: string) => Promise<ChatType | void>
-    createMessage: (message: Message, userId: string) => void
+    deselectUser: () => void,
 }
 
 
@@ -38,14 +33,12 @@ export const appStore = create<AppStoreType>()((set, get) => ({
     posts: [],
     loading: false,
     selectedUser: null,
-    currentChat: null,
-    allPostChats: null,
 
     setError: (err: string) => set({ error: err }),
     setMapRender: () => set((state) => ({ mapRender: !state.mapRender })),
     setFotoUrl: (newUrl) => set({ fotoUrl: newUrl }),
     setSelectedFile: (file) => set({ selectedFile: file }),
-    deselecUser: () => {
+    deselectUser: () => {
         set({ selectedUser: null })
     },
 
@@ -95,111 +88,6 @@ export const appStore = create<AppStoreType>()((set, get) => ({
         }
     },
 
-    createChat: async (postId, ownerId, notOwnerId) => {
-        set({ loading: true });
-        console.log("createChat")
-        try {
-            const response = await fetch(`${url}newChat`, {
-                method: "POST",
-                body: JSON.stringify({ postId, ownerId, notOwnerId }),
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-
-            if (!response.ok) {
-                const data = await response.json();
-                set({ error: data.error });
-                throw (data)
-            }
-            const data = await response.json();
-            set({ currentChat: data.chat });
-
-            //update the post
-            const posts = get().posts;
-            const updatedPosts = posts.map((post) =>
-                post.id === postId
-                    ? post = data.post
-                    : post
-            );
-            set({ posts: updatedPosts, error: "" });
-            return data.chat
-        } catch (e) {
-            console.log("Error", e)
-        } finally {
-            set({ loading: false });
-        }
-    },
-
-    getChatById: async (id) => {
-        set({ loading: true });
-        console.log("getChatById", id)
-        try {
-            const response = await fetch(`${url}getChatById/${id}`);
-            if (!response.ok) {
-                const data = await response.json();
-                set({ error: data.error });
-                throw (data)
-            }
-            const data = await response.json();
-            set({ currentChat: data.chat });
-            set({ error: "" });
-
-        } catch (e) {
-            console.log("Error", e)
-        } finally {
-            set({ loading: false });
-        }
-    },
-
-    getChatsByPostId: async (id) => {
-
-        set({ loading: true });
-        console.log("getChatsByPostId", id)
-        try {
-            const response = await fetch(`${url}getChatsByPostId/${id}`);
-            if (!response.ok) {
-                const data = await response.json();
-                set({ error: data.error });
-                throw (data)
-            }
-            const data = await response.json();
-            set({ allPostChats: data.chats });
-            set({ error: "" });
-
-        } catch (e) {
-            console.log("Error", e)
-        } finally {
-            set({ loading: false });
-        }
-    },
-
-    createMessage: async (message, userId) => {
-        set({ loading: true });
-        const chatId = get().currentChat!.id
-        console.log("createMessage")
-        try {
-            const response = await fetch(`${url}newMessage`, {
-                method: "POST",
-                body: JSON.stringify({ chatId, message, userId }),
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-
-            if (!response.ok) {
-                const data = await response.json();
-                set({ error: data.error });
-                throw (data)
-            }
-            const data = await response.json();
-            set({ currentChat: data.chat });
-
-        } catch (e) {
-            console.log("Error", e)
-        } finally {
-            set({ loading: false });
-        }
-    }
+   
 
 }))

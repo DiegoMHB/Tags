@@ -5,9 +5,11 @@ import { checkIdType } from "../assets/helperFunctions/checkIdType";
 import { userStore } from "../zustand/userStore";
 import ChatComponent from "../components/ChatComponent";
 import ChatListComponent from "../components/ChatListComponent";
+import { chatStore } from "../zustand/chatStore";
 
 export default function Chat() {
-  const { currentChat, getChatsByPostId, getChatById } = appStore();
+  const { currentChat } = appStore();
+  const {  getChatsByPostId, getChatById } = chatStore();
   const { userPostsList,user } = userStore();
   const { id } = useParams();
   const [ pageContent, setPageContent] = useState<string>("")
@@ -15,7 +17,7 @@ export default function Chat() {
 
   useEffect(() => {
     if(id === user.id){
-        getAllChats(id);
+        // getAllChats(id);
         setPageContent("all")
     }
     //id is a post
@@ -34,7 +36,7 @@ export default function Chat() {
     <main className="flex flex-col justify-start w-[100%] space-y-4 ">
       {pageContent =="all" && <ChatListComponent/>}
       {pageContent =="chat" && <ChatListComponent/>}
-      {pageContent == "post" && <ChatComponent   chat={currentChat}/>}
+      {pageContent == "post" && <ChatComponent   chat={currentChat!}/>}
     </main>
   );
 }
