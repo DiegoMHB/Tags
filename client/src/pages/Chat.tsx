@@ -5,11 +5,13 @@ import { userStore } from "../zustand/userStore";
 import ChatComponent from "../components/ChatComponent";
 import ChatListComponent from "../components/ChatListComponent";
 import { chatStore } from "../zustand/chatStore";
+import { postStore } from "../zustand/postStore";
 
 export default function Chat() {
 
   const {  getChatsByPostId, getChatById ,currentChat} = chatStore();
-  const { userPostsList,user } = userStore();
+  const { user } = userStore();
+  const { userPostsList } = postStore();
   const { id } = useParams();
   const [ pageContent, setPageContent] = useState<string>("")
 

@@ -4,9 +4,11 @@ import PostComponent from "../components/PostComponent";
 import ProfileHeader from "../components/ProfileHeader";
 import { PostType } from "../types/postTypes";
 import { userStore } from "../zustand/userStore";
+import { postStore } from "../zustand/postStore";
 
 export default function Profile() {
-  const { logOut, userPostsList, getUserPosts, activePost } = userStore();
+  const { logOut } = userStore();
+  const {  userPostsList, getUserPosts, activePost } = postStore();
 
   useEffect(() => {
     if (!activePost) getUserPosts();

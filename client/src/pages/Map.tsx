@@ -2,11 +2,11 @@ import { MapContainer, TileLayer, Marker } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { LatLngTuple } from "leaflet";
 import { mapStore } from "../zustand/mapStore";
-import { userStore } from "../zustand/userStore";
 import { appStore } from "../zustand/appStore";
 import { mapUtilities } from "../data/mapUtilities";
 import PostMarker from "../components/PostMarker";
 import { useEffect } from "react";
+import { postStore } from "../zustand/postStore";
 
 
 
@@ -14,7 +14,7 @@ import { useEffect } from "react";
 export default function Map() {
   const { coordinates, getCoords } = mapStore();
   const { posts } = appStore();
-  const { activePost } = userStore();
+  const { activePost } = postStore();
 
   const postFiltered = posts.filter((p)=> p.id !== activePost?.id)
 

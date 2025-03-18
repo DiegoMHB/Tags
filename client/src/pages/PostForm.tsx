@@ -9,6 +9,7 @@ import FotoUploader from "../components/buttons/FotoUploader";
 import { NewPostType } from "../types/postTypes";
 import Error from "../components/Error";
 import { categories } from "../data/listUtilities";
+import { postStore } from "../zustand/postStore";
 
 export default function PostForm() {
   const {
@@ -19,13 +20,8 @@ export default function PostForm() {
     error,
     getAllPosts,
   } = appStore();
-  const {
-    activePost,
-    user,
-    createActivePost,
-    editActivePost,
-    getUserPosts,
-  } = userStore();
+  const { user } = userStore();
+  const { activePost, createActivePost, editActivePost, getUserPosts } = postStore();
   const { coordinates } = mapStore();
   const navigate = useNavigate();
 

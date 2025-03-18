@@ -6,13 +6,15 @@ import { userStore } from "../zustand/userStore";
 import stampToDate from "../assets/helperFunctions/stampToDate";
 import { useNavigate } from "react-router-dom";
 import { appStore } from "../zustand/appStore";
+import { postStore } from "../zustand/postStore";
 
 type PostComponentProps = {
   post: PostType;
 };
 
 export default function PostComponent({ post }: PostComponentProps) {
-  const { user, getUserPosts, } = userStore();
+  const { user } = userStore();
+  const {  getUserPosts} = postStore();
   const { selectedUser } = appStore();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(() =>

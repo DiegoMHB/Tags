@@ -23,7 +23,7 @@ export type PostStoreType = {
 }
 
 
-export const posttore = create<PostStoreType>()((set, get) => ({
+export const postStore = create<PostStoreType>()((set, get) => ({
 
 
 

@@ -11,12 +11,13 @@ import { useParams } from "react-router-dom";
 import { ChatListElement, PostType } from "../types/postTypes";
 import { checkExistingChat } from "../assets/helperFunctions/checkExistingChat";
 import { chatStore } from "../zustand/chatStore";
+import { postStore } from "../zustand/postStore";
 
 export default function Post() {
   const { fotoUrl, selectedFile, posts, selectedUser } = appStore();
   const { getChatById, createChat } = chatStore();
-  const { deletePost, closeActivePost, userPostsList, activePost, user } =
-    userStore();
+  const { deletePost, closeActivePost, userPostsList, activePost } = postStore()
+  const {  user } =  userStore();
 
   const { id } = useParams();
   const navigate = useNavigate();
