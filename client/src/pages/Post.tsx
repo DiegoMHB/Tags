@@ -14,24 +14,26 @@ import { chatStore } from "../zustand/chatStore";
 import { postStore } from "../zustand/postStore";
 
 export default function Post() {
-  const { fotoUrl, selectedFile, posts, selectedUser } = appStore();
-  const { getChatById, createChat } = chatStore();
-  const { deletePost, closeActivePost, userPostsList, activePost } = postStore()
-  const {  user } =  userStore();
+  const { fotoUrl, selectedFile, allActivePosts, selectedUser } = appStore();
+  const { createChat } = chatStore();
+  const { deletePost, closeActivePost, authUserPostsList, activePost } =
+    postStore();
+  const { user } = userStore();
 
   const { id } = useParams();
   const navigate = useNavigate();
   const [post, setPost] = useState<PostType | null>(null);
 
   useEffect(() => {
-    const allPosts = [...posts, ...userPostsList];
+    const allPosts = [...allActivePosts, ...authUserPostsList];
     const postById = allPosts.find((post) => post.id == id);
     setPost(postById!);
-  }, [posts, userPostsList, id]);
+  }, [allActivePosts, authUserPostsList, id]);
 
   async function handleChatClick() {
-    //owner
+    console.log(post);
     if (post!.userId === user.id) {
+      //owner
       navigate(`/chat/${post!.id}`);
     } else {
       //not owner
@@ -39,7 +41,7 @@ export default function Post() {
 
       if (chat) {
         const { chatId } = chat;
-        await getChatById(chatId);
+
         navigate(`/chat/${chatId}`);
       } else {
         const chat = await createChat(post!.id, post!.userId, user.id);

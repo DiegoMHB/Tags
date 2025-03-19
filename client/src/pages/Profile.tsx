@@ -5,10 +5,13 @@ import ProfileHeader from "../components/ProfileHeader";
 import { PostType } from "../types/postTypes";
 import { userStore } from "../zustand/userStore";
 import { postStore } from "../zustand/postStore";
+import { appStore } from "../zustand/appStore";
 
 export default function Profile() {
   const { logOut } = userStore();
-  const {  userPostsList, getUserPosts, activePost } = postStore();
+  const { deselectUser } = appStore();
+  const { deselectPost, getUserPosts, activePost, authUserPostsList } =
+    postStore();
 
   useEffect(() => {
     if (!activePost) getUserPosts();
@@ -16,11 +19,14 @@ export default function Profile() {
   }, [activePost]);
 
   useEffect(() => {
+    deselectUser();
+    deselectPost();
     getUserPosts();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const sortedPosts = userPostsList.sort(
+  const sortedPosts = authUserPostsList.sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
 

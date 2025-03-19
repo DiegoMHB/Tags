@@ -1,37 +1,50 @@
 import { create } from "zustand";
 import { NewPostType, PostType } from "../types/postTypes";
 import { userStore } from "./userStore"
+import { appStore } from "./appStore";
 
 const port = import.meta.env.VITE_PORT;
 const url = `http://localhost:${port}/`
 
 export type PostStoreType = {
 
-
     loading: boolean
-    error: string
-    userPostsList: PostType[] | [] //My posts
     activePost: PostType | null
 
+    getPostById: (id: string) => void
     createActivePost: (post: NewPostType) => void
     getUserPosts: () => void
     deletePost: (id: string) => void
     closeActivePost: () => void
     editActivePost: (changes: Partial<NewPostType>) => void
 
-
 }
 
 
 export const postStore = create<PostStoreType>()((set, get) => ({
-
-
-
     loading: false,
-    error: "",
     activePost: null,
-    userPostsList: [],
 
+    getPostById: async (id: string) => {
+        console.log("getPostById")
+        set({ loading: true });
+        try {
+            const response = await fetch(`${url}getPostById/${id}`);
+            if (!response.ok) {
+                const data = await response.json();
+                appStore.setState({ error: data.error });
+                throw (data)
+            }
+            const data = await response.json();
+            appStore.setState({ selectedPost: data.post })
+
+        } catch (e) {
+            console.log("Error", e)
+        } finally {
+            set({ loading: false });
+        }
+
+    },
     createActivePost: async (post: NewPostType) => {
         set({ loading: true });
         console.log('createActivePost')
@@ -45,12 +58,12 @@ export const postStore = create<PostStoreType>()((set, get) => ({
             });
             if (!response.ok) {
                 const data = await response.json();
-                set({ error: data.error });
+                appStore.setState({ error: data.error });
                 throw (data)
             }
             const data = await response.json();
-            set((state) => ({ userPostsList: [...state.userPostsList, data.post] }));
-            set({ error: "" });
+            appStore.setState((state) => ({ authUserPostsList: [...state.authUserPostsList, data.post] }));
+            appStore.setState({ error: "" });
             //after duration activePost = null
             setTimeout(() => {
                 set({ activePost: null })
@@ -78,11 +91,11 @@ export const postStore = create<PostStoreType>()((set, get) => ({
             });
             if (!response.ok) {
                 const data = await response.json();
-                set({ error: data.error });
+                appStore.setState({ error: data.error });
                 throw (data) //advertir al usuario
             }
             const data = await response.json();
-            set({ error: data.message });
+            appStore.setState({ error: data.message });
 
 
         } catch (e) {
@@ -106,14 +119,14 @@ export const postStore = create<PostStoreType>()((set, get) => ({
             });
             if (!response.ok) {
                 const data = await response.json();
-                set({ error: data.error });
+                appStore.setState({ error: data.error });
                 throw (data) //advertir al usuario
             }
             const data = await response.json();
             set({ activePost: null });
-            set({ error: data.message });
-            set((state) => ({
-                userPostsList: state.userPostsList.map((post) =>
+            appStore.setState({ error: data.message });
+            appStore.setState((state) => ({
+                authUserPostsList: state.authUserPostsList.map((post) =>
                     post.id === postId ? { ...post, active: false } : post
                 )
             }));
@@ -129,7 +142,7 @@ export const postStore = create<PostStoreType>()((set, get) => ({
     editActivePost: async (changes) => {
         console.log("editActivePost")
         set({ loading: true });
-        const id = get().userPostsList.filter((post: PostType) => post.isActive)[0].id;
+        const id = appStore.getState().authUserPostsList.filter((post: PostType) => post.isActive)[0].id;
 
         try {
             const response = await fetch(`${url}editPost`, {
@@ -141,11 +154,11 @@ export const postStore = create<PostStoreType>()((set, get) => ({
             });
             if (!response.ok) {
                 const data = await response.json();
-                set({ error: data.error });
+                appStore.setState({ error: data.error });
                 throw (data) //advertir al usuario
             }
             const data = await response.json();
-            set({ error: data.message });
+            appStore.setState({ error: data.message });
 
 
         } catch (e) {
@@ -163,12 +176,12 @@ export const postStore = create<PostStoreType>()((set, get) => ({
             const response = await fetch(`${url}getAllPosts/${id}`);
             if (!response.ok) {
                 const data = await response.json();
-                set({ error: data.error });
+                appStore.setState({ error: data.error });
                 throw (data)
             }
             const data = await response.json();
-            set({ userPostsList: data.posts })
-            const activePost = get().userPostsList.filter((post: PostType) =>
+            appStore.setState({ authUserPostsList: data.posts })
+            const activePost = appStore.getState().authUserPostsList.filter((post: PostType) =>
                 post.isActive)[0];
             set({ activePost });
 

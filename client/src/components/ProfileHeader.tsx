@@ -3,8 +3,8 @@ import { postStore } from "../zustand/postStore";
 import { userStore } from "../zustand/userStore";
 
 export default function ProfileHeader() {
-  const { user, } = userStore();
-  const {  activePost, userPostsList } = postStore();
+  const { user } = userStore();
+  const { activePost, authUserPostsList } = postStore();
 
   return (
     <section
@@ -35,7 +35,7 @@ export default function ProfileHeader() {
           </div>
           <div className="flex justify-between items-baseline ">
             <p className="text-xs">Posts:</p>
-            <p className="text-xs">{userPostsList.length}</p>
+            <p className="text-xs">{authUserPostsList.length}</p>
           </div>
           <div className="flex justify-between items-baseline ">
             <p className="text-xs">City:</p>

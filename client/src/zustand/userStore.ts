@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { NewUser, User } from "../types/userTypes";
 import { LoginForm } from "../types/appTypes";
+import { appStore } from "./appStore";
 
 const port = import.meta.env.VITE_PORT;
 const url = `http://localhost:${port}/`
@@ -9,7 +10,6 @@ export type UserStoreType = {
     user: User
     auth: boolean
     loading: boolean
-    error: string
 
     signIn: (user: NewUser) => void
     logIn: (user: LoginForm) => void
@@ -34,13 +34,6 @@ export const userStore = create<UserStoreType>()((set) => ({
     user: initialUser,
     auth: false,
     loading: false,
-    error: "",
-    activePost: null,
-    userPostsList: [],
-
-  
-
-
 
     signIn: async (user: NewUser): Promise<void> => {
         set({ loading: true });
@@ -57,13 +50,13 @@ export const userStore = create<UserStoreType>()((set) => ({
             });
             if (!response.ok) {
                 const data = await response.json();
-                set({ error: data.error });
+                appStore.setState({ error: data.error });
                 throw (data)
             }
             const data = await response.json();
-            set({ user: { ...data.user }, error: data.message });
+            set({ user: { ...data.user }});
             set({ auth: true });
-            set({ error: "" });
+            appStore.setState({ error: "" });
 
         } catch (e) {
             console.log("Error", e)
@@ -88,13 +81,13 @@ export const userStore = create<UserStoreType>()((set) => ({
             });
             if (!response.ok) {
                 const data = await response.json();
-                set({ error: data.error });
+                appStore.setState({ error: data.error });
                 throw (data)
             };
             const data = await response.json();
-            set({ user: { ...data.user }, error: data.message })
+            set({ user: { ...data.user }})
             set({ auth: true });
-            set({ error: "" });
+            appStore.setState({ error: "" });
 
         } catch (e) {
             console.log("Error", e)
@@ -125,7 +118,7 @@ export const userStore = create<UserStoreType>()((set) => ({
             }))
             return
         } catch (error) {
-            set({ error: error as string });
+            appStore.setState({ error: error as string });
         }
     }
 

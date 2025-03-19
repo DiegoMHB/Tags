@@ -6,40 +6,44 @@ import ChatComponent from "../components/ChatComponent";
 import ChatListComponent from "../components/ChatListComponent";
 import { chatStore } from "../zustand/chatStore";
 import { postStore } from "../zustand/postStore";
+import { renderChat } from "../assets/helperFunctions/chatFunctions";
+import { ChatType } from "../types/appTypes";
 
 export default function Chat() {
-
-  const {  getChatsByPostId, getChatById ,currentChat} = chatStore();
+  const { getChatsByPostId } = chatStore();
   const { user } = userStore();
-  const { userPostsList } = postStore();
-  const { id } = useParams();
-  const [ pageContent, setPageContent] = useState<string>("")
+  const { authUserPostsList, setSelectedPost } = postStore();
 
+  const { id } = useParams();
+
+  const [pageContent, setPageContent] = useState<string>("");
+  const [chat, setChat] = useState<ChatType | null>(null);
 
   useEffect(() => {
-    if(id === user.id){
-        // getAllChats(id);
-        setPageContent("all")
-    }
-    //id is a post
-    else if (checkIdType(id!, userPostsList)) {
-        getChatsByPostId(id!);
-        setPageContent("post")
+    //id is users Id
+    if (id === user.id) {
+      // getAllChats(id);
+      setPageContent("all");
+    } else if (checkIdType(id!, authUserPostsList)) {
+      //id is a post
+      getChatsByPostId(id!);
+      setSelectedPost(id!);
+      setPageContent("post");
     } else {
-        //id is a chat
-        getChatById(id!);
-        setPageContent("chat")
+      //id is a chat
+      const data = renderChat(id!);
+      console.log(data);
+      setChat(chat);
+      setPageContent("chat");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [id]);
 
   return (
     <main className="flex flex-col justify-start w-[100%] space-y-4 ">
-      {pageContent =="all" && <ChatListComponent/>}
-      {pageContent =="chat" && <ChatListComponent/>}
-      {pageContent == "post" && <ChatComponent   chat={currentChat!}/>}
+      {pageContent == "all" && <div>ALL POST CHAT LIST</div>}
+      {pageContent == "post" && <ChatListComponent />}
+      {pageContent == "chat" && <ChatComponent />}
     </main>
   );
 }
-
-{/*owner={false}*/}

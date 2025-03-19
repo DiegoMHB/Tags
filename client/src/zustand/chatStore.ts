@@ -1,17 +1,14 @@
 import { create } from "zustand";
 import { ChatType, Message } from "../types/appTypes";
-import { appStore} from "./appStore";
+import { appStore } from "./appStore";
 
 const port = import.meta.env.VITE_PORT;
 const url = `http://localhost:${port}/`
 
 export type ChatStoreType = {
-    error: string,
-    loading: boolean,
-    currentChat: ChatType | null,
-    allPostChats: ChatType[] | null,
 
-  
+    loading: boolean,
+    
     getChatById: (id: string) => void,
     getChatsByPostId: (id: string) => void,
     createChat: (postId: string, owner: string, notOwner: string) => Promise<ChatType | void>
@@ -19,13 +16,10 @@ export type ChatStoreType = {
 }
 
 
-export const chatStore = create<ChatStoreType>()((set, get) => ({
-    error: "",
+export const chatStore = create<ChatStoreType>()((set) => ({
     loading: false,
-    currentChat: null,
     allPostChats: null,
-
-
+    
     createChat: async (postId, ownerId, notOwnerId) => {
         set({ loading: true });
         console.log("createChat")
@@ -40,20 +34,20 @@ export const chatStore = create<ChatStoreType>()((set, get) => ({
 
             if (!response.ok) {
                 const data = await response.json();
-                set({ error: data.error });
+                appStore.setState({ error: data.error });
                 throw (data)
             }
             const data = await response.json();
-            set({ currentChat: data.chat });
+            appStore.setState({ selectedChat: data.chat });
 
             //update the post
-            const posts = appStore.getState().posts;
+            const posts = appStore.getState().allActivePosts;
             const updatedPosts = posts.map((post) =>
                 post.id === postId
                     ? post = data.post
                     : post
             );
-            appStore.setState({ posts: updatedPosts, error: "" });
+            appStore.setState({ allActivePosts: updatedPosts, error: "" });
             return data.chat
         } catch (e) {
             console.log("Error", e)
@@ -64,17 +58,17 @@ export const chatStore = create<ChatStoreType>()((set, get) => ({
 
     getChatById: async (id) => {
         set({ loading: true });
-        console.log("getChatById", id)
+        console.log("getChatById")
         try {
             const response = await fetch(`${url}getChatById/${id}`);
             if (!response.ok) {
                 const data = await response.json();
-                set({ error: data.error });
+                appStore.setState({ error: data.error });
                 throw (data)
             }
             const data = await response.json();
-            set({ currentChat: data.chat });
-            set({ error: "" });
+            appStore.setState({ selectedChat: data.chat });
+            appStore.setState({ error: "" });
 
         } catch (e) {
             console.log("Error", e)
@@ -91,12 +85,12 @@ export const chatStore = create<ChatStoreType>()((set, get) => ({
             const response = await fetch(`${url}getChatsByPostId/${id}`);
             if (!response.ok) {
                 const data = await response.json();
-                set({ error: data.error });
+                appStore.setState({ error: data.error });
                 throw (data)
             }
             const data = await response.json();
-            set({ allPostChats: data.chats });
-            set({ error: "" });
+            appStore.setState({ allPostChats: data.chats });
+            appStore.setState({ error: "" });
 
         } catch (e) {
             console.log("Error", e)
@@ -107,7 +101,7 @@ export const chatStore = create<ChatStoreType>()((set, get) => ({
 
     createMessage: async (message, userId) => {
         set({ loading: true });
-        const chatId = get().currentChat!.id
+        const chatId = appStore.getState().selectedChat!.id
         console.log("createMessage")
         try {
             const response = await fetch(`${url}newMessage`, {
@@ -120,11 +114,11 @@ export const chatStore = create<ChatStoreType>()((set, get) => ({
 
             if (!response.ok) {
                 const data = await response.json();
-                set({ error: data.error });
+                appStore.setState({ error: data.error });
                 throw (data)
             }
             const data = await response.json();
-            set({ currentChat: data.chat });
+            appStore.setState({ selectedChat: data.chat });
 
         } catch (e) {
             console.log("Error", e)

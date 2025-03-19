@@ -1,27 +1,37 @@
 import { create } from "zustand";
 import { PostType } from "../types/postTypes";
 import { User } from "../types/userTypes";
+import { ChatType } from "../types/appTypes";
 
 const port = import.meta.env.VITE_PORT;
 const url = `http://localhost:${port}/`
 
 export type AppStoreType = {
     error: string,
+    loading: boolean,
+
     selectedFile: File | null,
     mapRender: boolean,
     fotoUrl: string,
-    posts: PostType[],
-    loading: boolean,
-    selectedUser: User | null,
-   
 
-    getAllPosts: () => void,
-    getUserById: (userId: string, returns?: boolean) =>  Promise<void |User>,
-    setError: (error: string) => void,
+    allActivePosts: PostType[],
+    authUserPostsList: PostType[] | []
+    selectedUser: User | null,
+    selectedPost: PostType | null,
+    selectedChat: ChatType | null,
+    allPostChats: ChatType[] | null,
+
+    setSelectedPost: (id: string) => void
+    deselectUser: () => void,
+    deselectPost: () => void,
+    deselectChat: () => void,
+
+
     setMapRender: () => void,
     setFotoUrl: (url: string) => void,
     setSelectedFile: (file: File | null) => void,
-    deselectUser: () => void,
+    getAllPosts: () => void,
+    getUserById: (userId: string, returns?: boolean) => Promise<void | User>,
 }
 
 
@@ -30,38 +40,59 @@ export const appStore = create<AppStoreType>()((set, get) => ({
     mapRender: false,
     fotoUrl: "",
     selectedFile: null,
-    posts: [],
+    allActivePosts: [],
     loading: false,
     selectedUser: null,
+    authUserPostsList: [],
+    selectedChat: null,
+    allPostChats: null,
+    selectedPost: null,
 
-    setError: (err: string) => set({ error: err }),
+
+
     setMapRender: () => set((state) => ({ mapRender: !state.mapRender })),
     setFotoUrl: (newUrl) => set({ fotoUrl: newUrl }),
     setSelectedFile: (file) => set({ selectedFile: file }),
+
+    deselectChat: () => {
+        set({ selectedChat: null })
+    },
+
     deselectUser: () => {
         set({ selectedUser: null })
+    },
+
+    deselectPost: () => {
+        appStore.setState({ selectedPost: null })
+    },
+    
+    setSelectedPost: (id) => {
+        const userPostList = get().authUserPostsList
+        const post = userPostList.find(post => id == post.id);
+        appStore.setState({ selectedPost: post })
+
     },
 
     getAllPosts: async () => {
         set({ loading: true });
         console.log("getAllPosts")
-        if (get().posts) {
-            set({ posts: [] })
+        if (get().allActivePosts) {
+            set({ allActivePosts: [] })
         }
         const response = await fetch(`${url}getAllPosts`, {
             method: "GET",
         })
         if (!response.ok) {
-            throw new Error('Couldn´t get posts');
+            throw new Error('Couldn´t get active posts');
         }
         const data = await response.json();
         set(() => ({
             loading: false,
-            posts: data.posts
+            allActivePosts: data.posts
         }))
     },
 
-    getUserById: async (userId: string, returns: boolean = false ) => {
+    getUserById: async (userId: string, returns: boolean = false) => {
         set({ loading: true });
         console.log("getUserById")
 
@@ -88,6 +119,6 @@ export const appStore = create<AppStoreType>()((set, get) => ({
         }
     },
 
-   
+
 
 }))

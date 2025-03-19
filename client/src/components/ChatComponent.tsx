@@ -1,35 +1,17 @@
-import { useEffect, useState } from "react";
-import { ChatType, Message } from "../types/appTypes";
+import { useState } from "react";
+import { Message } from "../types/appTypes";
 import { appStore } from "../zustand/appStore";
 import { userStore } from "../zustand/userStore";
 import { v4 as uuidv4 } from "uuid";
 import { chatStore } from "../zustand/chatStore";
 
-type ChatComponentProps = {
-  chat: ChatType;
-  
-};
-
-export default function ChatComponent({chat}: ChatComponentProps) {
+export default function ChatComponent() {
   const { selectedUser } = appStore();
-  const {  createMessage, getChatById ,currentChat} = chatStore();
-
+  const { selectedChat, createMessage, getChatById } = chatStore();
   const { user } = userStore();
 
   const [content, setContent] = useState<string>("");
-  const [messages, setMessages] = useState<Message[]>(chat.messages);
-
-  useEffect(
-    () => {
-      getChatById(chat.id);
-      const interval = setInterval(() => {
-        setMessages([...currentChat!.messages]);
-        return () => clearInterval(interval);
-      }, 5000);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    []
-  );
+  const [messages, setMessages] = useState<Message[]>(selectedChat!.messages);
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,9 +27,10 @@ export default function ChatComponent({chat}: ChatComponentProps) {
       }),
       ownerId: user.id,
     };
+
     setMessages((prev) => [...prev, newMessage]);
     await createMessage(newMessage, user.id);
-    await getChatById(chat.id);
+    await getChatById(selectedChat!.id);
 
     setContent("");
   };
@@ -94,3 +77,27 @@ export default function ChatComponent({chat}: ChatComponentProps) {
 //     const user = await getUserById(id, true);
 //     console.log(user)
 //   };
+
+//   useEffect(
+//     () => {
+//       const fetchChat = async () => {
+//         // await getChatById(id!);
+//         const notMeUser =
+//           user.id == selectedChat!.ownerId
+//             ? selectedChat!.notOwnerId
+//             : selectedChat!.ownerId;
+//         await getUserById(notMeUser);
+
+//         if (selectedChat!.messages) {
+//           setMessages(selectedChat!.messages);
+//         }else
+//       };
+
+//       fetchChat();
+//       return ()=>{
+//         deselectChat()
+//       }
+//     },
+//     // eslint-disable-next-line react-hooks/exhaustive-deps
+//     []
+//   );

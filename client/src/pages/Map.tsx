@@ -8,15 +8,12 @@ import PostMarker from "../components/PostMarker";
 import { useEffect } from "react";
 import { postStore } from "../zustand/postStore";
 
-
-
-
 export default function Map() {
   const { coordinates, getCoords } = mapStore();
-  const { posts } = appStore();
+  const { allActivePosts } = appStore();
   const { activePost } = postStore();
 
-  const postFiltered = posts.filter((p)=> p.id !== activePost?.id)
+  const postFiltered = allActivePosts.filter((p) => p.id !== activePost?.id);
 
   useEffect(() => {
     getCoords();
@@ -32,16 +29,15 @@ export default function Map() {
             attribution={mapUtilities.attribution}
             id="map"
           />
-          {!activePost?
-            <Marker position={coordinates as LatLngTuple} ></Marker>
-            :
-            <PostMarker post={activePost} key={activePost.id} isUsers={true}/>
-          }
+          {!activePost ? (
+            <Marker position={coordinates as LatLngTuple}></Marker>
+          ) : (
+            <PostMarker post={activePost} key={activePost.id} isUsers={true} />
+          )}
 
           {postFiltered.map((post) => (
-            <PostMarker post={post} key={post.id} isUsers={false}/>
+            <PostMarker post={post} key={post.id} isUsers={false} />
           ))}
-
         </MapContainer>
       </main>
     </>

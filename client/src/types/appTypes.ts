@@ -31,6 +31,7 @@ export type TimeLeft = {
 export type ChatType = {
     id: string
     notOwnerId: string
+    notOwnerUserName: string
     ownerId: string
     messages: Message[]
     postId: string
