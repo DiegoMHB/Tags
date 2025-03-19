@@ -6,12 +6,10 @@ import { appStore } from "../zustand/appStore";
 import { mapUtilities } from "../data/mapUtilities";
 import PostMarker from "../components/PostMarker";
 import { useEffect } from "react";
-import { postStore } from "../zustand/postStore";
 
 export default function Map() {
   const { coordinates, getCoords } = mapStore();
-  const { allActivePosts } = appStore();
-  const { activePost } = postStore();
+  const { allActivePosts,activePost } = appStore();
 
   const postFiltered = allActivePosts.filter((p) => p.id !== activePost?.id);
 

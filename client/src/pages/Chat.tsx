@@ -5,14 +5,14 @@ import { userStore } from "../zustand/userStore";
 import ChatComponent from "../components/ChatComponent";
 import ChatListComponent from "../components/ChatListComponent";
 import { chatStore } from "../zustand/chatStore";
-import { postStore } from "../zustand/postStore";
 import { renderChat } from "../assets/helperFunctions/chatFunctions";
 import { ChatType } from "../types/appTypes";
+import { appStore } from "../zustand/appStore";
 
 export default function Chat() {
   const { getChatsByPostId } = chatStore();
   const { user } = userStore();
-  const { authUserPostsList, setSelectedPost } = postStore();
+  const {authUserPostsList, setSelectedPost } = appStore()
 
   const { id } = useParams();
 

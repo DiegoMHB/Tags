@@ -10,8 +10,8 @@ import { appStore } from "../zustand/appStore";
 import FotoUploader from "../components/buttons/FotoUploader";
 
 export default function Signin() {
-  const { signIn, error, auth } = userStore();
-  const { fotoUrl, selectedFile, setFotoUrl, setSelectedFile } = appStore();
+  const { signIn,  auth } = userStore();
+  const { fotoUrl, error,selectedFile, setFotoUrl, setSelectedFile } = appStore();
 
   const navigate = useNavigate();
 

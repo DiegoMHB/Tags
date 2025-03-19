@@ -6,8 +6,8 @@ import { v4 as uuidv4 } from "uuid";
 import { chatStore } from "../zustand/chatStore";
 
 export default function ChatComponent() {
-  const { selectedUser } = appStore();
-  const { selectedChat, createMessage, getChatById } = chatStore();
+  const { selectedChat, selectedUser } = appStore();
+  const {  createMessage, getChatById } = chatStore();
   const { user } = userStore();
 
   const [content, setContent] = useState<string>("");

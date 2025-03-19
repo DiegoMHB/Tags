@@ -15,13 +15,14 @@ export default function PostForm() {
   const {
     fotoUrl,
     selectedFile,
+    error,
+    activePost,
     setFotoUrl,
     setSelectedFile,
-    error,
     getAllPosts,
   } = appStore();
   const { user } = userStore();
-  const { activePost, createActivePost, editActivePost, getUserPosts } = postStore();
+  const {  createActivePost, editActivePost, getUserPosts } = postStore();
   const { coordinates } = mapStore();
   const navigate = useNavigate();
 
@@ -52,7 +53,9 @@ export default function PostForm() {
       await createActivePost(post);
       await getUserPosts();
 
-      if (error) return;
+      if (error){
+        console.log("EEEEERORRRRRRR");
+        return;}
     } else {
       //create an object with changes, and use it to edit the post
       const changes: Partial<NewPostType> = {};

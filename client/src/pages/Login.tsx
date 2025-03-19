@@ -7,9 +7,9 @@ import BtnMain from "../components/buttons/BtnMain";
 import { postStore } from "../zustand/postStore";
 
 export default function Login() {
-  const { logIn, error, auth } = userStore();
+  const {  auth, logIn } = userStore();
   const { getUserPosts } = postStore();
-  const { getAllPosts } = appStore();
+  const { error,getAllPosts } = appStore();
   const navigate = useNavigate();
 
   const [loginForm, setLoginForm] = useState<LoginForm>({

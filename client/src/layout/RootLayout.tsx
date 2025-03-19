@@ -8,8 +8,8 @@ import { useEffect } from "react";
 import { userStore } from "../zustand/userStore";
 
 export default function RootLayout() {
-  const { mapRender } = appStore();
-  const { auth, activePost } = userStore();
+  const { mapRender,activePost } = appStore();
+  const { auth } = userStore();
   const url = useLocation().pathname;
   const navigate = useNavigate();
 

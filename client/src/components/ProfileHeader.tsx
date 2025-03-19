@@ -1,10 +1,10 @@
 import stampToDate from "../assets/helperFunctions/stampToDate";
-import { postStore } from "../zustand/postStore";
+import { appStore } from "../zustand/appStore";
 import { userStore } from "../zustand/userStore";
 
 export default function ProfileHeader() {
   const { user } = userStore();
-  const { activePost, authUserPostsList } = postStore();
+  const { activePost, authUserPostsList } = appStore();
 
   return (
     <section

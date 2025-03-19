@@ -9,10 +9,10 @@ import { userStore } from "../../zustand/userStore";
 
 export async function renderChat(id: string): Promise<{ otherUser: User, chat: ChatType, post: PostType }> {
 
-    const { selectedChat, getChatById } = chatStore()
+    const {  getChatById } = chatStore()
     const { user } = userStore()
-    const { selectedUser, getUserById } = appStore()
-    const { selectedPost, getPostById } = postStore()
+    const { selectedUser,selectedChat, selectedPost, getUserById } = appStore()
+    const {  getPostById } = postStore()
 
     await getChatById(id);
     console.log(selectedChat, 'en funcion')

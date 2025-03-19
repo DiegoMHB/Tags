@@ -1,10 +1,8 @@
-import { chatStore } from "../zustand/chatStore";
-import { postStore } from "../zustand/postStore";
+import { appStore } from "../zustand/appStore";
 import { useNavigate } from "react-router-dom";
 
 export default function ChatListComponent() {
-  const { selectedPost } = postStore();
-  const { allPostChats } = chatStore();
+  const { selectedPost,allPostChats } = appStore();
 
   const navigate = useNavigate();
 

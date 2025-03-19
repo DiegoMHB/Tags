@@ -9,7 +9,6 @@ const url = `http://localhost:${port}/`
 export type PostStoreType = {
 
     loading: boolean
-    activePost: PostType | null
 
     getPostById: (id: string) => void
     createActivePost: (post: NewPostType) => void
@@ -21,9 +20,9 @@ export type PostStoreType = {
 }
 
 
-export const postStore = create<PostStoreType>()((set, get) => ({
+export const postStore = create<PostStoreType>()((set) => ({
     loading: false,
-    activePost: null,
+    
 
     getPostById: async (id: string) => {
         console.log("getPostById")
@@ -66,7 +65,7 @@ export const postStore = create<PostStoreType>()((set, get) => ({
             appStore.setState({ error: "" });
             //after duration activePost = null
             setTimeout(() => {
-                set({ activePost: null })
+                appStore.setState({ activePost: null })
             }, data.post.duration * 60 * 1000);
 
         } catch (e) {
@@ -96,6 +95,7 @@ export const postStore = create<PostStoreType>()((set, get) => ({
             }
             const data = await response.json();
             appStore.setState({ error: data.message });
+            appStore.setState({ error: "" });
 
 
         } catch (e) {
@@ -110,7 +110,7 @@ export const postStore = create<PostStoreType>()((set, get) => ({
         console.log("closeActivePost")
 
         try {
-            const postId = get().activePost!.id;
+            const postId = appStore.getState().activePost!.id;
             const response = await fetch(`${url}closePost/${postId}`, {
                 method: "PATCH",
                 headers: {
@@ -123,13 +123,14 @@ export const postStore = create<PostStoreType>()((set, get) => ({
                 throw (data) //advertir al usuario
             }
             const data = await response.json();
-            set({ activePost: null });
+            appStore.setState({ activePost: null });
             appStore.setState({ error: data.message });
             appStore.setState((state) => ({
                 authUserPostsList: state.authUserPostsList.map((post) =>
                     post.id === postId ? { ...post, active: false } : post
                 )
             }));
+            appStore.setState({ error: "" });
 
 
         } catch (e) {
@@ -159,6 +160,7 @@ export const postStore = create<PostStoreType>()((set, get) => ({
             }
             const data = await response.json();
             appStore.setState({ error: data.message });
+            appStore.setState({ error: "" });
 
 
         } catch (e) {
@@ -183,7 +185,7 @@ export const postStore = create<PostStoreType>()((set, get) => ({
             appStore.setState({ authUserPostsList: data.posts })
             const activePost = appStore.getState().authUserPostsList.filter((post: PostType) =>
                 post.isActive)[0];
-            set({ activePost });
+            appStore.setState({ activePost });
 
         } catch (e) {
             console.log("Error", e)

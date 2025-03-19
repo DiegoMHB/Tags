@@ -9,9 +9,8 @@ import { appStore } from "../zustand/appStore";
 
 export default function Profile() {
   const { logOut } = userStore();
-  const { deselectUser } = appStore();
-  const { deselectPost, getUserPosts, activePost, authUserPostsList } =
-    postStore();
+  const { activePost, authUserPostsList } = appStore();
+  const { getUserPosts } = postStore();
 
   useEffect(() => {
     if (!activePost) getUserPosts();
@@ -19,8 +18,6 @@ export default function Profile() {
   }, [activePost]);
 
   useEffect(() => {
-    deselectUser();
-    deselectPost();
     getUserPosts();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps

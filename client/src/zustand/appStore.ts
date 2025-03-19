@@ -20,8 +20,10 @@ export type AppStoreType = {
     selectedPost: PostType | null,
     selectedChat: ChatType | null,
     allPostChats: ChatType[] | null,
+    
 
-    setSelectedPost: (id: string) => void
+    activePost: PostType | null,
+    setSelectedPost: (id: string) => void,
     deselectUser: () => void,
     deselectPost: () => void,
     deselectChat: () => void,
@@ -45,6 +47,7 @@ export const appStore = create<AppStoreType>()((set, get) => ({
     selectedUser: null,
     authUserPostsList: [],
     selectedChat: null,
+    activePost: null,
     allPostChats: null,
     selectedPost: null,
 
@@ -65,7 +68,7 @@ export const appStore = create<AppStoreType>()((set, get) => ({
     deselectPost: () => {
         appStore.setState({ selectedPost: null })
     },
-    
+
     setSelectedPost: (id) => {
         const userPostList = get().authUserPostsList
         const post = userPostList.find(post => id == post.id);

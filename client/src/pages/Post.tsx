@@ -16,9 +16,9 @@ import { postStore } from "../zustand/postStore";
 export default function Post() {
   const { fotoUrl, selectedFile, allActivePosts, selectedUser } = appStore();
   const { createChat } = chatStore();
-  const { deletePost, closeActivePost, authUserPostsList, activePost } =
-    postStore();
+  const { deletePost, closeActivePost } = postStore();
   const { user } = userStore();
+  const {authUserPostsList, activePost } = appStore();
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -29,6 +29,8 @@ export default function Post() {
     const postById = allPosts.find((post) => post.id == id);
     setPost(postById!);
   }, [allActivePosts, authUserPostsList, id]);
+
+  
 
   async function handleChatClick() {
     console.log(post);
