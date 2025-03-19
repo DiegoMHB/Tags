@@ -9,9 +9,11 @@ import { useEffect } from "react";
 
 export default function Map() {
   const { coordinates, getCoords } = mapStore();
-  const { allActivePosts,activePost } = appStore();
+  const { allActivePosts, authUserActivePost } = appStore();
 
-  const postFiltered = allActivePosts.filter((p) => p.id !== activePost?.id);
+  const postFiltered = allActivePosts.filter(
+    (p) => p.id !== authUserActivePost?.id
+  );
 
   useEffect(() => {
     getCoords();
@@ -27,10 +29,14 @@ export default function Map() {
             attribution={mapUtilities.attribution}
             id="map"
           />
-          {!activePost ? (
+          {!authUserActivePost ? (
             <Marker position={coordinates as LatLngTuple}></Marker>
           ) : (
-            <PostMarker post={activePost} key={activePost.id} isUsers={true} />
+            <PostMarker
+              post={authUserActivePost}
+              key={authUserActivePost.id}
+              isUsers={true}
+            />
           )}
 
           {postFiltered.map((post) => (

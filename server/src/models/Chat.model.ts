@@ -33,6 +33,11 @@ class Chat extends Model {
         type: DataType.UUID, allowNull: false
     })
     notOwnerId!: string
+   
+    @Column({
+        type: DataType.STRING, allowNull: false
+    })
+    notOwnerUserName!: string
 
 
     @Column({

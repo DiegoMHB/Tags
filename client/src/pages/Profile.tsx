@@ -9,13 +9,13 @@ import { appStore } from "../zustand/appStore";
 
 export default function Profile() {
   const { logOut } = userStore();
-  const { activePost, authUserPostsList } = appStore();
+  const { authUserActivePost, authUserPostsList } = appStore();
   const { getUserPosts } = postStore();
 
   useEffect(() => {
-    if (!activePost) getUserPosts();
+    if (!authUserActivePost) getUserPosts();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [activePost]);
+  }, [authUserActivePost]);
 
   useEffect(() => {
     getUserPosts();

@@ -14,26 +14,33 @@ import { chatStore } from "../zustand/chatStore";
 import { postStore } from "../zustand/postStore";
 
 export default function Post() {
-  const { fotoUrl, selectedFile, allActivePosts, selectedUser } = appStore();
+  const {
+    fotoUrl,
+    selectedFile,
+    allActivePosts,
+    selectedUser,
+    authUserPostsList,
+    authUserActivePost,
+  } = appStore();
   const { createChat } = chatStore();
   const { deletePost, closeActivePost } = postStore();
   const { user } = userStore();
-  const {authUserPostsList, activePost } = appStore();
 
   const { id } = useParams();
   const navigate = useNavigate();
   const [post, setPost] = useState<PostType | null>(null);
 
   useEffect(() => {
+    if (selectedUser && user.id === selectedUser.id) {
+      appStore.setState({ selectedUser: null });
+    }
     const allPosts = [...allActivePosts, ...authUserPostsList];
     const postById = allPosts.find((post) => post.id == id);
     setPost(postById!);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allActivePosts, authUserPostsList, id]);
 
-  
-
   async function handleChatClick() {
-    console.log(post);
     if (post!.userId === user.id) {
       //owner
       navigate(`/chat/${post!.id}`);
@@ -57,11 +64,11 @@ export default function Post() {
   return (
     <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
       {/*POST HEADER*/}
-      {activePost && post && post.id === activePost.id && (
+      {authUserActivePost && post && post.id === authUserActivePost.id && (
         <h3 className="text-xl text-center m-0">You have an active post:</h3>
       )}
 
-      {post && post.userId == user.id && post.id !== activePost?.id && (
+      {post && post.userId == user.id && post.id !== authUserActivePost?.id && (
         <h3 className="text-2xl text-center m-3">Closed post:</h3>
       )}
       {selectedUser && post && post.userId !== user.id && (
@@ -93,15 +100,17 @@ export default function Post() {
 
         {post && post.userId === user.id && (
           <div className="flex flex-col justify-between items-center w-[100%] pb-5 mt-5">
-            {activePost && post && post.id === activePost.id && (
-              <BtnMain
-                text="Edit Post"
-                disabled={selectedFile && !fotoUrl ? true : false}
-                mode={1}
-                link=""
-                onClick={() => navigate("/postForm")}
-              />
-            )}
+            {authUserActivePost &&
+              post &&
+              post.id === authUserActivePost.id && (
+                <BtnMain
+                  text="Edit Post"
+                  disabled={selectedFile && !fotoUrl ? true : false}
+                  mode={1}
+                  link=""
+                  onClick={() => navigate("/postForm")}
+                />
+              )}
             <div className="flex flex-col gap-3 w-full justify-center items-center">
               <BtnMain
                 text="Delete Post"
@@ -113,18 +122,20 @@ export default function Post() {
                   navigate("/Profile");
                 }}
               />
-              {activePost && post && post.id === activePost.id && (
-                <BtnMain
-                  text="Close Post"
-                  disabled={selectedFile && !fotoUrl ? true : false}
-                  mode={0}
-                  link=""
-                  onClick={() => {
-                    closeActivePost();
-                    navigate("/Profile");
-                  }}
-                />
-              )}
+              {authUserActivePost &&
+                post &&
+                post.id === authUserActivePost.id && (
+                  <BtnMain
+                    text="Close Post"
+                    disabled={selectedFile && !fotoUrl ? true : false}
+                    mode={0}
+                    link=""
+                    onClick={() => {
+                      closeActivePost();
+                      navigate("/Profile");
+                    }}
+                  />
+                )}
             </div>
           </div>
         )}

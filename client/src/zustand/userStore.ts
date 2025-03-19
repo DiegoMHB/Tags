@@ -54,7 +54,7 @@ export const userStore = create<UserStoreType>()((set) => ({
                 throw (data)
             }
             const data = await response.json();
-            set({ user: { ...data.user }});
+            set({ user: { ...data.user } });
             set({ auth: true });
             appStore.setState({ error: "" });
 
@@ -85,7 +85,7 @@ export const userStore = create<UserStoreType>()((set) => ({
                 throw (data)
             };
             const data = await response.json();
-            set({ user: { ...data.user }})
+            set({ user: { ...data.user } })
             set({ auth: true });
             appStore.setState({ error: "" });
 
@@ -114,7 +114,7 @@ export const userStore = create<UserStoreType>()((set) => ({
                 auth: false,
                 loading: false,
                 error: "",
-                activePost: null
+                authUserActivePost: null
             }))
             return
         } catch (error) {

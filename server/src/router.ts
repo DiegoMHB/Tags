@@ -1,6 +1,6 @@
 import express from "express";
 import { register, login, logout, getUser } from "./controllers/users";
-import { newPost, getAllPosts, deletePost, closePost, editPost, getUserPosts } from "./controllers/posts";
+import { newPost, getAllPosts, deletePost, closePost, editPost, getUserPosts,getPostById } from "./controllers/posts";
 import { newChat,getChatById,newMessage,getChatsByPostId } from "./controllers/chats";
 
 
@@ -14,6 +14,7 @@ router.get("/logout", logout);
 
 //user post (auth)
 router.get("/getAllPosts/:id", getUserPosts);
+router.get("/getPostById/:id", getPostById);
 router.delete("/deletePost", deletePost);
 router.post("/newPost", newPost);
 router.patch("/closePost/:id", closePost);

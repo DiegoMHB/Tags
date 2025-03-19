@@ -16,13 +16,13 @@ export default function PostForm() {
     fotoUrl,
     selectedFile,
     error,
-    activePost,
+    authUserActivePost,
     setFotoUrl,
     setSelectedFile,
     getAllPosts,
   } = appStore();
   const { user } = userStore();
-  const {  createActivePost, editActivePost, getUserPosts } = postStore();
+  const { createActivePost, editActivePost, getUserPosts } = postStore();
   const { coordinates } = mapStore();
   const navigate = useNavigate();
 
@@ -37,15 +37,15 @@ export default function PostForm() {
   const [edit, setEdit] = useState<null | NewPostType>(null);
 
   useEffect(() => {
-    //if theres an activePost put the data in the form
-    if (activePost) {
-      setValue("category", activePost.category);
-      setValue("duration", activePost.duration);
-      setValue("description", activePost.description);
-      setValue("title", activePost.title);
-      setEdit(activePost);
+    //if theres an authUserActivePost put the data in the form
+    if (authUserActivePost) {
+      setValue("category", authUserActivePost.category);
+      setValue("duration", authUserActivePost.duration);
+      setValue("description", authUserActivePost.description);
+      setValue("title", authUserActivePost.title);
+      setEdit(authUserActivePost);
     }
-  }, [activePost, setValue]);
+  }, [authUserActivePost, setValue]);
 
   async function registerPost(post: NewPostType) {
     if (!edit) {
@@ -53,9 +53,10 @@ export default function PostForm() {
       await createActivePost(post);
       await getUserPosts();
 
-      if (error){
+      if (error) {
         console.log("EEEEERORRRRRRR");
-        return;}
+        return;
+      }
     } else {
       //create an object with changes, and use it to edit the post
       const changes: Partial<NewPostType> = {};
@@ -178,9 +179,9 @@ export default function PostForm() {
             />
           </div>
         </section>
-        {activePost?.picture && (
+        {authUserActivePost?.picture && (
           <img
-            src={activePost.picture}
+            src={authUserActivePost.picture}
             className="w-[40px] h-[40px] object-cover mx-auto"
           />
         )}

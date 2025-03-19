@@ -20,9 +20,9 @@ export type AppStoreType = {
     selectedPost: PostType | null,
     selectedChat: ChatType | null,
     allPostChats: ChatType[] | null,
-    
 
-    activePost: PostType | null,
+
+    authUserActivePost: PostType | null,
     setSelectedPost: (id: string) => void,
     deselectUser: () => void,
     deselectPost: () => void,
@@ -39,17 +39,18 @@ export type AppStoreType = {
 
 export const appStore = create<AppStoreType>()((set, get) => ({
     error: "",
+    loading: false,
     mapRender: false,
     fotoUrl: "",
     selectedFile: null,
+
     allActivePosts: [],
-    loading: false,
+    authUserActivePost: null,
     selectedUser: null,
     authUserPostsList: [],
-    selectedChat: null,
-    activePost: null,
-    allPostChats: null,
     selectedPost: null,
+    selectedChat: null,
+    allPostChats: null,
 
 
 

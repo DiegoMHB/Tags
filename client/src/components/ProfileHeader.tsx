@@ -4,7 +4,7 @@ import { userStore } from "../zustand/userStore";
 
 export default function ProfileHeader() {
   const { user } = userStore();
-  const { activePost, authUserPostsList } = appStore();
+  const { authUserActivePost, authUserPostsList } = appStore();
 
   return (
     <section
@@ -22,7 +22,7 @@ export default function ProfileHeader() {
           <div className="flex flex-row items-center gap-3">
             <div
               className={`${
-                activePost ? "bg-green-500" : "bg-amber-300"
+                authUserActivePost ? "bg-green-500" : "bg-amber-300"
               } w-3 h-3 rounded-xl`}
             ></div>
             <h3 className="text-xl">{user.userName}</h3>

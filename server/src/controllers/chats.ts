@@ -2,6 +2,7 @@ import Chat from "../models/Chat.model";
 import { Request, Response } from "express";
 import Post from "../models/Post.model";
 import { ChatListElement } from "../types";
+import User from "../models/User.model";
 
 
 
@@ -10,7 +11,9 @@ import { ChatListElement } from "../types";
 export const newChat = async (req: Request, res: Response): Promise<void> => {
     try {
         const { postId, ownerId, notOwnerId } = req.body;
-        const newChat = new Chat({ postId, ownerId, notOwnerId, messages: [] });
+
+        const notOwner = User.findByPk(notOwnerId)
+        const newChat = new Chat({ postId, ownerId, notOwnerId, messages: [] , notOwnerUserName: (await notOwner).userName});
         const responseChat = await newChat.save();
         if (responseChat.dataValues) {
 
@@ -72,7 +75,6 @@ export const getChatsByPostId = async (req: Request, res: Response): Promise<voi
     try {
         const id = req.params.id;
         const response = await Chat.findAll({where: { postId: id }})
-        console.log("-------------",response)
         if (response) {
             res
                 .status(200)

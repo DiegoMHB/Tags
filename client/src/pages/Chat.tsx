@@ -10,9 +10,9 @@ import { ChatType } from "../types/appTypes";
 import { appStore } from "../zustand/appStore";
 
 export default function Chat() {
+  const { authUserPostsList, setSelectedPost } = appStore();
   const { getChatsByPostId } = chatStore();
   const { user } = userStore();
-  const {authUserPostsList, setSelectedPost } = appStore()
 
   const { id } = useParams();
 
@@ -31,9 +31,12 @@ export default function Chat() {
       setPageContent("post");
     } else {
       //id is a chat
-      const data = renderChat(id!);
-      console.log(data);
-      setChat(chat);
+      console.log("en useEffect---------")
+      async function loadChat(id: string) {
+        const data = await renderChat(id!);
+        setChat(data.chat);
+      }
+      loadChat(id!);
       setPageContent("chat");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -43,7 +46,7 @@ export default function Chat() {
     <main className="flex flex-col justify-start w-[100%] space-y-4 ">
       {pageContent == "all" && <div>ALL POST CHAT LIST</div>}
       {pageContent == "post" && <ChatListComponent />}
-      {pageContent == "chat" && <ChatComponent />}
+      {chat && pageContent == "chat" && <ChatComponent chat={chat} />}
     </main>
   );
 }

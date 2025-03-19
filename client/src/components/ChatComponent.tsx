@@ -1,17 +1,36 @@
-import { useState } from "react";
-import { Message } from "../types/appTypes";
+import { useEffect, useState } from "react";
+import { ChatType, Message } from "../types/appTypes";
 import { appStore } from "../zustand/appStore";
 import { userStore } from "../zustand/userStore";
 import { v4 as uuidv4 } from "uuid";
 import { chatStore } from "../zustand/chatStore";
+import { useParams } from "react-router-dom";
 
-export default function ChatComponent() {
+type ChatComponentProps = {
+    chat:ChatType
+}
+
+export default function ChatComponent({chat}:ChatComponentProps) {
   const { selectedChat, selectedUser } = appStore();
   const {  createMessage, getChatById } = chatStore();
   const { user } = userStore();
-
+  const {id} = useParams()
+ 
   const [content, setContent] = useState<string>("");
   const [messages, setMessages] = useState<Message[]>(selectedChat!.messages);
+
+  useEffect(
+    () => {
+      getChatById(chat.id);
+      const interval = setInterval(() => {
+        getChatById(id!)
+        setMessages([...selectedChat!.messages]);
+        return () => clearInterval(interval);
+      }, 5000);
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    []
+  );
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -58,6 +58,31 @@ export const getAllPosts = async (req: Request, res: Response): Promise<void> =>
     }
 }
 
+export const getPostById = async (req: Request, res: Response): Promise<void> => {
+    const id = req.body
+    console.log("----------", id)
+    try {
+        const response = await Post.findByPk(id)
+
+        if (response) {
+            res
+                .status(200)
+                .send({ posts: response, message: "Post get" })
+            return
+        } else throw ({ message: "Couldnt get POST from DB" })
+
+
+    } catch (error) {
+        if (error.message) {
+            res.status(400).send({ error: error.message });
+            return
+        }
+        res.status(500).send({ error: "Something happened: try again" });
+        return
+    }
+}
+
+
 export const deletePost = async (req: Request, res: Response): Promise<void> => {
     try {
         const { id } = req.body;

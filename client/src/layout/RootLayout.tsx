@@ -8,7 +8,7 @@ import { useEffect } from "react";
 import { userStore } from "../zustand/userStore";
 
 export default function RootLayout() {
-  const { mapRender,activePost } = appStore();
+  const { mapRender, authUserActivePost } = appStore();
   const { auth } = userStore();
   const url = useLocation().pathname;
   const navigate = useNavigate();
@@ -21,11 +21,10 @@ export default function RootLayout() {
       navigate("/map");
     } else navigate("/");
   }, [auth, navigate]);
-//w-full flex-1 
+  //w-full flex-1
   return (
     <>
       <main className="flex flex-col justify-center items-center h-screen max-w-[400px]  bg-[#00061A] m-auto ">
-
         <section
           className="
         flex justify-evenly bg-gradient-to-b from-[#00062A] to-[#00061A] h-10 w-full items-center "
@@ -48,11 +47,16 @@ export default function RootLayout() {
 
         <section className="flex justify-evenly bg-gradient-to-t from-[#00062A] to-[#00061A]  h-12 min-h-12 w-full  items-center max-w-[400px] ">
           {linkRendered.map((el) =>
-            activePost && el.text == "New Post" ? null : !activePost &&
+            authUserActivePost &&
+            el.text == "New Post" ? null : !authUserActivePost &&
               el.text == "Post" ? null : (
               <NavBarElement
                 key={el.id}
-                link={el.to === "/post" ? el.to + `/${activePost!.id}` : el.to}
+                link={
+                  el.to === "/post"
+                    ? el.to + `/${authUserActivePost!.id}`
+                    : el.to
+                }
                 text={el.text}
               />
             )
