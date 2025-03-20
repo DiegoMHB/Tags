@@ -12,6 +12,7 @@ import { ChatListElement, PostType } from "../types/postTypes";
 import { checkExistingChat } from "../assets/helperFunctions/checkExistingChat";
 import { chatStore } from "../zustand/chatStore";
 import { postStore } from "../zustand/postStore";
+import { populateStoreChat, populateStoreChats } from "../assets/helperFunctions/chatFunctions";
 
 export default function Post() {
   const {
@@ -43,6 +44,7 @@ export default function Post() {
   async function handleChatClick() {
     if (post!.userId === user.id) {
       //owner
+      populateStoreChats(post!.id)
       navigate(`/chat/${post!.id}`);
     } else {
       //not owner
@@ -50,11 +52,12 @@ export default function Post() {
 
       if (chat) {
         const { chatId } = chat;
-
+        await populateStoreChat(chatId);
         navigate(`/chat/${chatId}`);
       } else {
-        const chat = await createChat(post!.id, post!.userId, user.id);
-        navigate(`/chat/${chat!.id}`);
+        const newChat = await createChat(post!.id, post!.userId, user.id);
+        await populateStoreChat(newChat!.id);
+        navigate(`/chat/${newChat!.id}`);
       }
     }
   }

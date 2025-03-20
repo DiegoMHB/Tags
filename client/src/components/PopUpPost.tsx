@@ -11,7 +11,7 @@ type PopUpPostProps = {
 };
 
 export default function PopUpPost({ post, timeLeft }: PopUpPostProps) {
-  const { selectedUser, loading } = appStore();
+  const { selectedUser, loading, setSelectedPost } = appStore();
   const { auth } = userStore();
   const navigate = useNavigate();
   const { minutes } = timeLeft;
@@ -52,7 +52,9 @@ export default function PopUpPost({ post, timeLeft }: PopUpPostProps) {
       {auth && (
         <button
           className=" w-15 h-5 m-auto bg-[#c6eef7] rounded-full"
-          onClick={() => navigate(`/post/${post.id}`)}
+          onClick={() => {
+            setSelectedPost(post)
+            navigate(`/post/${post.id}`)}}
         >
           View
         </button>

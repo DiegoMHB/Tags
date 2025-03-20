@@ -13,9 +13,9 @@ type PostComponentProps = {
 };
 
 export default function PostComponent({ post }: PostComponentProps) {
+  const { selectedUser ,setSelectedPost } = appStore();
   const { user } = userStore();
-  const {  getUserPosts} = postStore();
-  const { selectedUser } = appStore();
+  const { getUserPosts } = postStore();
   const [imageLoaded, setImageLoaded] = useState(false);
   const [timeLeft, setTimeLeft] = useState<TimeLeft>(() =>
     calculateTimeLeft(post.destroyAt, post.createdAt)
@@ -67,7 +67,10 @@ export default function PostComponent({ post }: PostComponentProps) {
         <div className="flex flex-row justify-between gap-3">
           <h3
             className="text-xl font-bold flex items-baseline gap-3"
-            onClick={() => navigate(`/post/${post.id}`)}
+            onClick={() => {
+              setSelectedPost(post.id)
+              navigate(`/post/${post.id}`);
+            }}
           >
             {post.title}
             <div

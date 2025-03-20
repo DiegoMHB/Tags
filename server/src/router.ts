@@ -14,7 +14,6 @@ router.get("/logout", logout);
 
 //user post (auth)
 router.get("/getAllPosts/:id", getUserPosts);
-router.get("/getPostById/:id", getPostById);
 router.delete("/deletePost", deletePost);
 router.post("/newPost", newPost);
 router.patch("/closePost/:id", closePost);
@@ -22,6 +21,7 @@ router.patch("/editPost", editPost);
 
 
 //users post (others)
+router.get("/getPostById/:id", getPostById);
 router.get("/user/:id", getUser);
 router.get("/getAllPosts", getAllPosts);
 

@@ -9,7 +9,7 @@ import { useEffect } from "react";
 
 export default function Map() {
   const { coordinates, getCoords } = mapStore();
-  const { allActivePosts, authUserActivePost } = appStore();
+  const { allActivePosts, authUserActivePost , resetSelected} = appStore();
 
   const postFiltered = allActivePosts.filter(
     (p) => p.id !== authUserActivePost?.id
@@ -17,6 +17,7 @@ export default function Map() {
 
   useEffect(() => {
     getCoords();
+    resetSelected()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

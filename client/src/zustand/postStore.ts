@@ -31,7 +31,6 @@ export const postStore = create<PostStoreType>()((set) => ({
             const response = await fetch(`${url}getPostById/${id}`);
             if (!response.ok) {
                 const data = await response.json();
-                console.log("recibio mallll")
                 appStore.setState({ error: data.error });
                 throw (data)
             }

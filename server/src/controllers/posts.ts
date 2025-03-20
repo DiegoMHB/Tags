@@ -59,8 +59,7 @@ export const getAllPosts = async (req: Request, res: Response): Promise<void> =>
 }
 
 export const getPostById = async (req: Request, res: Response): Promise<void> => {
-    const id = req.body
-    console.log("----------", id)
+    const {id} = req.body
     try {
         const response = await Post.findByPk(id)
 
