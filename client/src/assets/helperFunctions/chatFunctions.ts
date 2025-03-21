@@ -4,7 +4,8 @@ import { chatStore } from "../../zustand/chatStore"
 import { postStore } from "../../zustand/postStore";
 import { userStore } from "../../zustand/userStore";
 
-export async function populateStoreChat(id: string): Promise<void> {
+export async function populateStoreWithChatData(id: string): Promise<void> {
+    console.log("populateStoreWithChatData")
 
     const chatState = chatStore.getState();
     const userState = userStore.getState();
@@ -12,6 +13,7 @@ export async function populateStoreChat(id: string): Promise<void> {
     const postState = postStore.getState();
 
     await chatState.getChatById(id);
+    console.log('1er log',appState.selectedChat)
 
     if (appState.selectedChat) {
         const otherUserId =
@@ -25,7 +27,7 @@ export async function populateStoreChat(id: string): Promise<void> {
 }
 
 
-export async function populateStoreChats(id: string): Promise<void> {
+export async function populateStoreWithChatDataList(id: string): Promise<void> {
 
     const chatState = chatStore.getState();
     await chatState.getChatsByPostId(id)

@@ -7,7 +7,7 @@ import ChatListComponent from "../components/ChatListComponent";
 import { appStore } from "../zustand/appStore";
 
 export default function Chat() {
-  const { authUserPostsList, selectedChat } = appStore();
+  const { authUserPostsList } = appStore();
   const { user } = userStore();
 
   const { id } = useParams();
@@ -20,7 +20,7 @@ export default function Chat() {
     } else if (checkIdType(id!, authUserPostsList)) {
       setPageContent("post");
     } else {
-      if (selectedChat) setPageContent("chat");
+       setPageContent("chat");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);

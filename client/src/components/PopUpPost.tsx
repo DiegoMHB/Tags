@@ -53,7 +53,7 @@ export default function PopUpPost({ post, timeLeft }: PopUpPostProps) {
         <button
           className=" w-15 h-5 m-auto bg-[#c6eef7] rounded-full"
           onClick={() => {
-            setSelectedPost(post)
+            setSelectedPost(post.id)
             navigate(`/post/${post.id}`)}}
         >
           View

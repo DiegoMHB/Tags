@@ -58,8 +58,11 @@ export default function PostMarker({ post, isUsers }: postMarkerProps) {
   return (
     visible && (
       <Marker
-        eventHandlers={{ click: () =>{
-            getUserById(post.userId); }}}
+        eventHandlers={{
+          click: () => {
+            getUserById(post.userId);
+          },
+        }}
         position={post.coordinates}
         icon={customIcon}
       >

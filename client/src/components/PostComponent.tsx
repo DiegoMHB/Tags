@@ -40,11 +40,6 @@ export default function PostComponent({ post }: PostComponentProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [timeLeft]);
 
-  {
-    /* {!imageLoaded && post.picture && (
-    <div className="w-8 h-8 bg-indigo-200 animate-pulse "></div>
-  )} */
-  }
   return (
     <section
       className="flex flex-col w-full p-2 mt-0 rounded-2xl relative
