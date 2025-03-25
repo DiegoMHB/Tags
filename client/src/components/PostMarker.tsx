@@ -59,8 +59,8 @@ export default function PostMarker({ post, isUsers }: postMarkerProps) {
     visible && (
       <Marker
         eventHandlers={{
-          click: () => {
-            getUserById(post.userId);
+          click: async () => {
+           await getUserById(post.userId);
           },
         }}
         position={post.coordinates}

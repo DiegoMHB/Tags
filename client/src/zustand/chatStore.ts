@@ -1,7 +1,8 @@
 import { create } from "zustand";
-import { ChatType, Message } from "../types/appTypes";
+import { ChatType, Message, postContext, userContext } from "../types/appTypes";
 import { appStore } from "./appStore";
 import { userStore } from "./userStore";
+import { ChatListElement } from "../types/postTypes";
 
 const port = import.meta.env.VITE_PORT;
 const url = `http://localhost:${port}/`
@@ -9,10 +10,10 @@ const url = `http://localhost:${port}/`
 export type ChatStoreType = {
 
     loading: boolean,
-    
+
     getChatById: (id: string) => void,
     getChatsByPostId: (id: string) => void,
-    getAllChats:()=>void,
+    getAllChats: () => void,
     createChat: (postId: string, owner: string, notOwner: string) => Promise<ChatType | void>
     createMessage: (message: Message, userId: string) => void
 }
@@ -20,7 +21,7 @@ export type ChatStoreType = {
 
 export const chatStore = create<ChatStoreType>()((set) => ({
     loading: false,
-    
+
     createChat: async (postId, ownerId, notOwnerId) => {
         set({ loading: true });
         console.log("createChat")
@@ -105,26 +106,43 @@ export const chatStore = create<ChatStoreType>()((set) => ({
         set({ loading: true });
         console.log("getAllChats")
         try {
-            const response = await fetch(`${url}getAllChats/${userStore.getState().user.id}`);
+            const response = await fetch(`${url}getAllMyChats/${userStore.getState().user.id}`);
             if (!response.ok) {
                 const data = await response.json();
                 appStore.setState({ error: data.error });
                 throw (data)
             }
             const data = await response.json();
-            
-            const myPosts = appStore.getState().authUserPostsList;
-            if(!myPosts)return
 
-            const owner = await Promise.all(myPosts.map(async (post) => {
-                const response = await fetch(`${url}getChatsByPostId/${post.id}`);
-                const chats = await response.json();
+            const groupedChats = data.chats?.reduce(
+                (acc: Record<
+                    string,
+                    {
+                        post: postContext;
+                        chats: { owner: userContext; notOwner: userContext; messages: Message[] }[];
+                    }
+                >, chat: ChatType) => {
+                    const postId = chat.postId;
 
-                return {chat: chats.chats, post}
-            } ))
+                    if (!acc[postId]) {
+                        acc[postId] = {
+                            post: chat.context.post,
+                            chats: [],
+                        };
+                    }
 
+                    acc[postId].chats.push({
+                        notOwner: chat.context.notOwner,
+                        owner: chat.context.owner,
+                        messages: chat.messages
+                    });
 
-            appStore.setState({ allMyChats: [...data.chatsData, ...owner]  });
+                    return acc;
+                }, {} as ChatListElement
+            );
+
+            appStore.setState({ allMyChats: groupedChats });
+            console.log(appStore.getState().allMyChats)
             appStore.setState({ error: "" });
 
         } catch (e) {

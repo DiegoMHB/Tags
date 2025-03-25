@@ -22,6 +22,8 @@ export type Context = {
  }
  
  type postContext = {
+    id:string,
+    title:string,
     category:string,
     picture:string,
     createdAt: Date

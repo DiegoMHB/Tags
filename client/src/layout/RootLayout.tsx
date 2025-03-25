@@ -9,7 +9,7 @@ import { userStore } from "../zustand/userStore";
 
 export default function RootLayout() {
   const { mapRender, authUserActivePost } = appStore();
-  const { auth } = userStore();
+  const { auth, user } = userStore();
   const url = useLocation().pathname;
   const navigate = useNavigate();
 
@@ -47,7 +47,7 @@ export default function RootLayout() {
 
         <section className="flex justify-evenly bg-gradient-to-t from-[#00062A] to-[#00061A]  h-12 min-h-12 w-full  items-center max-w-[400px] ">
           {linkRendered.map((el) =>
-            authUserActivePost &&
+            authUserActivePost &&         
             el.text == "New Post" ? null : !authUserActivePost &&
               el.text == "Post" ? null : (
               <NavBarElement
@@ -55,7 +55,10 @@ export default function RootLayout() {
                 link={
                   el.to === "/post"
                     ? el.to + `/${authUserActivePost!.id}`
-                    : el.to
+                    : el.to === "/chat"
+                    ? el.to + `/${user.id}`:
+                    el.to
+
                 }
                 text={el.text}
               />

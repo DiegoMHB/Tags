@@ -11,7 +11,7 @@ type PopUpPostProps = {
 };
 
 export default function PopUpPost({ post, timeLeft }: PopUpPostProps) {
-  const { selectedUser, loading, setSelectedPost } = appStore();
+  const { selectedUser, setSelectedPost } = appStore();
   const { auth } = userStore();
   const navigate = useNavigate();
   const { minutes } = timeLeft;
@@ -19,11 +19,9 @@ export default function PopUpPost({ post, timeLeft }: PopUpPostProps) {
   return (
     <main className="flex flex-col gap-3 w-[200px]">
       <div className="flex justify-between gap-3">
-        {loading ? (
-          <div className="w-15 h-15rounded-full bg-indigo-200" />
-        ) : (
+       
           <img
-            className="w-15 h-15 object-cover rounded-full items-center"
+            className="w-15 h-15 object-cover rounded-full"
             src={
               post.picture
                 ? post.picture
@@ -33,7 +31,7 @@ export default function PopUpPost({ post, timeLeft }: PopUpPostProps) {
             }
             alt={"photo"}
           />
-        )}
+        
         <div className="flex flex-col flex-1">
           <section className="flex justify-end mb-1">
             <h2 className="font-bold text-xl">#{post.title} </h2>

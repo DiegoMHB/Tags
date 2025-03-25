@@ -71,7 +71,7 @@ class User extends Model {
     post: Post
     
     @HasMany(() => Chat, {
-        foreignKey: 'OwnerId',
+        foreignKey: 'ownerId',
         onDelete: 'CASCADE',
         hooks: true,
     })

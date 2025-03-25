@@ -3,6 +3,7 @@ import { Request, Response } from "express";
 import Post from "../models/Post.model";
 import { ChatListElement } from "../types";
 import User from "../models/User.model";
+import { Op } from "sequelize";
 
 
 
@@ -20,7 +21,7 @@ export const newChat = async (req: Request, res: Response): Promise<void> => {
             postId, ownerId, notOwnerId, messages: [], context: {
                 owner: { userName: (await owner).userName, profilePic: (await owner).profilePicture },
                 notOwner: { userName: (await notOwner).userName, profilePic: (await notOwner).profilePicture },
-                post: { category: (await post).category, picture: (await post).picture, createdAt: (await post).createdAt }
+                post: { id: (await post).id, title: (await post).title, category: (await post).category, picture: (await post).picture, createdAt: (await post).createdAt }
             }
         });
         const responseChat = await newChat.save();
@@ -66,6 +67,29 @@ export const getChatById = async (req: Request, res: Response): Promise<void> =>
             res
                 .status(200)
                 .send({ chat: response, message: "Chat get" })
+            return
+        } else throw ({ message: "Couldnt get CHat from DB" })
+
+    } catch (error) {
+        if (error.message) {
+            res.status(400).send({ error: error.message });
+            return
+        }
+        res.status(500).send({ error: "Something happened: try again" });
+        return
+    }
+}
+
+export const getAllMyChats = async (req: Request, res: Response): Promise<void> => {
+
+    try {
+        const id = req.params.id;
+        const response = await Chat.findAll({ where: { [Op.or]: [{ ownerId: id }, { notOwnerId: id }] } })
+        console.log(response)
+        if (response) {
+            res
+                .status(200)
+                .send({ chats: response, message: "All chats received" })
             return
         } else throw ({ message: "Couldnt get CHat from DB" })
 

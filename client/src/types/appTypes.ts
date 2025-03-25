@@ -1,25 +1,25 @@
 
 
 export type link = {
-    id:number
-    to:string
-    text:string
+    id: number
+    to: string
+    text: string
 }
 
 export type linkList = {
-    online : link[]
-    offline : link[]
+    online: link[]
+    offline: link[]
 }
 
 export type LoginForm = {
-    email : string
+    email: string
     password: string
 }
 
 export type Selection = {
-    label:string,
-    id:number,
-    value:string
+    label: string,
+    id: number,
+    value: string
 }
 
 
@@ -31,7 +31,7 @@ export type TimeLeft = {
 export type ChatType = {
     id: string
     postId: string
-    context:Context
+    context: Context
     messages: Message[]
 }
 export type Message = {
@@ -41,20 +41,31 @@ export type Message = {
     id: string
 }
 
-type Context = {
+export type Context = {
     owner: userContext,
     notOwner: userContext,
     post: postContext
- }
+}
 
- type userContext = {
-    userName:string,
-    profilePic:string
- }
- 
- type postContext = {
-    category:string,
-    picture:string,
-    createdAt: Date
- }
+export type userContext = {
+    userName: string,
+    profilePic: string
+}
 
+export type postContext = {
+    id: string,
+    title: string,
+    category: string,
+    picture: string,
+    createdAt: string
+}
+
+export type ChatListElement = Record<string,
+    {
+        post: postContext,
+        chats: {
+            owner: userContext;
+            notOwner: userContext;
+            messages: Message[]
+        }[]
+    }> 

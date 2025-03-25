@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { PostType } from "../types/postTypes";
+import { ChatListElement, PostType } from "../types/postTypes";
 import { User } from "../types/userTypes";
 import { ChatType } from "../types/appTypes";
 
@@ -18,7 +18,7 @@ export type AppStoreType = {
     authUserPostsList: PostType[] | null
     allActivePosts: PostType[] | null,
     allPostChats: ChatType[] | null,
-    allMyChats: ChatType[] | null,
+    allMyChats: ChatListElement | null,
 
     selectedUser: User | null,
     selectedPost: PostType | null,

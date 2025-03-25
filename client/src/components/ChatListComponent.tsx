@@ -31,7 +31,7 @@ export default function ChatListComponent() {
                   navigate(`/chat/${chat.id}`);
                 }}
               >
-                <p>{chat.context.notOwner.userName}</p>
+                <p>with{chat.context.notOwner.userName}</p>
                 <p>{chat.messages[chat.messages.length - 1].content}</p>
               </div>
             ))}
