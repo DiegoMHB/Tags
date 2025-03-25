@@ -1,6 +1,7 @@
 import { Table, Column, Model, DataType, PrimaryKey, Default, CreatedAt, HasMany, HasOne } from "sequelize-typescript";
 import Post from "./Post.model";
 import { NonAttribute } from "sequelize";
+import Chat from "./Chat.model";
 // import { ChatsType } from "../types";
 
 @Table({
@@ -68,6 +69,13 @@ class User extends Model {
         hooks: true,
     })
     post: Post
+    
+    @HasMany(() => Chat, {
+        foreignKey: 'OwnerId',
+        onDelete: 'CASCADE',
+        hooks: true,
+    })
+    chat: Chat
 
 
 }

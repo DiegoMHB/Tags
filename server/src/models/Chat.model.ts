@@ -1,12 +1,9 @@
 import { Table, Column, Model, DataType, PrimaryKey, Default, CreatedAt, ForeignKey, BelongsTo, BeforeCreate, AllowNull } from "sequelize-typescript";
 import User from "./User.model";
 import Post from "./Post.model";
+import { Context, Message } from "../types";
 
-type Message = {
-    owner: boolean,
-    date: string,
-    content: string,
-}
+
 
 @Table({
     tableName: "chats",
@@ -22,22 +19,30 @@ class Chat extends Model {
     })
     id!: string
 
-    
+    @ForeignKey(() => User)
     @Column({
         type: DataType.UUID, allowNull: false
     })
     ownerId!: string
-
-
+    
+    @BelongsTo(() => User, { foreignKey: "ownerId" })
+    owner!: User;
+    
+    
+    @ForeignKey(() => User)
     @Column({
         type: DataType.UUID, allowNull: false
     })
     notOwnerId!: string
+
+    @BelongsTo(() => User, { foreignKey: "notOwnerId" })
+    notOwner!: User;
+
    
     @Column({
-        type: DataType.STRING, allowNull: false
+        type: DataType.JSONB, allowNull: false
     })
-    notOwnerUserName!: string
+    context!: Context
 
 
     @Column({

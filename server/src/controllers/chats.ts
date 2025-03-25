@@ -12,8 +12,17 @@ export const newChat = async (req: Request, res: Response): Promise<void> => {
     try {
         const { postId, ownerId, notOwnerId } = req.body;
 
+        const post = Post.findByPk(postId)
+        const owner = User.findByPk(ownerId)
         const notOwner = User.findByPk(notOwnerId)
-        const newChat = new Chat({ postId, ownerId, notOwnerId, messages: [] , notOwnerUserName: (await notOwner).userName});
+
+        const newChat = new Chat({
+            postId, ownerId, notOwnerId, messages: [], context: {
+                owner: { userName: (await owner).userName, profilePic: (await owner).profilePicture },
+                notOwner: { userName: (await notOwner).userName, profilePic: (await notOwner).profilePicture },
+                post: { category: (await post).category, picture: (await post).picture, createdAt: (await post).createdAt }
+            }
+        });
         const responseChat = await newChat.save();
         if (responseChat.dataValues) {
 
@@ -74,7 +83,7 @@ export const getChatsByPostId = async (req: Request, res: Response): Promise<voi
 
     try {
         const id = req.params.id;
-        const response = await Chat.findAll({where: { postId: id }})
+        const response = await Chat.findAll({ where: { postId: id } })
         if (response) {
             res
                 .status(200)
