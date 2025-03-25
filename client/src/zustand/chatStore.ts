@@ -18,7 +18,6 @@ export type ChatStoreType = {
 
 export const chatStore = create<ChatStoreType>()((set) => ({
     loading: false,
-    allPostChats: null,
     
     createChat: async (postId, ownerId, notOwnerId) => {
         set({ loading: true });

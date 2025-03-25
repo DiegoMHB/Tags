@@ -14,15 +14,17 @@ export type AppStoreType = {
     mapRender: boolean,
     fotoUrl: string,
 
+    authUserActivePost: PostType | null,
     allActivePosts: PostType[],
     authUserPostsList: PostType[] | []
+    allPostChats: ChatType[] | null,
+    allMyChats: ChatType[] | null,
+    
     selectedUser: User | null,
     selectedPost: PostType | null,
     selectedChat: ChatType | null,
-    allPostChats: ChatType[] | null,
 
 
-    authUserActivePost: PostType | null,
     setSelectedPost: (postId: string) => void,
     deselectUser: () => void,
     deselectPost: () => void,
@@ -49,10 +51,12 @@ export const appStore = create<AppStoreType>(
         allActivePosts: [],
         authUserPostsList: [],
         authUserActivePost: null,
+        allMyChats: null,
+        allPostChats: null,
+
         selectedUser: null,
         selectedPost: null,
         selectedChat: null,
-        allPostChats: null,
 
         setMapRender: () => set((state) => ({ mapRender: !state.mapRender })),
         setFotoUrl: (newUrl) => set({ fotoUrl: newUrl }),
