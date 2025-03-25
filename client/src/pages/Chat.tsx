@@ -17,7 +17,7 @@ export default function Chat() {
   useEffect(() => {
     if (id === user.id) {
       setPageContent("all");
-    } else if (checkIdType(id!, authUserPostsList)) {
+    } else if (checkIdType(id!, authUserPostsList!)) {
       setPageContent("post");
     } else {
        setPageContent("chat");

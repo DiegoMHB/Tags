@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { ChatType, Message } from "../types/appTypes";
 import { appStore } from "./appStore";
+import { userStore } from "./userStore";
 
 const port = import.meta.env.VITE_PORT;
 const url = `http://localhost:${port}/`
@@ -11,6 +12,7 @@ export type ChatStoreType = {
     
     getChatById: (id: string) => void,
     getChatsByPostId: (id: string) => void,
+    getAllChats:()=>void,
     createChat: (postId: string, owner: string, notOwner: string) => Promise<ChatType | void>
     createMessage: (message: Message, userId: string) => void
 }
@@ -39,9 +41,9 @@ export const chatStore = create<ChatStoreType>()((set) => ({
             const data = await response.json();
             appStore.setState({ selectedChat: data.chat });
 
-            //update the post
+            //update the post with the chatData
             const posts = appStore.getState().allActivePosts;
-            const updatedPosts = posts.map((post) =>
+            const updatedPosts = posts!.map((post) =>
                 post.id === postId
                     ? post = data.post
                     : post
@@ -89,6 +91,40 @@ export const chatStore = create<ChatStoreType>()((set) => ({
             }
             const data = await response.json();
             appStore.setState({ allPostChats: data.chats });
+            appStore.setState({ error: "" });
+
+        } catch (e) {
+            console.log("Error", e)
+        } finally {
+            set({ loading: false });
+        }
+    },
+
+    getAllChats: async () => {
+
+        set({ loading: true });
+        console.log("getAllChats")
+        try {
+            const response = await fetch(`${url}getAllChats/${userStore.getState().user.id}`);
+            if (!response.ok) {
+                const data = await response.json();
+                appStore.setState({ error: data.error });
+                throw (data)
+            }
+            const data = await response.json();
+            
+            const myPosts = appStore.getState().authUserPostsList;
+            if(!myPosts)return
+
+            const owner = await Promise.all(myPosts.map(async (post) => {
+                const response = await fetch(`${url}getChatsByPostId/${post.id}`);
+                const chats = await response.json();
+
+                return {chat: chats.chats, post}
+            } ))
+
+
+            appStore.setState({ allMyChats: [...data.chatsData, ...owner]  });
             appStore.setState({ error: "" });
 
         } catch (e) {

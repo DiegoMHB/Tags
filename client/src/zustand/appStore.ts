@@ -15,11 +15,11 @@ export type AppStoreType = {
     fotoUrl: string,
 
     authUserActivePost: PostType | null,
-    allActivePosts: PostType[],
-    authUserPostsList: PostType[] | []
+    authUserPostsList: PostType[] | null
+    allActivePosts: PostType[] | null,
     allPostChats: ChatType[] | null,
     allMyChats: ChatType[] | null,
-    
+
     selectedUser: User | null,
     selectedPost: PostType | null,
     selectedChat: ChatType | null,
@@ -48,9 +48,9 @@ export const appStore = create<AppStoreType>(
         fotoUrl: "",
         selectedFile: null,
 
-        allActivePosts: [],
-        authUserPostsList: [],
         authUserActivePost: null,
+        authUserPostsList: null,
+        allActivePosts: null,
         allMyChats: null,
         allPostChats: null,
 
@@ -67,8 +67,7 @@ export const appStore = create<AppStoreType>(
         deselectPost: () => set({ selectedPost: null }),
 
         setSelectedPost: (postId: string) => {
-            const post = get().allActivePosts.find(post => post.id === postId);
-            get().getUserById(post!.userId)
+            const post = get().allActivePosts!.find(post => post.id === postId);
             set({ selectedPost: post })
         },
         resetSelected: () => set({ selectedPost: null, selectedUser: null, selectedChat: null }),
@@ -76,10 +75,7 @@ export const appStore = create<AppStoreType>(
         getAllPosts: async () => {
             set({ loading: true });
             console.log("getAllPosts");
-
-            if (get().allActivePosts.length) {
-                set({ allActivePosts: [] });
-            }
+            set({ allActivePosts: [] });
 
             try {
                 const response = await fetch(`${url}getAllPosts`);
@@ -95,7 +91,7 @@ export const appStore = create<AppStoreType>(
         getUserById: async (userId: string, returns: boolean = false) => {
             set({ loading: true });
             console.log("getUserById");
-            
+
 
             try {
                 const response = await fetch(`${url}user/${userId}`);

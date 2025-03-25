@@ -30,11 +30,9 @@ export type TimeLeft = {
 
 export type ChatType = {
     id: string
-    notOwnerId: string
-    notOwnerUserName: string
-    ownerId: string
-    messages: Message[]
     postId: string
+    context:Context
+    messages: Message[]
 }
 export type Message = {
     ownerId: string
@@ -43,17 +41,20 @@ export type Message = {
     id: string
 }
 
-// export type ChatByOwner = {
-//     owned: ChatPostOwned | null,
-//     notOwned: ChatPostNotOwned | null,
-// }
+type Context = {
+    owner: userContext,
+    notOwner: userContext,
+    post: postContext
+ }
 
-// export type ChatPostOwned = {
-//     [chatId: string]: string[];
-// };
-
-// export type ChatPostNotOwned = {
-//     [chatId: string]: string;
-// };
-
+ type userContext = {
+    userName:string,
+    profilePic:string
+ }
+ 
+ type postContext = {
+    category:string,
+    picture:string,
+    createdAt: Date
+ }
 
