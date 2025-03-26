@@ -39,7 +39,7 @@ export default function Post() {
     if (selectedUser && user.id === selectedUser.id) {
       appStore.setState({ selectedUser: null });
     }
-    const allPosts = [...allActivePosts, ...authUserPostsList];
+    const allPosts = [...allActivePosts!, ...authUserPostsList!];
     const postById = allPosts.find((post) => post.id == id);
     setPost(postById!);
     // eslint-disable-next-line react-hooks/exhaustive-deps

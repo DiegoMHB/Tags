@@ -21,17 +21,23 @@ export default function ChatComponent() {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  useEffect(
-    () => {
-      const interval = setInterval(() => {
-        getChatById(id!);
-        setMessages([...selectedChat!.messages]);
-      }, 5000);
-      return () => clearInterval(interval);
-    },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [selectedChat]
-  );
+  useEffect(() => {
+    if (!id) return;
+
+    const fetchChat = async () => {
+      await getChatById(id);
+      const updatedChat = appStore.getState().selectedChat;
+      if (updatedChat) {
+        setMessages(updatedChat.messages);
+      }
+    };
+
+    fetchChat();
+    const interval = setInterval(fetchChat, 5000);
+
+    return () => clearInterval(interval);
+  }, [id, getChatById]);
+
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -62,6 +68,11 @@ export default function ChatComponent() {
     setContent("");
     await createMessage(newMessage, user.id);
   };
+
+  if (!selectedChat) {
+    return <p className="text-center text-xl mt-4">No chat selected.</p>;
+  }
+  
   return (
     <main className="flex flex-col h-screen w-full relative">
       <p className="mt-2 mx-auto p-1 uppercase bg-amber-50 ">

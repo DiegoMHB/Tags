@@ -35,7 +35,9 @@ export default function ProfileHeader() {
           </div>
           <div className="flex justify-between items-baseline ">
             <p className="text-xs">Posts:</p>
-            <p className="text-xs">{authUserPostsList.length}</p>
+            <p className="text-xs">
+              {authUserPostsList ? authUserPostsList.length : 0}
+            </p>
           </div>
           <div className="flex justify-between items-baseline ">
             <p className="text-xs">City:</p>

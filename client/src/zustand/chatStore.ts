@@ -1,8 +1,7 @@
 import { create } from "zustand";
-import { ChatType, Message, postContext, userContext } from "../types/appTypes";
+import { AllChatsListElement, ChatType, Message } from "../types/appTypes";
 import { appStore } from "./appStore";
 import { userStore } from "./userStore";
-import { ChatListElement } from "../types/postTypes";
 
 const port = import.meta.env.VITE_PORT;
 const url = `http://localhost:${port}/`
@@ -114,32 +113,28 @@ export const chatStore = create<ChatStoreType>()((set) => ({
             }
             const data = await response.json();
 
-            const groupedChats = data.chats?.reduce(
-                (acc: Record<
-                    string,
-                    {
-                        post: postContext;
-                        chats: { owner: userContext; notOwner: userContext; messages: Message[] }[];
-                    }
-                >, chat: ChatType) => {
-                    const postId = chat.postId;
+            const groupedChats = data.chats?.reduce((acc: AllChatsListElement[], chat: ChatType) => {
+                const postId = chat.context.post.id;
+                let chatGroup = acc.find(group => group.post.id == postId);
 
-                    if (!acc[postId]) {
-                        acc[postId] = {
-                            post: chat.context.post,
-                            chats: [],
-                        };
-                    }
+                if (!chatGroup) {
+                    chatGroup = {
+                        post: chat.context.post,
+                        chats: []
+                    };
+                    acc.push(chatGroup);
+                }
 
-                    acc[postId].chats.push({
-                        notOwner: chat.context.notOwner,
-                        owner: chat.context.owner,
-                        messages: chat.messages
-                    });
+                chatGroup.chats.push({
+                    id: chat.id,
+                    owner: chat.context.owner,
+                    notOwner: chat.context.notOwner,
+                    messages: chat.messages
+                });
 
-                    return acc;
-                }, {} as ChatListElement
-            );
+                return acc;
+            }, [] as AllChatsListElement[]);
+
 
             appStore.setState({ allMyChats: groupedChats });
             console.log(appStore.getState().allMyChats)

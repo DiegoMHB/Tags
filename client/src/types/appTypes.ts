@@ -60,12 +60,13 @@ export type postContext = {
     createdAt: string
 }
 
-export type ChatListElement = Record<string,
+export type AllChatsListElement =
     {
         post: postContext,
         chats: {
+            id: string
             owner: userContext;
             notOwner: userContext;
             messages: Message[]
         }[]
-    }> 
+    } 

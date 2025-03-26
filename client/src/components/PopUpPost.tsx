@@ -16,22 +16,23 @@ export default function PopUpPost({ post, timeLeft }: PopUpPostProps) {
   const navigate = useNavigate();
   const { minutes } = timeLeft;
 
+
+
   return (
     <main className="flex flex-col gap-3 w-[200px]">
       <div className="flex justify-between gap-3">
-       
-          <img
-            className="w-15 h-15 object-cover rounded-full"
-            src={
-              post.picture
-                ? post.picture
-                : selectedUser?.profilePicture
-                ? selectedUser?.profilePicture // TODO: icon depending on category
-                : defaultUser
-            }
-            alt={"photo"}
-          />
-        
+        <img
+          className="w-15 h-15 object-cover rounded-full"
+          src={
+            post.picture
+              ? post.picture
+              : selectedUser?.profilePicture
+              ? selectedUser?.profilePicture // TODO: icon depending on category
+              : defaultUser
+          }
+          alt={"photo"}
+        />
+
         <div className="flex flex-col flex-1">
           <section className="flex justify-end mb-1">
             <h2 className="font-bold text-xl">#{post.title} </h2>
@@ -51,8 +52,9 @@ export default function PopUpPost({ post, timeLeft }: PopUpPostProps) {
         <button
           className=" w-15 h-5 m-auto bg-[#c6eef7] rounded-full"
           onClick={() => {
-            setSelectedPost(post.id)
-            navigate(`/post/${post.id}`)}}
+            setSelectedPost(post.id);
+            navigate(`/post/${post.id}`);
+          }}
         >
           View
         </button>

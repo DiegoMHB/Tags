@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import { ChatListElement, PostType } from "../types/postTypes";
+import { PostType } from "../types/postTypes";
 import { User } from "../types/userTypes";
-import { ChatType } from "../types/appTypes";
+import { AllChatsListElement, ChatType } from "../types/appTypes";
 
 const port = import.meta.env.VITE_PORT;
 const url = `http://localhost:${port}/`
@@ -18,7 +18,7 @@ export type AppStoreType = {
     authUserPostsList: PostType[] | null
     allActivePosts: PostType[] | null,
     allPostChats: ChatType[] | null,
-    allMyChats: ChatListElement | null,
+    allMyChats: AllChatsListElement[] | null,
 
     selectedUser: User | null,
     selectedPost: PostType | null,
@@ -67,7 +67,8 @@ export const appStore = create<AppStoreType>(
         deselectPost: () => set({ selectedPost: null }),
 
         setSelectedPost: (postId: string) => {
-            const post = get().allActivePosts!.find(post => post.id === postId);
+            const allPosts = [...get().allActivePosts!, ...get().authUserPostsList!]
+            const post = allPosts.find(post => post.id === postId);
             set({ selectedPost: post })
         },
         resetSelected: () => set({ selectedPost: null, selectedUser: null, selectedChat: null }),
