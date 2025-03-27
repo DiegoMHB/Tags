@@ -19,8 +19,8 @@ export const newChat = async (req: Request, res: Response): Promise<void> => {
 
         const newChat = new Chat({
             postId, ownerId, notOwnerId, messages: [], context: {
-                owner: { userName: (await owner).userName, profilePic: (await owner).profilePicture },
-                notOwner: { userName: (await notOwner).userName, profilePic: (await notOwner).profilePicture },
+                owner: { userName: (await owner).userName, id: (await owner).id,profilePic: (await owner).profilePicture },
+                notOwner: { userName: (await notOwner).userName,id: (await notOwner).id, profilePic: (await notOwner).profilePicture },
                 post: { id: (await post).id, title: (await post).title, category: (await post).category, picture: (await post).picture, createdAt: (await post).createdAt }
             }
         });

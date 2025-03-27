@@ -6,22 +6,27 @@ import ChatComponent from "../components/ChatComponent";
 import ChatListComponent from "../components/ChatListComponent";
 import { appStore } from "../zustand/appStore";
 import { chatStore } from "../zustand/chatStore";
-import AllChatComponent from "../components/AllChatComponent";
+import { AllChatsListElement } from "../types/appTypes";
 
 export default function Chat() {
-  const { authUserPostsList, allMyChats } = appStore();
+  const { authUserPostsList, allChats, selectedPost } = appStore();
   const { user } = userStore();
   const { getAllChats } = chatStore();
 
   const { id } = useParams();
 
   const [pageContent, setPageContent] = useState<string>("");
+  const [filteredChats, setFilteredChats] = useState<AllChatsListElement[] | []>([]);
 
   useEffect(() => {
     if (id === user.id) {
       getAllChats();
       setPageContent("all");
     } else if (checkIdType(id!, authUserPostsList!)) {
+        const postId = selectedPost?.id;
+        if (!postId) return;
+        const filtered = allChats?.filter((chat) => chat.post.id === postId);
+        setFilteredChats(filtered ?? []);
       setPageContent("post");
     } else {
       setPageContent("chat");
@@ -31,8 +36,8 @@ export default function Chat() {
 
   return (
     <main className="flex flex-col justify-start w-[100%] space-y-4 ">
-      {pageContent == "all" && <AllChatComponent allMyChats={allMyChats!}/>}
-      {pageContent == "post" && <ChatListComponent />}
+      {pageContent == "all" && <ChatListComponent chats={allChats!} />}
+      {pageContent == "post" && <ChatListComponent chats={filteredChats} />}
       {pageContent == "chat" && <ChatComponent />}
     </main>
   );

@@ -5,29 +5,28 @@ import { useEffect, useState } from "react";
 import { userStore } from "../zustand/userStore";
 
 type AllChatsCompType = {
-  allMyChats?: AllChatsListElement[];
+  allChats?: AllChatsListElement[];
 };
 
-export default function AllChatComponent({ allMyChats }: AllChatsCompType) {
+export default function AllChatComponent({ allChats }: AllChatsCompType) {
   const { setSelectedPost } = appStore();
   const { user } = userStore();
   const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (allMyChats && allMyChats.length > 0) {
+    if (allChats && allChats.length > 0) {
       setLoading(false);
     }
-  }, [allMyChats]);
+  }, [allChats]);
 
   if (loading) {
     return <p className="text-center">Loading chats...</p>; // Mensaje de carga
   }
 
   return (
-
     <div>
-      {allMyChats?.map((el) => (
+      {allChats?.map((el) => (
         <div
           key={el.post.id}
           className="flex flex-col justify-start align-middle gap-2  rounded-2xl
@@ -40,19 +39,23 @@ export default function AllChatComponent({ allMyChats }: AllChatsCompType) {
             }}
             className="flex "
           >
-            {el.post.picture ?  
+            {el.post.picture ? (
               <img
                 className="w-10 h-10 object-cover m-1 mr-0 rounded-[100%]"
                 src={el.post.picture}
                 alt={"photo"}
               />
-              :
+            ) : (
               <img
                 className="w-10 h-10 object-cover m-1 mr-0 rounded-[100%]"
-                src={el.chats[0].owner.userName === user.userName? el.chats[0].notOwner.profilePic :  el.chats[0].owner.profilePic }
+                src={
+                  el.chats[0].owner.userName === user.userName
+                    ? el.chats[0].notOwner.profilePic
+                    : el.chats[0].owner.profilePic
+                }
                 alt={"photo"}
               />
-            }
+            )}
             <p className="font-bold mt-[12px] ml-2">
               #{el.post.title} - {el.post.category}
             </p>
@@ -65,7 +68,12 @@ export default function AllChatComponent({ allMyChats }: AllChatsCompType) {
                   navigate(`/chat/${chat.id}`);
                 }}
               >
-                With <span className="font-bold">{chat.owner.userName == user.userName? chat.notOwner.userName : chat.owner.userName} </span>
+                With{" "}
+                <span className="font-bold">
+                  {chat.owner.userName == user.userName
+                    ? chat.notOwner.userName
+                    : chat.owner.userName}{" "}
+                </span>
                 at{" "}
                 <span className="font-bold">
                   {chat.messages[chat.messages.length - 1]?.date}
@@ -76,6 +84,5 @@ export default function AllChatComponent({ allMyChats }: AllChatsCompType) {
         </div>
       ))}
     </div>
-    
   );
 }

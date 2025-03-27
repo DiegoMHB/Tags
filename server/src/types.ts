@@ -18,6 +18,7 @@ export type Context = {
 
  type userContext = {
     userName:string,
+    id: string,
     profilePic:string
  }
  

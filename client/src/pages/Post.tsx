@@ -13,8 +13,7 @@ import { checkExistingChat } from "../assets/helperFunctions/checkExistingChat";
 import { chatStore } from "../zustand/chatStore";
 import { postStore } from "../zustand/postStore";
 import {
-    populateStoreWithChatData,
-//   populateStoreWithChatData,
+  populateStoreWithChatData,
   populateStoreWithChatDataList,
 } from "../assets/helperFunctions/chatFunctions";
 
@@ -68,6 +67,7 @@ export default function Post() {
 
   //TODO: component for the map with props and attributes
   //TODO: Profileheader of the user
+  
   return (
     <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
       {/*POST HEADER*/}

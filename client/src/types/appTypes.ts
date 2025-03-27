@@ -49,6 +49,7 @@ export type Context = {
 
 export type userContext = {
     userName: string,
+    userId:string,
     profilePic: string
 }
 

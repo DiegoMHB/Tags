@@ -11,7 +11,6 @@ export type ChatStoreType = {
     loading: boolean,
 
     getChatById: (id: string) => void,
-    getChatsByPostId: (id: string) => void,
     getAllChats: () => void,
     createChat: (postId: string, owner: string, notOwner: string) => Promise<ChatType | void>
     createMessage: (message: Message, userId: string) => void
@@ -78,28 +77,6 @@ export const chatStore = create<ChatStoreType>()((set) => ({
         }
     },
 
-    getChatsByPostId: async (id) => {
-
-        set({ loading: true });
-        console.log("getChatsByPostId", id)
-        try {
-            const response = await fetch(`${url}getChatsByPostId/${id}`);
-            if (!response.ok) {
-                const data = await response.json();
-                appStore.setState({ error: data.error });
-                throw (data)
-            }
-            const data = await response.json();
-            appStore.setState({ allPostChats: data.chats });
-            appStore.setState({ error: "" });
-
-        } catch (e) {
-            console.log("Error", e)
-        } finally {
-            set({ loading: false });
-        }
-    },
-
     getAllChats: async () => {
 
         set({ loading: true });
@@ -136,8 +113,8 @@ export const chatStore = create<ChatStoreType>()((set) => ({
             }, [] as AllChatsListElement[]);
 
 
-            appStore.setState({ allMyChats: groupedChats });
-            console.log(appStore.getState().allMyChats)
+            appStore.setState({ allChats: groupedChats });
+            console.log(appStore.getState().allChats)
             appStore.setState({ error: "" });
 
         } catch (e) {

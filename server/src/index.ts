@@ -25,6 +25,7 @@ async function connectDB() {
     try {
         await db.authenticate();
         await db.sync()
+            // TODO: CLOSE EXPIRED POSTS 
             // .then(() => Populate())//-- DEV --
             // .then(() => {
             //     if(port === "3000")
