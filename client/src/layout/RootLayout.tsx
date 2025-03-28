@@ -39,16 +39,15 @@ export default function RootLayout() {
         {showSearch && (
           <section
             className="
-        flex justify-evenly bg-[#e0f5e9] h-20 w-full items-center "
+        flex justify-evenly bg-[#c6eef7] h-13 w-full items-center "
           >
-            {" "}
-            <SearchBar></SearchBar>{" "}
+            <SearchBar></SearchBar>
           </section>
         )}
 
         <section
           className="flex-1 flex align-middle justify-center 
-        bg-gradient-to-r from-[#c6eef7] to-[#e0f5e6] 
+        bg-gradient-to-b from-[#c6eef7] to-[#e0f5e6] 
         h-[100%] w-[100%]
         overflow-y-auto scrollbar-hidden"
         >
