@@ -43,33 +43,26 @@ export default function PostComponent({ post }: PostComponentProps) {
   return (
     <section
       className="flex flex-col w-full p-2 mt-0 rounded-2xl relative
-    bg-gradient-to-t from-[#FFFFFF]/30 to-[#FFFFFF]/40"
+    bg-gradient-to-t from-[#FFFFFF]/60 to-[#FFFFFF]/40"
     >
-      {post.picture ? 
-        <div className="w-15 h-15 rounded-full overflow-hidden flex items-center justify-center absolute right-[20px] top-[35px]">
+      
+        <div className="w-13 h-13 rounded-full overflow-hidden flex items-center justify-center absolute right-[20px] top-[45px]">
           <img
-            className={`w-full h-full transition-opacity duration-500 transform ${
-              imageLoaded ? "opacity-100 scale-200" : "opacity-0 scale-100"
-            }`}
-            src={post.picture}
+            className={`w-full h-full transition-opacity duration-500 transform 
+                ${imageLoaded ? "opacity-100 " : "opacity-0 "}
+                ${post.picture ? "scale-200": "scale-100"}`
+              }
+            src={post.picture?post.picture:`/assets/images/${post.category}.svg`}
             alt="photo"
             onLoad={() => setImageLoaded(true)}
           />
         </div>
-        :
-        <div className="w-15 h-15  absolute right-[20px] top-[35px]">
-        <img
-          className={`w-full h-full transition-opacity duration-500 transform `}
-          src={`/assets/images/${post.category}.svg`}
-          alt="photo"
-        />
-      </div>
-      }
+        
 
       <div className=" flex flex-col w-full ml-2 ">
-        <div className="flex flex-row justify-between gap-3">
+        <div className="flex flex-row justify-between gap-3 border-b-1">
           <h3
-            className="text-xl font-bold flex items-baseline gap-3"
+            className="text-xl font-bold flex items-baseline gap-3 "
             onClick={() => {
               setSelectedPost(post.id);
               navigate(`/post/${post.id}`);
@@ -86,18 +79,18 @@ export default function PostComponent({ post }: PostComponentProps) {
 
         <div className="flex justify-between items-baseline ">
           <p className="text-xs font-bold">Category:</p>
-          <p className="text-xs mr-[100px]">{post!.category}</p>
+          <p className="text-xs mr-[90px]">{post!.category}</p>
         </div>
         {post.isActive && (
           <div className="flex justify-between items-baseline ">
             <p className="text-xs font-bold">Duration:</p>
-            <p className="text-xs mr-[100px]">{timeLeft.minutes}'</p>
+            <p className="text-xs mr-[90px]">{timeLeft.minutes}'</p>
           </div>
         )}
         {!post.isActive && (
           <div className="flex justify-between items-baseline ">
             <p className="text-xs font-bold">Date:</p>
-            <p className="text-xs mr-[100px]">
+            <p className="text-xs mr-[90px]">
               {post && stampToDate(post.createdAt as string)}
             </p>
           </div>
@@ -105,12 +98,12 @@ export default function PostComponent({ post }: PostComponentProps) {
         {post.userId == user.id ? null : (
           <div className="flex justify-between items-baseline ">
             <p className="text-xs font-bold">User:</p>
-            <p className="text-xs mr-[100px]">{selectedUser!.userName}</p>
+            <p className="text-xs mr-[90px]">{selectedUser!.userName}</p>
           </div>
         )}
         <div className="flex justify-between items-baseline ">
           <p className="text-xs font-bold">Chats:</p>
-          <p className="text-xs mr-[100px]">2</p>
+          <p className="text-xs mr-[90px]">2</p>
         </div>
         <div className="flex flex-col items-baseline">
           <p className="text-xs font-bold">Description:</p>
