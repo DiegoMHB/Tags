@@ -62,7 +62,6 @@ export default function PostComponent({ post }: PostComponentProps) {
           className={`w-full h-full transition-opacity duration-500 transform `}
           src={`/assets/images/${post.category}.svg`}
           alt="photo"
-          onLoad={() => setImageLoaded(true)}
         />
       </div>
       }

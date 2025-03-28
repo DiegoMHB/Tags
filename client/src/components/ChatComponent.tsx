@@ -101,15 +101,15 @@ export default function ChatComponent() {
         </div>
         <form
           onSubmit={handleSendMessage}
-          className="absolute bottom-0  flex items-center p-2 bg-gray-400 w-full "
+          className="absolute bottom-0 bg-[#e0f5e9] flex items-center p-2   w-full "
         >
           <input
             type="text"
             value={content}
             onChange={(e) => setContent(e.target.value)}
-            className="flex-1 bg-gray-100 rounded-full p-3 ml-2 outline-none"
+            className="flex-1 bg-white rounded-full p-3 ml-2 outline-none"
           />
-          <button className="mx-2 bg-white rounded-full p-3 text-gray-700">
+          <button className="mx-2 bg-white rounded-full p-3 text-black">
             send
           </button>
         </form>

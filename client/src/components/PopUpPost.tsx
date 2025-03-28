@@ -1,6 +1,6 @@
 import { PostType } from "../types/postTypes";
 import { appStore } from "../zustand/appStore";
-import defaultUser from "../../public/assets/images/processed_cv_photo.jpg";
+import defaultUser from "/assets/images/processed_cv_photo.jpg";
 import { TimeLeft } from "../types/appTypes";
 import { useNavigate } from "react-router-dom";
 import { userStore } from "../zustand/userStore";
@@ -35,6 +35,7 @@ export default function PopUpPost({ post, timeLeft }: PopUpPostProps) {
 
         <div className="flex flex-col flex-1">
           <section className="flex justify-end mb-1">
+            
             <h2 className="font-bold text-xl">#{post.title} </h2>
           </section>
           <section className="flex justify-between">
