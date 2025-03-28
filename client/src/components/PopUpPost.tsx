@@ -1,6 +1,6 @@
 import { PostType } from "../types/postTypes";
 import { appStore } from "../zustand/appStore";
-import defaultUser from "../assets/processed_cv_photo.jpg";
+import defaultUser from "../../public/assets/images/processed_cv_photo.jpg";
 import { TimeLeft } from "../types/appTypes";
 import { useNavigate } from "react-router-dom";
 import { userStore } from "../zustand/userStore";

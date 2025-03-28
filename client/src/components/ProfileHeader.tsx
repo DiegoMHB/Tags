@@ -1,4 +1,4 @@
-import stampToDate from "../assets/helperFunctions/stampToDate";
+import stampToDate from "../assets/helperFunctions/dateFunctions";
 import { appStore } from "../zustand/appStore";
 import { userStore } from "../zustand/userStore";
 

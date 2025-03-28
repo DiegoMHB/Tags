@@ -20,42 +20,6 @@ export type ChatStoreType = {
 export const chatStore = create<ChatStoreType>()((set) => ({
     loading: false,
 
-    createChat: async (postId, ownerId, notOwnerId) => {
-        set({ loading: true });
-        console.log("createChat")
-        try {
-            const response = await fetch(`${url}newChat`, {
-                method: "POST",
-                body: JSON.stringify({ postId, ownerId, notOwnerId }),
-                headers: {
-                    "Content-Type": "application/json",
-                },
-            });
-
-            if (!response.ok) {
-                const data = await response.json();
-                appStore.setState({ error: data.error });
-                throw (data)
-            }
-            const data = await response.json();
-            appStore.setState({ selectedChat: data.chat });
-
-            //update the post with the chatData
-            const posts = appStore.getState().allActivePosts;
-            const updatedPosts = posts!.map((post) =>
-                post.id === postId
-                    ? post = data.post
-                    : post
-            );
-            appStore.setState({ allActivePosts: updatedPosts, error: "" });
-            return data.chat
-        } catch (e) {
-            console.log("Error", e)
-        } finally {
-            set({ loading: false });
-        }
-    },
-
     getChatById: async (id) => {
         set({ loading: true });
         console.log("getChatById")
@@ -117,6 +81,42 @@ export const chatStore = create<ChatStoreType>()((set) => ({
             console.log(appStore.getState().allChats)
             appStore.setState({ error: "" });
 
+        } catch (e) {
+            console.log("Error", e)
+        } finally {
+            set({ loading: false });
+        }
+    },
+
+    createChat: async (postId, ownerId, notOwnerId) => {
+        set({ loading: true });
+        console.log("createChat")
+        try {
+            const response = await fetch(`${url}newChat`, {
+                method: "POST",
+                body: JSON.stringify({ postId, ownerId, notOwnerId }),
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+
+            if (!response.ok) {
+                const data = await response.json();
+                appStore.setState({ error: data.error });
+                throw (data)
+            }
+            const data = await response.json();
+            appStore.setState({ selectedChat: data.chat });
+
+            //update the post with the chatData
+            const posts = appStore.getState().allActivePosts;
+            const updatedPosts = posts!.map((post) =>
+                post.id === postId
+                    ? post = data.post
+                    : post
+            );
+            appStore.setState({ allActivePosts: updatedPosts, error: "" });
+            return data.chat
         } catch (e) {
             console.log("Error", e)
         } finally {

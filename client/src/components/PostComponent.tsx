@@ -3,7 +3,7 @@ import { PostType } from "../types/postTypes";
 import { TimeLeft } from "../types/appTypes";
 import calculateTimeLeft from "../assets/helperFunctions/calculateTimeLeft";
 import { userStore } from "../zustand/userStore";
-import stampToDate from "../assets/helperFunctions/stampToDate";
+import stampToDate from "../assets/helperFunctions/dateFunctions";
 import { useNavigate } from "react-router-dom";
 import { appStore } from "../zustand/appStore";
 import { postStore } from "../zustand/postStore";
@@ -13,7 +13,7 @@ type PostComponentProps = {
 };
 
 export default function PostComponent({ post }: PostComponentProps) {
-  const { selectedUser ,setSelectedPost } = appStore();
+  const { selectedUser, setSelectedPost } = appStore();
   const { user } = userStore();
   const { getUserPosts } = postStore();
   const [imageLoaded, setImageLoaded] = useState(false);
@@ -45,7 +45,7 @@ export default function PostComponent({ post }: PostComponentProps) {
       className="flex flex-col w-full p-2 mt-0 rounded-2xl relative
     bg-gradient-to-t from-[#FFFFFF]/30 to-[#FFFFFF]/40"
     >
-      {post.picture && (
+      {post.picture ? 
         <div className="w-15 h-15 rounded-full overflow-hidden flex items-center justify-center absolute right-[20px] top-[35px]">
           <img
             className={`w-full h-full transition-opacity duration-500 transform ${
@@ -56,14 +56,23 @@ export default function PostComponent({ post }: PostComponentProps) {
             onLoad={() => setImageLoaded(true)}
           />
         </div>
-      )}
+        :
+        <div className="w-15 h-15  absolute right-[20px] top-[35px]">
+        <img
+          className={`w-full h-full transition-opacity duration-500 transform `}
+          src={`/assets/images/${post.category}.svg`}
+          alt="photo"
+          onLoad={() => setImageLoaded(true)}
+        />
+      </div>
+      }
 
       <div className=" flex flex-col w-full ml-2 ">
         <div className="flex flex-row justify-between gap-3">
           <h3
             className="text-xl font-bold flex items-baseline gap-3"
             onClick={() => {
-              setSelectedPost(post.id)
+              setSelectedPost(post.id);
               navigate(`/post/${post.id}`);
             }}
           >
