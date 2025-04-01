@@ -28,7 +28,7 @@ export default function RootLayout() {
     <>
       <main className="flex flex-col justify-center items-center h-screen max-w-[400px] m-auto ">
         {auth && (
-          <section className="flex flex-row justify-between bg-[#c6eef7] h-14 w-full p-3">
+          <section className="flex flex-row justify-between bg-[#c8eef9] h-14 w-full p-3">
             <div
               className=" flex flex-col justify-center h-[35px] w-[35px] rounded-full bg-white p-1 "
               onClick={() => navigate(`/profile`)}
@@ -65,7 +65,7 @@ export default function RootLayout() {
           )}
         </section>
 
-        <section className="flex justify-evenly bg-[#e0f5e9]  h-12 min-h-12 w-full  items-center max-w-[400px] ">
+        <section className="flex justify-evenly bg-[#c8eef9]  h-12 min-h-12 w-full  items-center max-w-[400px] ">
           {linkRendered.map((el) =>
             authUserActivePost &&
             el.text == "New Post" ? null : !authUserActivePost &&

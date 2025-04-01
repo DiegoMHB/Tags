@@ -14,7 +14,6 @@ import {
   populateStoreWithChatData,
   populateStoreWithChatDataList,
 } from "../assets/helperFunctions/chatFunctions";
-import ProfileHeader from "../components/ProfileHeader";
 
 export default function Post() {
   const {
@@ -69,7 +68,7 @@ export default function Post() {
 
   return (
     <main className="flex flex-col justify-center items-center w-screen">
-      <ProfileHeader></ProfileHeader>
+      {/*POST HEADER*/}
 
       {authUserActivePost && post && post.id === authUserActivePost.id && (
         <h3 className="text-xl text-center mb-3">You have an active post:</h3>
