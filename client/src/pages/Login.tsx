@@ -5,11 +5,13 @@ import { userStore } from "../zustand/userStore";
 import { appStore } from "../zustand/appStore";
 import BtnMain from "../components/buttons/BtnMain";
 import { postStore } from "../zustand/postStore";
+import { chatStore } from "../zustand/chatStore";
 
 export default function Login() {
   const {  auth, logIn } = userStore();
   const { getUserPosts } = postStore();
   const { error,getAllPosts } = appStore();
+  const { getAllChats } = chatStore();
   const navigate = useNavigate();
 
   const [loginForm, setLoginForm] = useState<LoginForm>({
@@ -41,7 +43,7 @@ export default function Login() {
     } else {
       getAllPosts();
       getUserPosts();
-
+      getAllChats();  
       navigate("/map");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
