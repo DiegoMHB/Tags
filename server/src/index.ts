@@ -24,7 +24,7 @@ app.use(router)
 async function connectDB() {
     try {
         await db.authenticate();
-        await db.sync()
+        await db.sync({force:true})
             // TODO: CLOSE EXPIRED POSTS 
             // .then(() => Populate())//-- DEV --
             // .then(() => {
