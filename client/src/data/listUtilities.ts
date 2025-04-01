@@ -11,11 +11,9 @@ export const links: linkList = {
     online:
         [
             { to: "/map", text: "Map", id: 1 },
-            { to: "/profile", text: "Profile", id: 2 },
             { to: "/tags", text: "Tags", id: 3 },
             { to: "/post", text: "Post", id: 4 },
             { to: "/postForm", text: "New Post", id: 5 },
-            { to: "/chat", text: "Chat", id: 6 },
         ]
 
 };

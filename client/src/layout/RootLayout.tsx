@@ -3,17 +3,17 @@ import Map from "../pages/Map";
 import NavBarElement from "../components/buttons/NavBarElement";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import { links } from "../data/listUtilities";
+import chat from "../../public/assets/images/chat.svg";
+import userIcon from "../../public/assets/images/user.svg";
 import { appStore } from "../zustand/appStore";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { userStore } from "../zustand/userStore";
-import SearchBar from "../components/SearchBar";
 
 export default function RootLayout() {
   const { mapRender, authUserActivePost } = appStore();
   const { auth, user } = userStore();
   const url = useLocation().pathname;
   const navigate = useNavigate();
-  const[showSearch, setShowSearch]= useState<boolean>(false)
 
   const linkRendered = auth ? links.online : links.offline;
 
@@ -24,24 +24,29 @@ export default function RootLayout() {
     } else navigate("/");
   }, [auth, navigate]);
 
-  useEffect(() => {
-    if (url.startsWith("/profile") || url.startsWith("/chat") || url === "/tags") {
-      setShowSearch(true);
-    } else {
-      setShowSearch(false);
-    }
-  }, [url]);
-
-
   return (
     <>
       <main className="flex flex-col justify-center items-center h-screen max-w-[400px] m-auto ">
-        {showSearch && (
-          <section
-            className="
-        flex justify-evenly bg-[#c6eef7] h-13 w-full items-center "
-          >
-            <SearchBar></SearchBar>
+        {auth && (
+          <section className="flex flex-row justify-between bg-[#c6eef7] h-14 w-full p-3">
+            <div
+              className=" flex flex-col justify-center h-[35px] w-[35px] rounded-full bg-white p-1 "
+              onClick={() => navigate(`/profile`)}
+            >
+              <img
+                src={userIcon}
+                className="w-[22px] h-[22px] self-center"
+              ></img>
+            </div>
+
+            <p className="text-2xl">this now!</p>
+
+            <div
+              className=" flex flex-col justify-center h-[35px] w-[35px] rounded-full bg-white p-1 "
+              onClick={() => navigate(`/chat/${user.id}`)}
+            >
+              <img src={chat} className="w-[22px] h-[22px] self-center"></img>
+            </div>
           </section>
         )}
 
@@ -49,7 +54,7 @@ export default function RootLayout() {
           className="flex-1 flex align-middle justify-center 
         bg-gradient-to-b from-[#c6eef7] to-[#e0f5e6] 
         h-[100%] w-[100%]
-        overflow-y-auto scrollbar-hidden"
+        overflow-y-auto scrollbar-hidden "
         >
           {url === "/" && !mapRender ? (
             <Landing />

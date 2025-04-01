@@ -78,7 +78,6 @@ export const chatStore = create<ChatStoreType>()((set) => ({
 
 
             appStore.setState({ allChats: groupedChats });
-            console.log(appStore.getState().allChats)
             appStore.setState({ error: "" });
 
         } catch (e) {
