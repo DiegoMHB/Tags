@@ -1,51 +1,34 @@
-import { useEffect, useState } from "react";
-import lupa from "../../public/assets/images/lupa.svg";
-import back from "../../public/assets/images/back.svg";
-import { useLocation } from "react-router-dom";
+import { useState } from "react";
+import { categories } from "../data/listUtilities";
 
-export default function SearchBar() {
-  const [search, setSearch] = useState<string>("");
-  const [searchIsOpen, setSearchIsOpen] = useState<boolean>(false);
-  const url = useLocation().pathname;
+type SearchBarProps = {
+    setSelectedCategory: (cat:string)=>void
+}
 
-  useEffect(() => {
-    return () => {
-      setSearchIsOpen(false);
-    };
-  }, [url]);
 
-  const handleSearch = async (e: React.FormEvent) => {
-    e.preventDefault();
+export default function SearchBar({ setSelectedCategory }:SearchBarProps) {
+  const [category, setCategory] = useState("");
+
+  const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    e.preventDefault()
+    setCategory(e.target.value);
+    setSelectedCategory(e.target.value); 
   };
 
   return (
-    <form
-      onSubmit={handleSearch}
-      className={`flex  items-center gap-2  bg-[#c6eef7] mx-2 w-full 
-          ${searchIsOpen ? "justify-end" : "flex-row-reverse"} `}
-    >
-      {searchIsOpen && (
-        <div className="relative flex w-full">
-          <img
-            src={back}
-            onClick={() => setSearchIsOpen(false)}
-            className="w-[26px] h-[26px] absolute top-[4px] left-[5px]"
-          ></img>
-
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="flex-1 bg-white rounded-full h-8 outline-none pl-8"
-          />
-        </div>
-      )}
-      <button
-        className="flex justify-center items-center h-[32px] w-[32px] bg-white rounded-full text-black"
-        onClick={() => setSearchIsOpen(true)}
+    <div className="absolute top-5 left-1/2 transform -translate-x-1/2 z-1000 bg-white p-2 rounded-full shadow-md h-[35px]">
+      <select
+        value={category}
+        onChange={handleCategoryChange}
+        className=""
       >
-        <img src={lupa} className="w-[15px] h-[15px]" alt="Buscar" />
-      </button>
-    </form>
+        <option value="">All Categories</option>
+        {categories.map(category => category.value).map((cat) => (
+          <option key={cat} value={cat}>
+            {cat}
+          </option>
+        ))}
+      </select>
+    </div>
   );
 }

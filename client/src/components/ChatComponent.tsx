@@ -75,10 +75,11 @@ export default function ChatComponent() {
   
   return (
     <main className="flex flex-col h-screen w-full relative">
-      <p className="mt-2 mx-auto p-1 uppercase bg-amber-50 ">
-        {selectedChat?.context.owner.userName} and{" "}
-        {selectedChat?.context.notOwner.userName}
-      </p>
+      <div className="flex flex-row mx-auto gap-2 ">
+       <img src={selectedChat?.context.owner.profilePic} className="w-[55px] h-[55px] rounded-[100%] object-cover" /> 
+       <img src={selectedChat?.context.notOwner.profilePic} className="w-[55px] h-[55px] rounded-[100%] object-cover"  /> 
+        
+      </div>
 
       <div className="flex flex-col-reverse overflow-y-auto flex-grow space-y-2">
         <div className="flex flex-col overflow-y-auto flex-grow max-h-[calc(100vh-140px)] space-y-2 scrollbar-hidden pb-[60px] ">

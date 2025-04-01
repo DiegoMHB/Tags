@@ -20,9 +20,6 @@ export default function NavBarElement({ text, link, url }: NavBarElementProps) {
     navigate(`${link}`);
   }
 
-  //CHANGED
-  console.log(text, url)
-
   return (
     <div className=" w-15 h-5 flex justify-center items-center bg-black rounded-full">
       <p
