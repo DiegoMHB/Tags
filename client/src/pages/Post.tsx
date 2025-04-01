@@ -3,9 +3,7 @@ import { appStore } from "../zustand/appStore";
 import { userStore } from "../zustand/userStore";
 import BtnMain from "../components/buttons/BtnMain";
 import PostComponent from "../components/PostComponent";
-import { LatLngTuple } from "leaflet";
-import { MapContainer, Marker, TileLayer } from "react-leaflet";
-import { mapUtilities } from "../data/mapUtilities";
+
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { ChatListElement, PostType } from "../types/postTypes";
@@ -16,6 +14,7 @@ import {
   populateStoreWithChatData,
   populateStoreWithChatDataList,
 } from "../assets/helperFunctions/chatFunctions";
+import ProfileHeader from "../components/ProfileHeader";
 
 export default function Post() {
   const {
@@ -67,62 +66,53 @@ export default function Post() {
 
   //TODO: component for the map with props and attributes
   //TODO: Profileheader of the user
-  
+
   return (
-    <main className="flex flex-col justify-center items-center w-screen space-y-4 ">
-      {/*POST HEADER*/}
+    <main className="flex flex-col justify-center items-center w-screen">
+      <ProfileHeader></ProfileHeader>
+
       {authUserActivePost && post && post.id === authUserActivePost.id && (
-        <h3 className="text-xl text-center m-0">You have an active post:</h3>
+        <h3 className="text-xl text-center mb-3">You have an active post:</h3>
       )}
 
-      {post && post.userId == user.id && post.id !== authUserActivePost?.id && (
-        <h3 className="text-2xl text-center m-3">Closed post:</h3>
-      )}
-      {selectedUser && post && post.userId !== user.id && (
-        <h3 className="text-xl text-center m-1">
-          Active post from: {selectedUser.name}
-        </h3>
-      )}
-
-      <div>
-        {post && (
-          <div className=" flex flex-col items-center w-[350px] mt-0 p-2 gap-2">
-            <PostComponent post={post!}></PostComponent>
-
-            <MapContainer
-              center={post!.coordinates! as LatLngTuple}
-              zoom={15}
-              id="mapPost"
-              zoomControl={false}
-            >
-              <TileLayer
-                url={mapUtilities.url}
-                attribution={mapUtilities.attribution}
-                id="map"
-              />
-              <Marker position={post!.coordinates as LatLngTuple}></Marker>
-            </MapContainer>
-          </div>
+      <div
+        className="flex flex-col justify-center items-center gap-3
+                    bg-gradient-to-t from-[#FFFFFF]/60 to-[#FFFFFF]/40 rounded-2xl "  >
+        {post &&
+          post.userId == user.id &&
+          post.id !== authUserActivePost?.id && (
+            <h3 className="text-2xl text-center m-3">Closed post:</h3>
+          )}
+        {selectedUser && post && post.userId !== user.id && (
+          <h3 className="text-xl text-center m-1">
+            Active post from: {selectedUser.name}
+          </h3>
         )}
 
-        {post && post.userId === user.id && (
-          <div className="flex flex-col justify-between items-center w-[100%] pb-5 mt-5">
-            {authUserActivePost &&
-              post &&
-              post.id === authUserActivePost.id && (
-                <BtnMain
-                  text="Edit Post"
-                  disabled={selectedFile && !fotoUrl ? true : false}
-                  mode={1}
-                  link=""
-                  onClick={() => navigate("/postForm")}
-                />
-              )}
-            <div className="flex flex-col gap-3 w-full justify-center items-center">
+        <div className="flex flex-col justify-center items-center ">
+          {post && (
+            <div className=" flex flex-col items-center w-[350px] p-2 gap-2">
+              <PostComponent post={post!}></PostComponent>
+            </div>
+          )}
+
+          {post && post.userId === user.id && (
+            <div className="flex flex-row justify-center gap-6 items-center w-[100%] ">
+              {authUserActivePost &&
+                post &&
+                post.id === authUserActivePost.id && (
+                  <BtnMain
+                    text="Edit Post"
+                    disabled={selectedFile && !fotoUrl ? true : false}
+                    mode={3}
+                    link=""
+                    onClick={() => navigate("/postForm")}
+                  />
+                )}
               <BtnMain
                 text="Delete Post"
                 disabled={selectedFile && !fotoUrl ? true : false}
-                mode={0}
+                mode={2}
                 link=""
                 onClick={() => {
                   deletePost(post!.id);
@@ -135,7 +125,7 @@ export default function Post() {
                   <BtnMain
                     text="Close Post"
                     disabled={selectedFile && !fotoUrl ? true : false}
-                    mode={0}
+                    mode={2}
                     link=""
                     onClick={() => {
                       closeActivePost();
@@ -144,16 +134,18 @@ export default function Post() {
                   />
                 )}
             </div>
-          </div>
-        )}
+          )}
+        </div>
+        <div className="flex flex-row justify-center mb-5 w-full ">
+          <BtnMain
+            text="GO TO THE CHAT"
+            disabled={false}
+            mode={0}
+            link=""
+            onClick={handleChatClick}
+          />
+        </div>
       </div>
-      <BtnMain
-        text="GO TO THE CHAT"
-        disabled={false}
-        mode={0}
-        link=""
-        onClick={handleChatClick}
-      />
     </main>
   );
 }

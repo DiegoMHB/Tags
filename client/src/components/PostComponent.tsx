@@ -7,6 +7,9 @@ import stampToDate from "../assets/helperFunctions/dateFunctions";
 import { useNavigate } from "react-router-dom";
 import { appStore } from "../zustand/appStore";
 import { postStore } from "../zustand/postStore";
+import { MapContainer, Marker, TileLayer } from "react-leaflet";
+import { mapUtilities } from "../data/mapUtilities";
+import { LatLngTuple } from "leaflet";
 
 type PostComponentProps = {
   post: PostType;
@@ -42,25 +45,23 @@ export default function PostComponent({ post }: PostComponentProps) {
 
   return (
     <section
-      className="flex flex-col w-full p-2 mt-0 rounded-2xl relative
-    bg-gradient-to-t from-[#FFFFFF]/60 to-[#FFFFFF]/40"
+      className="flex flex-col w-full p-2 mt-0 rounded-2xl relative"
     >
-      
-        <div className="w-13 h-13 rounded-full overflow-hidden flex items-center justify-center absolute right-[20px] top-[45px]">
-          <img
-            className={`w-full h-full transition-opacity duration-500 transform 
+      <div className="w-13 h-13 rounded-full overflow-hidden flex items-center justify-center absolute right-[20px] top-[45px]">
+        <img
+          className={`w-full h-full transition-opacity duration-500 transform 
                 ${imageLoaded ? "opacity-100 " : "opacity-0 "}
-                ${post.picture ? "scale-200": "scale-100"}`
-              }
-            src={post.picture?post.picture:`/assets/images/${post.category}.svg`}
-            alt="photo"
-            onLoad={() => setImageLoaded(true)}
-          />
-        </div>
-        
+                ${post.picture ? "scale-200" : "scale-100"}`}
+          src={
+            post.picture ? post.picture : `/assets/images/${post.category}.svg`
+          }
+          alt="photo"
+          onLoad={() => setImageLoaded(true)}
+        />
+      </div>
 
-      <div className=" flex flex-col w-full ml-2 ">
-        <div className="flex flex-row justify-between gap-3 border-b-1">
+      <div className=" flex flex-col w-full px-3">
+        <div className="flex flex-row justify-between gap-3 border-b-1 ">
           <h3
             className="text-xl font-bold flex items-baseline gap-3 "
             onClick={() => {
@@ -108,6 +109,21 @@ export default function PostComponent({ post }: PostComponentProps) {
         <div className="flex flex-col items-baseline">
           <p className="text-xs font-bold">Description:</p>
           <p className="text-[14px] ">{post.description}</p>
+        </div>
+        <div className="mt-5">
+          <MapContainer
+            center={post!.coordinates! as LatLngTuple}
+            zoom={15}
+            id="mapPost"
+            zoomControl={false}
+          >
+            <TileLayer
+              url={mapUtilities.url}
+              attribution={mapUtilities.attribution}
+              id="map"
+            />
+            <Marker position={post!.coordinates as LatLngTuple}></Marker>
+          </MapContainer>
         </div>
       </div>
     </section>
