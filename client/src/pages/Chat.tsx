@@ -16,19 +16,22 @@ export default function Chat() {
   const { id } = useParams();
 
   const [pageContent, setPageContent] = useState<string>("");
-  const [filteredChats, setFilteredChats] = useState<AllChatsListElement[] | []>([]);
+  const [filteredChats, setFilteredChats] = useState<
+    AllChatsListElement[] | []
+  >([]);
 
   useEffect(() => {
     if (id === user.id) {
       getAllChats();
       setPageContent("all");
     } else if (checkIdType(id!, authUserPostsList!)) {
-        const postId = selectedPost?.id;
-        if (!postId) return;
-        const filtered = allChats?.filter((chat) => chat.post.id === postId);
-        setFilteredChats(filtered ?? []);
+      const postId = selectedPost?.id;
+      if (!postId) return;
+      const filtered = allChats?.filter((chat) => chat.post.id === postId);
+      setFilteredChats(filtered ?? []);
       setPageContent("post");
     } else {
+      getAllChats();
       setPageContent("chat");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -42,3 +45,5 @@ export default function Chat() {
     </main>
   );
 }
+//todo:
+//if AllChats changes refresh

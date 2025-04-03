@@ -38,7 +38,6 @@ export default function ChatComponent() {
     return () => clearInterval(interval);
   }, [id, getChatById]);
 
-
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (content.trim().length === 0) return;
@@ -72,17 +71,22 @@ export default function ChatComponent() {
   if (!selectedChat) {
     return <p className="text-center text-xl mt-4">No chat selected.</p>;
   }
-  
+
   return (
-    <main className="flex flex-col h-screen w-full relative">
-      <div className="flex flex-row mx-auto gap-2 ">
-       <img src={selectedChat?.context.owner.profilePic} className="w-[55px] h-[55px] rounded-[100%] object-cover" /> 
-       <img src={selectedChat?.context.notOwner.profilePic} className="w-[55px] h-[55px] rounded-[100%] object-cover"  /> 
-        
+    <main className="flex flex-col h-screen w-full relative ">
+      <div className="absolute top-5 left-1/2 transform -translate-x-1/2 z-1000 flex flex-row  gap-2 h-[70px]">
+        <img
+          src={selectedChat?.context.owner.profilePic}
+          className="w-[50px] h-[50px] rounded-[100%] object-cover"
+        />
+        <img
+          src={selectedChat?.context.notOwner.profilePic}
+          className="w-[50px] h-[50px] rounded-[100%] object-cover"
+        />
       </div>
 
       <div className="flex flex-col-reverse overflow-y-auto flex-grow space-y-2">
-        <div className="flex flex-col overflow-y-auto flex-grow max-h-[calc(100vh-140px)] space-y-2 scrollbar-hidden pb-[60px] ">
+        <div className="flex flex-col overflow-y-auto flex-grow max-h-[calc(100vh-195px)] space-y-2 scrollbar-hidden pb-[60px] ">
           {messages &&
             messages.map((mes) => (
               <div

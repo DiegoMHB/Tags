@@ -127,6 +127,7 @@ export const chatStore = create<ChatStoreType>()((set) => ({
         set({ loading: true });
         const chatId = appStore.getState().selectedChat!.id
         console.log("createMessage")
+        console.log(chatId, message, userId )
         try {
             const response = await fetch(`${url}newMessage`, {
                 method: "POST",

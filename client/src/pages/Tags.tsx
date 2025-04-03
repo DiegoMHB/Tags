@@ -104,3 +104,4 @@ export default function PostsListPage() {
     </div>
   );
 }
+//navigate to post

@@ -13,24 +13,15 @@ export async function populateStoreWithChatData(id: string): Promise<void> {
     const postState = postStore.getState();
 
     await chatState.getChatById(id);
-    console.log('1er log',appState.selectedChat)
 
     if (appState.selectedChat) {
         const otherUserId =
-            userState.user.id === appState.selectedChat.ownerId
-                ? appState.selectedChat.notOwnerId
-                : appState.selectedChat.ownerId;
+            userState.user.id === appState.selectedChat.context.owner.userId
+                ? appState.selectedChat.context.notOwner.userId
+                : appState.selectedChat.context.owner.userId;
         await postState.getPostById(appState.selectedChat.postId)
         await appState.getUserById(otherUserId);
 
     }
 }
 
-
-export async function populateStoreWithChatDataList(id: string): Promise<void> {
-
-    const chatState = chatStore.getState();
-    await chatState.getChatsByPostId(id)
-
-
-}

@@ -10,10 +10,6 @@ import { ChatListElement, PostType } from "../types/postTypes";
 import { checkExistingChat } from "../assets/helperFunctions/checkExistingChat";
 import { chatStore } from "../zustand/chatStore";
 import { postStore } from "../zustand/postStore";
-import {
-  populateStoreWithChatData,
-  populateStoreWithChatDataList,
-} from "../assets/helperFunctions/chatFunctions";
 
 export default function Post() {
   const {
@@ -45,7 +41,6 @@ export default function Post() {
   async function handleChatClick() {
     if (post!.userId === user.id) {
       //owner
-      populateStoreWithChatDataList(post!.id);
       navigate(`/chat/${post!.id}`);
     } else {
       //not owner
@@ -53,17 +48,14 @@ export default function Post() {
 
       if (chat) {
         const { chatId } = chat;
-        await populateStoreWithChatData(chatId);
         navigate(`/chat/${chatId}`);
       } else {
         const newChat = await createChat(post!.id, post!.userId, user.id);
-        await populateStoreWithChatData(newChat!.id);
         navigate(`/chat/${newChat!.id}`);
       }
     }
   }
 
-  //TODO: component for the map with props and attributes
   //TODO: Profileheader of the user
 
   return (
@@ -148,3 +140,6 @@ export default function Post() {
     </main>
   );
 }
+//todo
+// Active Post from...
+//bg for every post

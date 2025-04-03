@@ -85,7 +85,6 @@ export const getAllMyChats = async (req: Request, res: Response): Promise<void> 
     try {
         const id = req.params.id;
         const response = await Chat.findAll({ where: { [Op.or]: [{ ownerId: id }, { notOwnerId: id }] } })
-        console.log(response)
         if (response) {
             res
                 .status(200)
@@ -128,7 +127,6 @@ export const getChatsByPostId = async (req: Request, res: Response): Promise<voi
 export const newMessage = async (req: Request, res: Response): Promise<void> => {
     try {
         const { chatId, message } = req.body;
-
         const chat = await Chat.findByPk(chatId);
         if (!chat) {
             res.status(404).json({ error: "Chat not found" });

@@ -26,17 +26,17 @@ async function connectDB() {
         await db.authenticate();
         await db.sync({force:true})
             // TODO: CLOSE EXPIRED POSTS 
-            // .then(() => Populate())//-- DEV --
-            // .then(() => {
-            //     if(port === "3000")
-            //     deleteExpiredPosts();
-            //     deleteDefaultPosts();
-            //     console.log("Database:::: deleted expired and default Posts")
-            // })
-            // .then(() => {
-            //     createPosts();
-            //     console.log("Database::: new default Posts created")
-            // })
+            .then(() => Populate())//-- DEV --
+            .then(() => {
+                if(port === "3000")
+                deleteExpiredPosts();
+                deleteDefaultPosts();
+                console.log("Database:::: deleted expired and default Posts")
+            })
+            .then(() => {
+                createPosts();
+                console.log("Database::: new default Posts created")
+            })
         console.log("Connected with DB")
     } catch (e) {
         console.log("Connection with DB not succeeded: ", e)

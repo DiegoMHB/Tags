@@ -27,7 +27,7 @@ export default function PopUpPost({ post, timeLeft }: PopUpPostProps) {
             post.picture
               ? post.picture
               : selectedUser?.profilePicture
-              ? selectedUser?.profilePicture // TODO: icon depending on category
+              ? selectedUser?.profilePicture 
               : defaultUser
           }
           alt={"photo"}

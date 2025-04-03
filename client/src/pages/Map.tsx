@@ -45,3 +45,6 @@ export default function Map() {
     </main>
   );
 }
+//todo button to post
+//skeleton
+//not rendering my own active post
