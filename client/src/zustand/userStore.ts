@@ -99,8 +99,8 @@ export const userStore = create<UserStoreType>()((set) => ({
     logOut: async (): Promise<void> => {
         console.log("logOut")
         try {
-            const response = await fetch(`${url}logout`, {
-                method: "GET",
+            const response = await fetch(`${url}logOut`, {
+                method: "POST",
                 credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
@@ -113,9 +113,8 @@ export const userStore = create<UserStoreType>()((set) => ({
                 user: initialUser,
                 auth: false,
                 loading: false,
-                error: "",
-                authUserActivePost: null
             }))
+            appStore.setState({ error: "" });
             return
         } catch (error) {
             appStore.setState({ error: error as string });

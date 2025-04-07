@@ -1,10 +1,10 @@
 import { LatLngTuple } from "leaflet";
 import { create } from "zustand";
+import { appStore } from "./appStore";
 
 export type MapStoreType ={
  coordinates : LatLngTuple,
  loading : boolean,
- error: string,
  getCoords : ()=> void
 }
 
@@ -29,7 +29,7 @@ export const mapStore = create<MapStoreType>()((set) => ({
           },
           (error) => {
             console.error("No location found:", error);
-            if(error) set({error: error.message}) 
+            if(error) appStore.setState({error: error.message}) 
             
           },
           {

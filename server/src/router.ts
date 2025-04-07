@@ -10,7 +10,7 @@ const router = express.Router();
 
 router.post("/register", register);
 router.post("/login", login);
-router.get("/logout", logout);
+router.post("/logOut", logout);
 
 //user post (auth)
 router.get("/getAllPosts/:id", getUserPosts);

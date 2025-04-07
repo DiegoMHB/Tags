@@ -22,7 +22,7 @@ export default function SearchBar({ setSelectedCategory }:SearchBarProps) {
         onChange={handleCategoryChange}
         className=""
       >
-        <option value="">All Categories</option>
+        <option value="" key={0}>All Categories</option>
         {categories.map(category => category.value).map((cat) => (
           <option key={cat} value={cat}>
             {cat}

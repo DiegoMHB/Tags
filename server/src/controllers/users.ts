@@ -84,9 +84,16 @@ export const login = async (req: Request, res: Response): Promise<any> => {
 }
 
 export const logout = async (req: Request, res: Response): Promise<any> => {
+    try{
     return res
         .clearCookie('access_token', { httpOnly: true, secure: false, sameSite: 'strict' })
         .send({ message: 'Cookie deleted, session expired', ok: true });
+    }catch (error) {
+        if (error.message) {
+            return res.status(400).send({ error: error.message });
+        }
+        return res.status(500).send({ error: "Something happened: try again" });
+    }
 }
 
 export const getUser = async (req: Request, res: Response) : Promise<any>  => {

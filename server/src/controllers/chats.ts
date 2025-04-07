@@ -19,8 +19,8 @@ export const newChat = async (req: Request, res: Response): Promise<void> => {
 
         const newChat = new Chat({
             postId, ownerId, notOwnerId, messages: [], context: {
-                owner: { userName: (await owner).userName, id: (await owner).id,profilePic: (await owner).profilePicture },
-                notOwner: { userName: (await notOwner).userName,id: (await notOwner).id, profilePic: (await notOwner).profilePicture },
+                owner: { userName: (await owner).userName, id: (await owner).id, profilePic: (await owner).profilePicture },
+                notOwner: { userName: (await notOwner).userName, id: (await notOwner).id, profilePic: (await notOwner).profilePicture },
                 post: { id: (await post).id, title: (await post).title, category: (await post).category, picture: (await post).picture, createdAt: (await post).createdAt }
             }
         });
@@ -148,7 +148,11 @@ export const newMessage = async (req: Request, res: Response): Promise<void> => 
 
         res.status(200).json({ success: true, message: "Message added successfully", chat });
     } catch (error) {
-        console.error("Error adding new message:", error);
-        res.status(500).json({ error: "Something went wrong" });
+        if (error.message) {
+            res.status(400).send({ error: error.message });
+            return
+        }
+        res.status(500).send({ error: "Something happened: try again" });
+        return
     }
 };

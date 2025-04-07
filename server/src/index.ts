@@ -14,11 +14,12 @@ const app = express();
 const port = process.env.PORT
 
 app.use(cors({
-    origin: ["http://localhost:5173", "http://localhost:5174"],
+    origin: "http://localhost:5173",
+    // origin: ["http://localhost:5173", "http://localhost:5174"],
     credentials: true,
 }));
-app.use(bodyParser.json());
 app.use(cookieParser())
+app.use(bodyParser.json());
 app.use(router)
 
 async function connectDB() {

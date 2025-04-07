@@ -65,7 +65,7 @@ export default function ChatComponent() {
     setMessages((prev) => (prev ? [...prev, newMessage] : [newMessage]));
 
     setContent("");
-    await createMessage(newMessage, user.id);
+    await createMessage(id!,newMessage,user.id);
   };
 
   if (!selectedChat) {
