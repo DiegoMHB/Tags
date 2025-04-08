@@ -1,5 +1,5 @@
 import express from "express";
-import { register, login, logout, getUser } from "./controllers/users";
+import { register, login,loginAuto, logout, getUser } from "./controllers/users";
 import { newPost, getAllPosts, deletePost, closePost, editPost, getUserPosts,getPostById } from "./controllers/posts";
 import { newChat,getChatById,newMessage,getChatsByPostId, getAllMyChats } from "./controllers/chats";
 
@@ -10,6 +10,7 @@ const router = express.Router();
 
 router.post("/register", register);
 router.post("/login", login);
+router.post("/loginAuto", loginAuto);
 router.post("/logOut", logout);
 
 //user post (auth)

@@ -83,6 +83,38 @@ export const login = async (req: Request, res: Response): Promise<any> => {
 
 }
 
+export const loginAuto = async (req, res) => {
+  const token = req.cookies.access_token;
+  if (!token) {
+    return res.status(403);
+  }
+  try {
+    const data = jwt.verify(token, jsonToken);
+    const user = await User.findByPk(data.id);
+    if (user instanceof User) {
+      user.password = '';
+      const token = jwt.sign(
+        { id: user.id, username: user.userName },
+        jsonToken,
+        { expiresIn: '1h' });
+
+      return res
+        .cookie('access_token', token, {
+          httpOnly: true,
+          secure: false,
+          sameSite: 'strict',
+        })
+        .status(200)
+        .send(user)
+    }
+  } catch (error) {
+    if (error.message) {
+      return res.status(400).send({ error: error.message });
+    }
+    res.status(500).send({ error: 'Something happened' });
+  }
+}
+
 export const logout = async (req: Request, res: Response): Promise<any> => {
     try{
     return res
