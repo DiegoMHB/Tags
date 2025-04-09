@@ -7,11 +7,12 @@ import { appStore } from "../zustand/appStore";
 import { mapUtilities } from "../data/mapUtilities";
 import PostMarker from "../components/PostMarker";
 import SearchBar from "../components/SearchBar";
+import { userStore } from "../zustand/userStore";
 
 export default function Map() {
   const { coordinates, getCoords } = mapStore();
   const { allActivePosts, authUserActivePost, resetSelected } = appStore();
-  
+  const {auth} = userStore()
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   useEffect(() => {
@@ -32,11 +33,13 @@ export default function Map() {
       <MapContainer center={coordinates as LatLngTuple} zoom={15} id="map" zoomControl={false}>
         <TileLayer url={mapUtilities.url} attribution={mapUtilities.attribution} id="map" />
         
-        {!authUserActivePost ? ( //my post or the pin (if cat selected also filtering)
-          <Marker position={coordinates as LatLngTuple}></Marker>
-        ) : ( authUserActivePost.category === selectedCategory && 
-          <PostMarker post={authUserActivePost} key={authUserActivePost.id} isUsers={true} />
-        )}
+        {authUserActivePost ? (
+  (!selectedCategory || authUserActivePost.category === selectedCategory) && (
+    <PostMarker post={authUserActivePost} key={authUserActivePost.id} isUsers={true} />
+  )
+) : (
+  <Marker position={coordinates as LatLngTuple} />
+)}
 
         {filteredPosts?.map((post) => (
           <PostMarker post={post} key={post.id} isUsers={false} />

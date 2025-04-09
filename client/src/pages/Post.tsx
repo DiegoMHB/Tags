@@ -118,8 +118,9 @@ export default function Post() {
                     disabled={selectedFile && !fotoUrl ? true : false}
                     mode={2}
                     link=""
-                    onClick={() => {
-                      closeActivePost();
+                    onClick={async() => {
+                       closeActivePost();
+
                       navigate("/Profile");
                     }}
                   />

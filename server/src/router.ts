@@ -10,8 +10,8 @@ const router = express.Router();
 
 router.post("/register", register);
 router.post("/login", login);
-router.post("/loginAuto", loginAuto);
-router.post("/logOut", logout);
+router.get("/loginAuto", loginAuto);
+router.get("/logOut", logout);
 
 //user post (auth)
 router.get("/getAllPosts/:id", getUserPosts);

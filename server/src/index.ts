@@ -7,6 +7,7 @@ import router from "./router";
 import { createPosts, deleteExpiredPosts } from "./dev/InitializersFunctions";
 import { deleteDefaultPosts } from "./dev/InitializersFunctions";
 import { Populate } from "./dev/InitializersFunctions";
+import { METHODS } from "node:http";
 
 
 
@@ -17,6 +18,7 @@ app.use(cors({
     origin: "http://localhost:5173",
     // origin: ["http://localhost:5173", "http://localhost:5174"],
     credentials: true,
+    METHODS:["GET","POST","PATCH","DELETE"]
 }));
 app.use(cookieParser())
 app.use(bodyParser.json());

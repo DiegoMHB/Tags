@@ -2,6 +2,8 @@ import { create } from "zustand";
 import { NewUser, User } from "../types/userTypes";
 import { LoginForm } from "../types/appTypes";
 import { appStore } from "./appStore";
+import { postStore } from "./postStore";
+import { chatStore } from "./chatStore";
 
 const port = import.meta.env.VITE_PORT;
 const url = `http://localhost:${port}/`
@@ -13,6 +15,7 @@ export type UserStoreType = {
 
     signIn: (user: NewUser) => void
     logIn: (user: LoginForm) => void
+    logInAuto: () => void
     logOut: () => void
 }
 
@@ -29,7 +32,7 @@ const initialUser: User = {
 
 };
 
-export const userStore = create<UserStoreType>()((set) => ({
+export const userStore = create<UserStoreType>()((set, get) => ({
 
     user: initialUser,
     auth: false,
@@ -95,16 +98,46 @@ export const userStore = create<UserStoreType>()((set) => ({
             set({ loading: false })
         }
     },
+    logInAuto: async (): Promise<void> => {
+        set({ loading: true });
+        console.log("logInAuto")
+        try {
+            const response = await fetch(`${url}loginAuto`, {
+                method: "GET",
+                credentials: 'include',
+            });
+            if (!response.ok) {
+                const data = await response.json();
+                appStore.setState({ error: data.error });
+                throw (data)
+            };
+            response.json().then((res)=>{
+                set({ user: { ...res.user } })
+                set({ auth: true });
+                if (get().user.id) {
+                    appStore.getState().getAllPosts();
+                    postStore.getState().getUserPosts()
+                    chatStore.getState().getAllChats()
+                }
+            })
+            appStore.setState({ error: "" });
+
+            return 
+
+        } catch (e) {
+            console.log("Error", e)
+            return
+        }
+
+
+    },
 
     logOut: async (): Promise<void> => {
         console.log("logOut")
         try {
             const response = await fetch(`${url}logOut`, {
-                method: "POST",
-                credentials: 'include',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                method: "GET",
+                credentials: 'include'
             });
             if (!response.ok) {
                 throw new Error('Session couldn\'t be closed');
