@@ -12,8 +12,8 @@ export type ChatStoreType = {
 
     getChatById: (id: string) => void,
     getAllChats: () => void,
-    createChat: ( postId: string, owner: string, notOwner: string) => Promise<ChatType | void>
-    createMessage: (chatId:string,message: Message, userId: string) => void
+    createChat: (postId: string, owner: string, notOwner: string) => Promise<ChatType | void>
+    createMessage: (chatId: string, message: Message, userId: string) => void
 }
 
 
@@ -123,11 +123,12 @@ export const chatStore = create<ChatStoreType>()((set) => ({
         }
     },
 
-    createMessage: async (chatId,message, userId) => {
+    createMessage: async (chatId, message, userId) => {
         set({ loading: true });
         console.log("createMessage")
+        console.log(chatId, message, userId)
         try {
-            const response = await fetch(`${url}newMessage`, {
+            const response = await fetch(`${url}postMessage`, {
                 method: "POST",
                 body: JSON.stringify({ chatId, message, userId }),
                 headers: {
@@ -141,7 +142,6 @@ export const chatStore = create<ChatStoreType>()((set) => ({
                 throw (data)
             }
             const data = await response.json();
-            console.log(data.chat)
             appStore.setState({ selectedChat: data.chat });
 
         } catch (e) {

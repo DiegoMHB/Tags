@@ -1,9 +1,9 @@
 import { PostType } from "../types/postTypes";
 import { appStore } from "../zustand/appStore";
-import defaultUser from "../assets/images/processed_cv_photo.jpg";
 import { TimeLeft } from "../types/appTypes";
 import { useNavigate } from "react-router-dom";
 import { userStore } from "../zustand/userStore";
+import {  categories } from "../data/listUtilities";
 
 type PopUpPostProps = {
   post: PostType;
@@ -16,7 +16,10 @@ export default function PopUpPost({ post, timeLeft }: PopUpPostProps) {
   const navigate = useNavigate();
   const { minutes } = timeLeft;
 
+  const image = (categories.filter((cat)=> cat.value == post.category))[0]
+  const {value} = image
 
+    console.log(value)
 
   return (
     <main className="flex flex-col gap-3 w-[200px]">
@@ -26,9 +29,7 @@ export default function PopUpPost({ post, timeLeft }: PopUpPostProps) {
           src={
             post.picture
               ? post.picture
-              : selectedUser?.profilePicture
-              ? selectedUser?.profilePicture 
-              : defaultUser
+              : `../assets/images/${value}.svg`
           }
           alt={"photo"}
         />
