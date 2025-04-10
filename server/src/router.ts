@@ -1,7 +1,7 @@
 import express from "express";
-import { register, login,loginAuto, logout, getUser } from "./controllers/users";
-import { newPost, getAllPosts, deletePost, closePost, editPost, getUserPosts,getPostById } from "./controllers/posts";
-import { newChat,getChatById,newMessage,getChatsByPostId, getAllMyChats } from "./controllers/chats";
+import { register, login, loginAuto, logout, getUser } from "./controllers/users";
+import { newPost, getAllPosts, deletePost, closePost, editPost, getUserPosts, getPostById } from "./controllers/posts";
+import { newChat, getChatById, postMessage, getChatsByPostId, getAllMyChats } from "./controllers/chats";
 
 
 const router = express.Router();
@@ -31,7 +31,7 @@ router.get("/getAllMyChats/:id", getAllMyChats)
 router.get("/getChatById/:id", getChatById);
 router.get("/getChatsByPostId/:id", getChatsByPostId);
 router.post("/newChat", newChat);
-router.post("/newMessage", newMessage)
+router.post("/postMessage", postMessage)
 
 
 export default router;
