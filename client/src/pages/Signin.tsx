@@ -128,7 +128,7 @@ export default function Signin() {
           </div>
         </section>
 
-        <FotoUploader text={"Upload a Picture"} location="/Post_pics/" />
+        <FotoUploader text={"Upload a Picture"} location="/Profile_pics/" />
 
         <div className=" flex flex-col justify-center items-center w-[100%] my-3">
           <BtnMain

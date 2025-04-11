@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { v4 } from "uuid"
+import { getStorage } from "firebase/storage";
+import { getAuth } from "firebase/auth";
+
 
 
 
@@ -23,20 +24,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 export const storage = getStorage(app);
+export const auth = getAuth(app);
 
-export async function uploadFile(file: File, location: string) {
-    const fileExtension = file.name.split(".").pop();
-    const metadata = {
-        contentType: file.type,
-    };
 
-    const storageRef = ref(storage, location + v4() + fileExtension);
-    const upLoaded = await uploadBytes(storageRef, file, metadata);
-    if (upLoaded.metadata) {
-        const url = await getDownloadURL(storageRef);
-        return url
-    }
-    else {
-        return
-    }
-}

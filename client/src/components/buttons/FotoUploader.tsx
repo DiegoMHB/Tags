@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { appStore } from "../../zustand/appStore";
-import { uploadFile } from "../../assets/firebase/firebase";
+import { uploadFile } from "../../assets/firebase/bucket";
 import BtnMain from "./BtnMain";
 
 type fotoUploaderProps = {
@@ -10,7 +10,7 @@ type fotoUploaderProps = {
 
 export default function FotoUploader({text, location}: fotoUploaderProps) {
 
-  const {fotoUrl,setFotoUrl,selectedFile,setSelectedFile,setError, error } = appStore()
+  const {fotoUrl,setFotoUrl,selectedFile,setSelectedFile, error } = appStore()
   const fileInputRef = useRef<HTMLInputElement>(null!);
 
   const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -26,13 +26,13 @@ export default function FotoUploader({text, location}: fotoUploaderProps) {
           try {
             const urlPic = await uploadFile(selectedFile, location);
             if (!urlPic) {
-              setError("Failed uploading");
+              appStore.setState({error:"Failed uploading"});
               return;
             }
             setFotoUrl(urlPic);
           } catch (e) {
             console.log(e);
-            setError("Failed uploading");
+            appStore.setState({error:"Failed uploading"});
           }
         };
         upload();

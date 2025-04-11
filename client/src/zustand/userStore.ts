@@ -4,6 +4,8 @@ import { LoginForm } from "../types/appTypes";
 import { appStore } from "./appStore";
 import { postStore } from "./postStore";
 import { chatStore } from "./chatStore";
+import { getAuth, signInAnonymously, signOut } from "firebase/auth";
+import { auth } from "../assets/firebase/firebase";
 
 const port = import.meta.env.VITE_PORT;
 const url = `http://localhost:${port}/`
@@ -92,6 +94,14 @@ export const userStore = create<UserStoreType>()((set, get) => ({
             set({ auth: true });
             appStore.setState({ error: "" });
 
+            signInAnonymously(auth)
+                .then(() => {
+                    console.log("User authenticated:", auth.currentUser?.uid);
+                })
+                .catch((error) => {
+                    console.error("Error at session start", error);
+                });
+
         } catch (e) {
             console.log("Error", e)
         } finally {
@@ -111,7 +121,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
                 appStore.setState({ error: data.error });
                 throw (data)
             };
-            response.json().then((res)=>{
+            response.json().then((res) => {
                 set({ user: { ...res.user } })
                 set({ auth: true });
                 if (get().user.id) {
@@ -122,7 +132,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
             })
             appStore.setState({ error: "" });
 
-            return 
+            return
 
         } catch (e) {
             console.log("Error", e)
@@ -133,6 +143,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
     },
 
     logOut: async (): Promise<void> => {
+        set({ loading: true });
         console.log("logOut")
         try {
             const response = await fetch(`${url}logOut`, {
@@ -147,10 +158,15 @@ export const userStore = create<UserStoreType>()((set, get) => ({
                 auth: false,
                 loading: false,
             }))
+
+            const auth = getAuth();
+            await signOut(auth);
+
             appStore.setState({ error: "" });
-            return
+            
         } catch (error) {
             appStore.setState({ error: error as string });
+            set({ loading: false });
         }
     }
 
