@@ -29,15 +29,18 @@ export async function upgradeAnonUser(email: string, password: string) {
     if (!auth.currentUser) throw new Error("No user is signed in");
 
     const credential = EmailAuthProvider.credential(email, password);
+    console.log(credential, auth.currentUser)
 
     try {
         const result = await linkWithCredential(auth.currentUser, credential);
         console.log("Usuario actualizado, uid:", result.user.uid);
         return result.user;
     } catch (error) {
-        console.log("Error:",error)
+        console.log("Error=>",error)
     }
 }
+
+
 
 export async function loginUser(email: string, password: string) {
     const auth = getAuth();
