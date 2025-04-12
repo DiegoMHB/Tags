@@ -97,7 +97,7 @@ export default function Signin() {
               type="password"
               {...register("password", {
                 required: "Password is required",
-                minLength: { value: 1, message: "Minimum 8 characters" },
+                minLength: { value: 6, message: "Minimum 6 characters" },
               })}
             />
             {errors.password && <Error> {errors.password?.message} </Error>}
@@ -128,7 +128,7 @@ export default function Signin() {
           </div>
         </section>
 
-        <FotoUploader text={"Upload a Picture"} location="/Profile_pics/" />
+        <FotoUploader text={"Upload a Picture"} location="Profile_pics" />
 
         <div className=" flex flex-col justify-center items-center w-[100%] my-3">
           <BtnMain

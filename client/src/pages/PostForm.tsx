@@ -187,7 +187,7 @@ export default function PostForm() {
         )}
         <FotoUploader
           text={edit ? "Change Picture" : "Upload a Picture"}
-          location="/Post_pics/"
+          location="Post_pics"
         />{" "}
         {/*TODO: change picture*/}
         <div className="flex flex-col justify-center items-center w-full my-3">
