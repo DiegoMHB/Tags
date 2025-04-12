@@ -19,7 +19,6 @@ export default function PopUpPost({ post, timeLeft }: PopUpPostProps) {
   const image = (categories.filter((cat)=> cat.value == post.category))[0]
   const {value} = image
 
-    console.log(value)
 
   return (
     <main className="flex flex-col gap-3 w-[200px]">

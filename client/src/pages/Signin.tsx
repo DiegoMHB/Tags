@@ -8,10 +8,14 @@ import Error from "../components/Error";
 import { cities } from "../data/listUtilities";
 import { appStore } from "../zustand/appStore";
 import FotoUploader from "../components/buttons/FotoUploader";
+import { postStore } from "../zustand/postStore";
+import { chatStore } from "../zustand/chatStore";
 
 export default function Signin() {
-  const { signIn,  auth } = userStore();
-  const { fotoUrl, error,selectedFile, setFotoUrl, setSelectedFile } = appStore();
+  const {   auth, signIn } = userStore();
+  const { fotoUrl, error,selectedFile, setFotoUrl, setSelectedFile, getAllPosts } = appStore();
+  const{getUserPosts} = postStore();
+  const {getAllChats} = chatStore();
 
   const navigate = useNavigate();
 
@@ -36,7 +40,9 @@ export default function Signin() {
       reset();
       setFotoUrl("");
       setSelectedFile(null);
-
+      getAllPosts();
+      getUserPosts();
+      getAllChats();  
       navigate("/map");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

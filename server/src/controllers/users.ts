@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import User from "../models/User.model";
 import bcrypt from "bcrypt";
-import  jwt from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
 const jsonToken = process.env.JSON_TOKEN
 
@@ -76,7 +76,7 @@ export const login = async (req: Request, res: Response): Promise<any> => {
 
     } catch (error) {
         if (error.message) {
-            return res.status(400).send({ error: error.message});
+            return res.status(400).send({ error: error.message });
         }
         return res.status(500).send({ error: "Something happened. Try again" });
     }
@@ -84,43 +84,49 @@ export const login = async (req: Request, res: Response): Promise<any> => {
 }
 
 export const loginAuto = async (req, res) => {
-  const token = req.cookies.access_token;
-  if (!token) {
-    return res.status(403);
-  }
-  try {
-    const data = jwt.verify(token, jsonToken);
-    const user = await User.findByPk(data.id);
-    if (user instanceof User) {
-      user.password = '';
-      const token = jwt.sign(
-        { id: user.id, username: user.userName },
-        jsonToken,
-        { expiresIn: '1h' });
+    const token = req.cookies.access_token;
+    console.log(token)
+    if (!token) {
+        return res.status(403);
+    }
+    try {
+        const data = jwt.verify(token, jsonToken);
+        console.log("DATA-------->", data)
+        const user = await User.findByPk(data.id);
+        console.log("user------->", user)
+        if (user instanceof User) {
+            user.password = '';
+            const token = jwt.sign(
+                { id: user.id, username: user.userName },
+                jsonToken,
+                { expiresIn: '1h' });
 
-      return res
-        .cookie('access_token', token, {
-          httpOnly: true,
-          secure: false,
-          sameSite: 'strict',
-        })
-        .status(200)
-        .send(user)
+            return res
+                .cookie('access_token', token, {
+                    httpOnly: true,
+                    secure: false,
+                    sameSite: 'strict',
+                })
+                .status(200)
+                .send({ user, message: "Login successfull" })
+        }
+    } catch (error) {
+        if (error.message) {
+            return res.status(400).send({ error: error.message });
+        }
+        res.status(500).send({ error: 'Something happened' });
     }
-  } catch (error) {
-    if (error.message) {
-      return res.status(400).send({ error: error.message });
-    }
-    res.status(500).send({ error: 'Something happened' });
-  }
 }
 
 export const logout = async (req: Request, res: Response): Promise<any> => {
-    try{
-    return res
-        .clearCookie('access_token', { httpOnly: true, secure: false, sameSite: 'strict' })
-        .send({ message: 'Cookie deleted, session expired', ok: true });
-    }catch (error) {
+    try {
+        return res.cookie('access_token', '', {
+            httpOnly: true,
+            secure: true,
+            sameSite: 'lax',
+            expires: new Date(0),
+        }).send({ message: 'Cookie deleted, session expired', ok: true });
+    } catch (error) {
         if (error.message) {
             return res.status(400).send({ error: error.message });
         }
@@ -128,9 +134,9 @@ export const logout = async (req: Request, res: Response): Promise<any> => {
     }
 }
 
-export const getUser = async (req: Request, res: Response) : Promise<any>  => {
+export const getUser = async (req: Request, res: Response): Promise<any> => {
     try {
-        const {id} = req.params;    
+        const { id } = req.params;
         const response = await User.findByPk(id)
         if (response) {
             return res

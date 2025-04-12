@@ -15,6 +15,7 @@ export type UserStoreType = {
     auth: boolean
     loading: boolean
     firebaseUid: string
+    loggedOut : boolean
 
     signIn: (user: NewUser) => void
     logIn: (user: LoginForm) => void
@@ -42,6 +43,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
     auth: false,
     loading: false,
     firebaseUid: "",
+    loggedOut: false,
 
     signIn: async (user: NewUser): Promise<void> => {
         set({ loading: true });
@@ -105,6 +107,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
         }
     },
     logInAuto: async (): Promise<void> => {
+        if(get().loggedOut)return
         set({ loading: true });
         console.log("logInAuto")
         try {
@@ -153,7 +156,9 @@ export const userStore = create<UserStoreType>()((set, get) => ({
                 user: initialUser,
                 auth: false,
                 loading: false,
+                loggedOut: true
             }))
+      
 
             const auth = getAuth();
             await signOut(auth);

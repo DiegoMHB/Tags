@@ -11,13 +11,16 @@ import { userStore } from "../zustand/userStore";
 
 export default function Map() {
   const { coordinates, getCoords } = mapStore();
-  const { allActivePosts, authUserActivePost, resetSelected } = appStore();
-  const {auth} = userStore()
+  const { allActivePosts, authUserActivePost, resetSelected, getAllPosts } = appStore();
+  const{auth} =  userStore();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   useEffect(() => {
     getCoords();
     resetSelected();
+    if(!allActivePosts) {
+        getAllPosts()
+    }
   }, []);
 
   // Filtering post by category

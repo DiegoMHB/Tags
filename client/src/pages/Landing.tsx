@@ -4,24 +4,23 @@ import { appStore } from "../zustand/appStore";
 import { mapStore } from "../zustand/mapStore";
 import { userStore } from "../zustand/userStore";
 
-
-
 export default function Landing() {
-//   const { logInAuto, } = userStore();
-  const { setMapRender,  } = appStore();
-;
+  const { logInAuto, loggedOut } = userStore();
+  const { allActivePosts, setMapRender, getAllPosts } = appStore();
   const { getCoords } = mapStore();
-
-
-
 
   useEffect(() => {
     getCoords();
-    // logInAuto()
-    ;
+    if (!allActivePosts) {
+      getAllPosts();
+    }
   }, []);
-
-
+  
+  useEffect(() => {
+    if (!loggedOut) {
+      logInAuto();
+    }
+  }, [loggedOut]);
 
   return (
     <div className="flex flex-col justify-center items-center w-screen space-y-4">
