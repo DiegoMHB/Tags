@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from "uuid";
 import { chatStore } from "../zustand/chatStore";
 import { useParams } from "react-router-dom";
 
+
 export default function ChatComponent() {
   const { selectedChat } = appStore();
   const { createMessage, getChatById } = chatStore();
@@ -23,7 +24,6 @@ export default function ChatComponent() {
 
   useEffect(() => {
     if (!id) return;
-
     const fetchChat = async () => {
       await getChatById(id);
       const updatedChat = appStore.getState().selectedChat;
@@ -31,12 +31,20 @@ export default function ChatComponent() {
         setMessages(updatedChat.messages);
       }
     };
-
     fetchChat();
     const interval = setInterval(fetchChat, 5000);
 
     return () => clearInterval(interval);
   }, [id, getChatById]);
+
+  useEffect(()=>{
+    createMessage(id!,{
+        id: "",
+        content: "",
+        date: "",
+        ownerId: user.id,
+        },user.id)
+  },[])
 
   const handleSendMessage = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -89,7 +97,7 @@ export default function ChatComponent() {
         <div className="flex flex-col overflow-y-auto flex-grow max-h-[calc(100vh-195px)] space-y-2 scrollbar-hidden pb-[60px] ">
           {messages &&
             messages.map((mes) => (
-              <div
+              mes.content && <div
                 className={`max-w-[80%] mx-2 px-3 py-1 rounded-xl ${
                   mes.ownerId === user.id
                     ? "self-end bg-amber-300 text-black"
