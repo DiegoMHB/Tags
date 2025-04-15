@@ -63,11 +63,12 @@ export const createPosts = async () => {
 
             try {
                 const newPost = await Post.create(el);
-                if (index == 3) 
+                if (index == 3)
                     user.posts = [...user.posts, newPost.id]
                 else {
                     user.posts = [];
-                    user.posts = [newPost.id]; }               
+                    user.posts = [newPost.id];
+                }
                 await user.save();
                 console.log(`Post ${userIndex} created`);
 
@@ -98,7 +99,7 @@ export const Populate = async () => {
     try {
         for (const [index, el] of usersArray.entries()) {
 
-            el.password = "1234" //always 123 --DEV--
+            el.password = "123456" //always 123 --DEV--
             el.password = await bcrypt.hash(el.password, 10);
             const newUser = new User(el);
 
