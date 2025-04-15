@@ -49,7 +49,7 @@ export default function PopUpPost({ post, timeLeft }: PopUpPostProps) {
         </div>
       </div>
       <span className="text-xs">{post.description}</span>
-      {auth && (
+      {auth && selectedUser && (
         <button
           className=" w-15 h-5 m-auto bg-[#c6eef7] rounded-full"
           onClick={() => {
