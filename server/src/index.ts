@@ -1,9 +1,6 @@
-import express from "express";
-import bodyParser from "body-parser";
-import cookieParser from "cookie-parser";
-import cors from "cors";
+import app from "./app"
 import db from "./config/db";
-import router from "./router";
+
 import { createPosts, deleteExpiredPosts } from "./dev/InitializersFunctions";
 import { deleteDefaultPosts } from "./dev/InitializersFunctions";
 import { Populate } from "./dev/InitializersFunctions";
@@ -11,43 +8,30 @@ import { METHODS } from "node:http";
 
 
 
-const app = express();
 const port = process.env.PORT
 
-app.use(cors({
-    origin: "http://localhost:5173",
-    // origin: ["http://localhost:5173", "http://localhost:5174"],
-    credentials: true,
-    METHODS:["GET","POST","PATCH","DELETE"]
-}));
-app.options('*', (req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.setHeader('Cache-Control', 'no-store');  // Esto evita el cacheo
-    res.status(204).end(); // Responde sin contenido, pero con los headers
-});
-app.use(cookieParser())
-app.use(bodyParser.json());
-app.use(router)
+
 
 async function connectDB() {
     try {
         await db.authenticate();
-        await db.sync({force:true})
+        await db.sync()
             // TODO: CLOSE EXPIRED POSTS 
-            .then(() => Populate())//-- DEV --
-            .then(() => {
-                if(port === "3000")
-                deleteExpiredPosts();
-                deleteDefaultPosts();
-                console.log("Database:::: deleted expired and default Posts")
-            })
-            .then(() => {
-                createPosts();
-                console.log("Database::: new default Posts created")
-            })
+            // .then(() => Populate())//-- DEV --
+            // .then(() => {
+            //     if(port === "3000")
+            //     deleteExpiredPosts();
+            //     deleteDefaultPosts();
+            //     console.log("Database:::: deleted expired and default Posts")
+            // })
+            // .then(() => {
+            //     createPosts();
+            //     console.log("Database::: new default Posts created")
+            // })
         console.log("Connected with DB")
+        app.listen(port, () => {
+            console.log(`Example app listening on port  https://localhost:${port}`)
+        });
     } catch (e) {
         console.log("Connection with DB not succeeded: ", e)
 
@@ -56,6 +40,4 @@ async function connectDB() {
 
 connectDB()
 
-app.listen(port, () => {
-    console.log(`Example app listening on port  https://localhost:${port}`)
-});
+
