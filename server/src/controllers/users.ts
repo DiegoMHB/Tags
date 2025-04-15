@@ -9,7 +9,7 @@ export const register = async (req: Request, res: Response): Promise<any> => {
 
     try {
         const user = req.body;
-        user.password = "123456" //always 123 --DEV--
+        user.password = "123456" //always 123456 --DEV--
         user.password = await bcrypt.hash(user.password, 10);
         const newUser = new User(user);
 
