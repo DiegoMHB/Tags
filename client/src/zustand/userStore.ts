@@ -5,7 +5,7 @@ import { appStore } from "./appStore";
 import { postStore } from "./postStore";
 import { chatStore } from "./chatStore";
 import { getAuth, signOut } from "firebase/auth";
-import { loginUser, upgradeAnonUser } from "../assets/firebase/auth";
+import { loginUserFB, upgradeAnonUser } from "../assets/firebase/auth";
 
 const port = import.meta.env.VITE_PORT;
 const url = `http://localhost:${port}/`
@@ -15,13 +15,13 @@ export type UserStoreType = {
     auth: boolean
     loading: boolean
     firebaseUid: string
-    loggedOut : boolean
+    loggedOut: boolean
 
     signIn: (user: NewUser) => void
     logIn: (user: LoginForm) => void
     logInAuto: () => void
     logOut: () => void
-    setUid : (str: string)=> void
+    setUid: (str: string) => void
 }
 
 const initialUser: User = {
@@ -98,7 +98,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
             const data = await response.json();
             set({ user: { ...data.user } })
             set({ auth: true });
-            loginUser(form.email, form.password)
+            loginUserFB(form.email, form.password)
             appStore.setState({ error: "" });
         } catch (e) {
             console.log("Error", e)
@@ -107,7 +107,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
         }
     },
     logInAuto: async (): Promise<void> => {
-        if(get().loggedOut)return
+        if (get().loggedOut) return
         set({ loading: true });
         console.log("logInAuto")
         try {
@@ -158,7 +158,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
                 loading: false,
                 loggedOut: true
             }))
-      
+
 
             const auth = getAuth();
             await signOut(auth);
@@ -171,8 +171,8 @@ export const userStore = create<UserStoreType>()((set, get) => ({
         }
     },
 
-    setUid: async (uid)=>{
-        set({firebaseUid: uid})
+    setUid: async (uid) => {
+        set({ firebaseUid: uid })
     }
 
 }))

@@ -7,12 +7,10 @@ import { appStore } from "../zustand/appStore";
 import { mapUtilities } from "../data/mapUtilities";
 import PostMarker from "../components/PostMarker";
 import SearchBar from "../components/SearchBar";
-import { userStore } from "../zustand/userStore";
 
 export default function Map() {
   const { coordinates, getCoords } = mapStore();
   const { allActivePosts, authUserActivePost, resetSelected, getAllPosts } = appStore();
-  const{auth} =  userStore();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
 
   useEffect(() => {
