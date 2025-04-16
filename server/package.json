@@ -7,7 +7,7 @@
     "dev": "nodemon src/index.ts",
     "build": "tsc",
     "dev:3001": "cross-env PORT=3001 ts-node src/index.ts",
-    "test":"jest"
+    "test":"jest --runInBand"
   },
   "keywords": [],
   "author": "",
