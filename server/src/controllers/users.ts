@@ -120,7 +120,7 @@ export const loginAuto = async (req, res) => {
 
 export const logout = async (req: Request, res: Response): Promise<any> => {
     try {
-        return res.cookie('access_token', '', {
+        return res.status(200).cookie('access_token', '', {
             httpOnly: true,
             secure: true,
             sameSite: 'lax',
@@ -151,6 +151,3 @@ export const getUser = async (req: Request, res: Response): Promise<any> => {
         return res.status(500).send({ error: "Something happened: try again" });
     }
 }
-
-//todo:
-//checking if cookie for automatic login 

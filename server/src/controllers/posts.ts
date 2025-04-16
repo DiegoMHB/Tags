@@ -30,6 +30,7 @@ export const newPost = async (req: Request, res: Response): Promise<void> => {
     } catch (error) {
         if (error.message) {
             res.status(400).send({ error: error.message });
+            return
         }
         res.status(500).send({ error: "Something happened: try again" });
         return
