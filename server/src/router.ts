@@ -15,7 +15,6 @@ router.get("/logOut", logout);
 
 //manage post
 router.post("/newPost", newPost);
-router.get("/getUserPosts/:id", getUserPosts);
 router.delete("/deletePost", deletePost);
 router.patch("/closePost/:id", closePost);
 router.patch("/editPost", editPost);
@@ -23,15 +22,16 @@ router.patch("/editPost", editPost);
 
 //app
 router.get("/getPostById/:id", getPostById);//for tests
+router.get("/getUserPosts/:id", getUserPosts);
 router.get("/user/:id", getUser);
 router.get("/getAllPosts", getAllPosts);
 
 //chats
+router.post("/newChat", newChat);
+router.post("/postMessage", postMessage)
 router.get("/getAllMyChats/:id", getAllMyChats)
 router.get("/getChatById/:id", getChatById);
 router.get("/getChatsByPostId/:id", getChatsByPostId);
-router.post("/newChat", newChat);
-router.post("/postMessage", postMessage)
 
 
 export default router;

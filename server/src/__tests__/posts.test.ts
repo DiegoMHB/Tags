@@ -32,13 +32,14 @@ beforeAll(async () => {
     post4 = { ...postsArray[3], userId: res.body.user.id };
 
 
-}, 15000)
+})
 
 afterAll(async () => {
+    
     await db.close();
 })
 
-describe.only("posts", () => {
+describe("posts", () => {
 
     it("/newPost: creates a new post in db and sends a status 200 back", async () => {
 
@@ -129,7 +130,7 @@ describe.only("posts", () => {
 
       });
       
-      it("/getUserPosts/:id: responses with the list of posts of an user", async () => {
+      it("/getUserPosts/:id: responds with the list of posts of an user", async () => {
         const res = await request(app).get(`/getUserPosts/${userId}`);
         expect(res.status).toBe(200);
         expect(res.body.posts[0].category).toBe("ticket");

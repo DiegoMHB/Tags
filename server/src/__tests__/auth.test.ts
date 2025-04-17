@@ -8,9 +8,11 @@ import db from "../config/db"
 
 beforeAll(async () => {
     await db.sync({ force: true })
+    jest.useFakeTimers()
 })
 
 afterAll(async () => {
+    jest.useRealTimers(); 
     await db.close();
 })
 

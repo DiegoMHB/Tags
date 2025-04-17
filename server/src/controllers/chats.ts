@@ -69,7 +69,9 @@ export const newChat = async (req: Request, res: Response): Promise<void> => {
     } catch (e) {
         if (e.message) {
             res.status(400).send({ error: e.message });
+            return
         }
+
         res.status(500).send({ error: "Something happened: try again" });
         return
     }
@@ -144,8 +146,15 @@ export const getChatsByPostId = async (req: Request, res: Response): Promise<voi
 }
 
 export const postMessage = async (req: Request, res: Response): Promise<void> => {
+    
     try {
         const { chatId, message } = req.body;
+
+        if (!message.ownerId || !message.content || !message.date || !message.id) {
+            res.status(400).json({ error: "Missing required message fields" });
+            return;
+        }
+        
         const chat = await Chat.findByPk(chatId);
         if (!chat) {
             res.status(404).json({ error: "Chat not found" });

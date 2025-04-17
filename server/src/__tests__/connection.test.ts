@@ -2,6 +2,14 @@ import request from "supertest";
 import db from "../config/db";
 import app from "../app";
 
+beforeAll(async () => {
+    await db.sync({ force: true })
+})
+
+afterAll(async () => {
+    await db.close();
+})
+
 
 describe("Server", () => {
     it("Response with status if request GET to `/` ", async () => {
