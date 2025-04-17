@@ -13,16 +13,16 @@ router.post("/login", login);
 router.get("/loginAuto", loginAuto);
 router.get("/logOut", logout);
 
-//user post (auth)
+//manage post
+router.post("/newPost", newPost);
 router.get("/getAllPosts/:id", getUserPosts);
 router.delete("/deletePost", deletePost);
-router.post("/newPost", newPost);
 router.patch("/closePost/:id", closePost);
 router.patch("/editPost", editPost);
 
 
-//users post (others)
-router.get("/getPostById/:id", getPostById);
+//app post
+router.get("/getPostById/:id", getPostById);//for tests
 router.get("/user/:id", getUser);
 router.get("/getAllPosts", getAllPosts);
 
