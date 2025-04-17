@@ -13,17 +13,36 @@ export const newChat = async (req: Request, res: Response): Promise<void> => {
     try {
         const { postId, ownerId, notOwnerId } = req.body;
 
-        const post = Post.findByPk(postId)
-        const owner = User.findByPk(ownerId)
-        const notOwner = User.findByPk(notOwnerId)
+        const post = await Post.findByPk(postId);
+        const owner = await User.findByPk(ownerId);
+        const notOwner = await User.findByPk(notOwnerId);
 
         const newChat = new Chat({
-            postId, ownerId, notOwnerId, messages: [], context: {
-                owner: { userName: (await owner).userName, id: (await owner).id, profilePic: (await owner).profilePicture },
-                notOwner: { userName: (await notOwner).userName, id: (await notOwner).id, profilePic: (await notOwner).profilePicture },
-                post: { id: (await post).id, title: (await post).title, category: (await post).category, picture: (await post).picture, createdAt: (await post).createdAt }
+            postId,
+            ownerId,
+            notOwnerId,
+            messages: [],
+            context: {
+                owner: {
+                    userName: owner.userName,
+                    id: owner.id,
+                    profilePic: owner.profilePicture
+                },
+                notOwner: {
+                    userName: notOwner.userName,
+                    id: notOwner.id,
+                    profilePic: notOwner.profilePicture
+                },
+                post: {
+                    id: post.id,
+                    title: post.title,
+                    category: post.category,
+                    picture: post.picture,
+                    createdAt: post.createdAt
+                }
             }
         });
+
         const responseChat = await newChat.save();
         if (responseChat.dataValues) {
 

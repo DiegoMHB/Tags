@@ -9,6 +9,7 @@ let post1: any;
 let post2: any;
 let post3: any;
 let post4: any;
+let userId: string;
 
 
 beforeAll(async () => {
@@ -24,7 +25,7 @@ beforeAll(async () => {
     };
 
     const res = await request(app).post("/register").send(userData);
-
+    userId = res.body.user.id
     post1 = { ...postsArray[0], userId: res.body.user.id };
     post2 = { ...postsArray[1], userId: res.body.user.id };
     post3 = { ...postsArray[2], userId: res.body.user.id };
@@ -42,7 +43,6 @@ describe.only("posts", () => {
     it("/newPost: creates a new post in db and sends a status 200 back", async () => {
 
         const res = await request(app).post("/newPost").send(post1);
-        console.log("POST!!!!!!!!!!!!!!!!!!",res.body.post)
 
         expect(res.status).toBe(200);
         expect(res.body.post).toBeDefined()
@@ -101,7 +101,6 @@ describe.only("posts", () => {
       it("/closePost/:id : should close an existing post", async () => {
         
         const res = await request(app).post("/newPost").send(post4);
-        console.log("-------------->",res.body.post)
         expect(res.status).toBe(200);
         expect(res.body.post.isActive).toBe(true);
         const id = res.body.post.id
@@ -123,11 +122,19 @@ describe.only("posts", () => {
         const all = (await request(app).get(`/getAllPosts`))
         expect(all.body.posts[0].category).toBe("need")
         const post = all.body.posts[0]
-        console.log(post)
         
         const resGetEdit = await request(app).patch(`/editPost`).send({id:post.id, ...changes})
         expect(resGetEdit.status).toBe(200);
         expect(resGetEdit.body.post.category).toBe("info");
+
+      });
+      
+      it("/getUserPosts/:id: responses with the list of posts of an user", async () => {
+        const res = await request(app).get(`/getUserPosts/${userId}`);
+        expect(res.status).toBe(200);
+        expect(res.body.posts[0].category).toBe("ticket");
+        expect(res.body.message).toBe("Post get");
+        
 
       });
       

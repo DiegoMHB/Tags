@@ -15,13 +15,13 @@ router.get("/logOut", logout);
 
 //manage post
 router.post("/newPost", newPost);
-router.get("/getAllPosts/:id", getUserPosts);
+router.get("/getUserPosts/:id", getUserPosts);
 router.delete("/deletePost", deletePost);
 router.patch("/closePost/:id", closePost);
 router.patch("/editPost", editPost);
 
 
-//app post
+//app
 router.get("/getPostById/:id", getPostById);//for tests
 router.get("/user/:id", getUser);
 router.get("/getAllPosts", getAllPosts);
