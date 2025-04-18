@@ -46,11 +46,12 @@ export const register = async (req: Request, res: Response): Promise<any> => {
 }
 
 export const login = async (req: Request, res: Response): Promise<any> => {
-
+    console.log("en login")
     try {
         const data = req.body;
-
+        console.log(req.body)
         const user = await User.findOne({ where: { email: data.email } });
+        console.log(user)
         if (!user) throw ({ message: "Email not registered" })
 
         const check = await bcrypt.compare(data.password, user.password)
@@ -85,7 +86,6 @@ export const login = async (req: Request, res: Response): Promise<any> => {
 
 export const loginAuto = async (req, res) => {
     const token = req.cookies.access_token;
-    console.log(token)
     if (!token) {
         return res.status(403);
     }
@@ -93,7 +93,6 @@ export const loginAuto = async (req, res) => {
         const data = jwt.verify(token, jsonToken);
         console.log("DATA-------->", data)
         const user = await User.findByPk(data.id);
-        console.log("user------->", user)
         if (user instanceof User) {
             user.password = '';
             const token = jwt.sign(

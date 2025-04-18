@@ -11,13 +11,6 @@
     "target": "es2017",
     "module": "commonjs",
     "emitDecoratorMetadata": true
-
-    // "target": "ES6",
-    // "module": "commonjs",
-    // "skipLibCheck": true,
-    // "forceConsistentCasingInFileNames": true,
-    // "resolveJsonModule": true,
-    // "moduleResolution": "node"
   },
   "include": [
     "src/**/*.ts",
