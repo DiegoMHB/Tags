@@ -6,12 +6,15 @@
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "module": "ESNext",
     "skipLibCheck": true,
+    "types": ["jest", "@testing-library/jest-dom","node"],
+    
 
     /* Bundler mode */
     "moduleResolution": "bundler",
     "allowImportingTsExtensions": true,
     "isolatedModules": true,
     "moduleDetection": "force",
+    "esModuleInterop": true, 
     "noEmit": true,
     "jsx": "react-jsx",
 
@@ -22,5 +25,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src", "src/assets/helperFunctions/checkExistingChat.ts"]
+  "include": ["src", "src/assets/helperFunctions/checkExistingChat.ts", "setupTests.ts", "jest.config.js"]
 }
