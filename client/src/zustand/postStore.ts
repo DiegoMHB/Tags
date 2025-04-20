@@ -173,9 +173,9 @@ export const postStore = create<PostStoreType>()((set) => ({
     getUserPosts: async () => {
         console.log("getUserPosts")
         set({ loading: true });
-        const id = userStore.getState().user.id
+        const id = userStore.getState().user!.id
         try {
-            const response = await fetch(`${url}getAllPosts/${id}`);
+            const response = await fetch(`${url}getUserPosts/${id}`);
             if (!response.ok) {
                 const data = await response.json();
                 appStore.setState({ error: data.error });

@@ -46,7 +46,7 @@ export const chatStore = create<ChatStoreType>()((set) => ({
         set({ loading: true });
         console.log("getAllChats")
         try {
-            const response = await fetch(`${url}getAllMyChats/${userStore.getState().user.id}`);
+            const response = await fetch(`${url}getAllMyChats/${userStore.getState().user!.id}`);
             if (!response.ok) {
                 const data = await response.json();
                 appStore.setState({ error: data.error });

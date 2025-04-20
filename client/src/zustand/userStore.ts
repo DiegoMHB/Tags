@@ -11,7 +11,7 @@ const port = import.meta.env.VITE_PORT;
 const url = `http://localhost:${port}/`
 
 export type UserStoreType = {
-    user: User
+    user: User |null
     auth: boolean
     loading: boolean
     firebaseUid: string
@@ -123,7 +123,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
             response.json().then((res) => {
                 set({ user: { ...res.user } })
                 set({ auth: true });
-                if (get().user.id) {
+                if (get().user!.id) {
                     appStore.getState().getAllPosts();
                     postStore.getState().getUserPosts()
                     chatStore.getState().getAllChats()
