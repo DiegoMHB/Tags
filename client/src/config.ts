@@ -1,2 +1,1 @@
-const PORT = process.env.VITE_PORT || "3000";
-export const API_URL = `http://localhost:${PORT}/`;
+export const API_URL = import.meta.env.VITE_API_URL;
