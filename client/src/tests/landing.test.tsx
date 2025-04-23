@@ -1,34 +1,74 @@
-import { render, screen } from "@testing-library/react";
-import Landing from "../pages/Landing";
 
+process.env.VITE_PORT = "4000";
+process.env.VITE_FIREBASE_API = "mock-firebase-api";
+jest.mock("../assets/firebase/firebase", () => ({}));
+
+const mockStore = {
+  allActivePosts: [],
+  getAllPosts: jest.fn(),
+};
 
 jest.mock("../zustand/appStore", () => ({
-  appStore: () => ({
-    allActivePosts: null,
-    setMapRender: jest.fn(),
-    getAllPosts: jest.fn(),
-  }),
+  appStore: jest.fn(() => mockStore),
 }));
 
 jest.mock("../zustand/mapStore", () => ({
-  mapStore: () => ({
+  mapStore: jest.fn(() => ({
     getCoords: jest.fn(),
-  }),
+  })),
 }));
 
 jest.mock("../zustand/userStore", () => ({
-  userStore: () => ({
+  userStore: jest.fn(() => ({
     logInAuto: jest.fn(),
-    loggedOut: false,
-  }),
+    loggedOut: true,
+  })),
 }));
 
-describe("Landing", () => {
-  it("renderiza los tres botones correctamente", () => {
-    render(<Landing />);
+import Landing from "../pages/Landing";
+import { MemoryRouter } from "react-router-dom";
+import { render, screen, waitFor } from "@testing-library/react";
 
-    expect(screen.getByText(/check around/i)).toBeInTheDocument();
-    expect(screen.getByText(/log in/i)).toBeInTheDocument();
-    expect(screen.getByText(/sign in/i)).toBeInTheDocument();
+beforeEach(() => {
+  Object.defineProperty(global.navigator, "geolocation", {
+    value: {
+      getCurrentPosition: jest.fn().mockImplementation((success) =>
+        success({
+          coords: {
+            latitude:0,
+            longitude:0,
+          },
+        })
+      ),
+    },
+    writable: true,
+  });
+});
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
+describe("Landing", () => {
+  it("It shows 3 different buttons", () => {
+    render(
+      <MemoryRouter>
+        <Landing />
+      </MemoryRouter>
+    );
+    expect(screen.getByText("Check Around")).toBeInTheDocument();
+    expect(screen.getByText("Log In")).toBeInTheDocument();
+    expect(screen.getByText("Sign In")).toBeInTheDocument();
+  });
+
+  it("It calls getAllPosts if allActivePosts is empty", async () => {
+    render(
+      <MemoryRouter>
+        <Landing />
+      </MemoryRouter>
+    );
+    await waitFor(() => {
+      expect(mockStore.getAllPosts).toHaveBeenCalled();
+    });
   });
 });

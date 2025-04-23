@@ -6,12 +6,10 @@ import { postStore } from "./postStore";
 import { chatStore } from "./chatStore";
 import { getAuth, signOut } from "firebase/auth";
 import { loginUserFB, upgradeAnonUser } from "../assets/firebase/auth";
-
-const port = import.meta.env.VITE_PORT;
-const url = `http://localhost:${port}/`
+import { API_URL } from "../config";
 
 export type UserStoreType = {
-    user: User |null
+    user: User | null
     auth: boolean
     loading: boolean
     firebaseUid: string
@@ -50,7 +48,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
         console.log("signIn")
 
         try {
-            const response = await fetch(`${url}register`, {
+            const response = await fetch(`${API_URL}register`, {
                 method: "POST",
                 body: JSON.stringify(user),
                 credentials: 'include',
@@ -82,7 +80,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
         set({ loading: true });
         console.log("logIn")
         try {
-            const response = await fetch(`${url}login`, {
+            const response = await fetch(`${API_URL}login`, {
                 method: "POST",
                 body: JSON.stringify(form),
                 credentials: 'include',
@@ -111,7 +109,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
         set({ loading: true });
         console.log("logInAuto")
         try {
-            const response = await fetch(`${url}loginAuto`, {
+            const response = await fetch(`${API_URL}loginAuto`, {
                 method: "GET",
                 credentials: 'include',
             });
@@ -145,7 +143,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
         set({ loading: true });
         console.log("logOut")
         try {
-            const response = await fetch(`${url}logOut`, {
+            const response = await fetch(`${API_URL}logOut`, {
                 method: "GET",
                 credentials: 'include'
             });

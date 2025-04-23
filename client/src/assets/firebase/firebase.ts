@@ -6,7 +6,7 @@ import { getAuth } from "firebase/auth";
 
 
 
-const firebase = import.meta.env.VITE_FIREBASE_API;
+const firebase = process.env.VITE_FIREBASE_API || "";
 
 const firebaseConfig = {
     apiKey: firebase,

@@ -2,9 +2,7 @@ import { create } from "zustand";
 import { AllChatsListElement, ChatType, Message } from "../types/appTypes";
 import { appStore } from "./appStore";
 import { userStore } from "./userStore";
-
-const port = import.meta.env.VITE_PORT;
-const url = `http://localhost:${port}/`
+import { API_URL } from "../config";
 
 export type ChatStoreType = {
 
@@ -24,7 +22,7 @@ export const chatStore = create<ChatStoreType>()((set) => ({
         set({ loading: true });
         console.log("getChatById")
         try {
-            const response = await fetch(`${url}getChatById/${id}`);
+            const response = await fetch(`${API_URL}getChatById/${id}`);
             if (!response.ok) {
                 const data = await response.json();
                 appStore.setState({ error: data.error });
@@ -46,7 +44,7 @@ export const chatStore = create<ChatStoreType>()((set) => ({
         set({ loading: true });
         console.log("getAllChats")
         try {
-            const response = await fetch(`${url}getAllMyChats/${userStore.getState().user!.id}`);
+            const response = await fetch(`${API_URL}getAllMyChats/${userStore.getState().user!.id}`);
             if (!response.ok) {
                 const data = await response.json();
                 appStore.setState({ error: data.error });
@@ -91,7 +89,7 @@ export const chatStore = create<ChatStoreType>()((set) => ({
         set({ loading: true });
         console.log("createChat")
         try {
-            const response = await fetch(`${url}newChat`, {
+            const response = await fetch(`${API_URL}newChat`, {
                 method: "POST",
                 body: JSON.stringify({ postId, ownerId, notOwnerId }),
                 headers: {
@@ -128,7 +126,7 @@ export const chatStore = create<ChatStoreType>()((set) => ({
         console.log("createMessage")
         console.log(chatId, message, userId)
         try {
-            const response = await fetch(`${url}postMessage`, {
+            const response = await fetch(`${API_URL}postMessage`, {
                 method: "POST",
                 body: JSON.stringify({ chatId, message, userId }),
                 headers: {

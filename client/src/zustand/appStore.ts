@@ -2,9 +2,8 @@ import { create } from "zustand";
 import { PostType } from "../types/postTypes";
 import { User } from "../types/userTypes";
 import { AllChatsListElement, ChatType } from "../types/appTypes";
+import { API_URL } from "../config";
 
-const port = import.meta.env.VITE_PORT;
-const url = `http://localhost:${port}/`
 
 export type AppStoreType = {
     error: string,
@@ -77,7 +76,7 @@ export const appStore = create<AppStoreType>(
             set({ allActivePosts: [] });
 
             try {
-                const response = await fetch(`${url}getAllPosts`);
+                const response = await fetch(`${API_URL}getAllPosts`);
                 if (!response.ok) throw new Error("Couldn't get active posts");
 
                 const data = await response.json();
@@ -94,7 +93,7 @@ export const appStore = create<AppStoreType>(
 
 
             try {
-                const response = await fetch(`${url}user/${userId}`);
+                const response = await fetch(`${API_URL}user/${userId}`);
                 if (!response.ok) {
                     const data = await response.json();
                     set({ error: data.error });

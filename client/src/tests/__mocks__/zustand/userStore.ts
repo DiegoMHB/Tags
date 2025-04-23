@@ -16,10 +16,10 @@ const initialState: UserStoreType = {
 };
 
 //mocked jest.fn that retunrs mocked state
-export const appStore = jest.fn(() => initialState);
+export const userStore = jest.fn(() => initialState);
 
 //reseting mocks
-export const resetAppStoreMock = () => {
+export const resetUserStoreMock = () => {
   Object.values(initialState).forEach((v) => {
     if (typeof v === "function") {
       (v as jest.Mock).mockReset();

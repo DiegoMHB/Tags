@@ -11,7 +11,7 @@ export default function Landing() {
 
   useEffect(() => {
     getCoords();
-    if (!allActivePosts) {
+    if (allActivePosts?.length == 0) {
       getAllPosts();
     }
   }, []);
