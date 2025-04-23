@@ -9,7 +9,7 @@ import { loginUserFB, upgradeAnonUser } from "../assets/firebase/auth";
 import { API_URL } from "../config";
 
 export type UserStoreType = {
-    user: User | null
+    user: User
     auth: boolean
     loading: boolean
     firebaseUid: string
@@ -154,7 +154,6 @@ export const userStore = create<UserStoreType>()((set, get) => ({
                 user: initialUser,
                 auth: false,
                 loading: false,
-                loggedOut: true
             }))
 
 

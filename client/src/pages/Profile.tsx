@@ -9,9 +9,8 @@ import { appStore } from "../zustand/appStore";
 
 export default function Profile() {
   const { logOut } = userStore();
-  const {  authUserPostsList } = appStore();
+  const { authUserPostsList } = appStore();
   const { getUserPosts } = postStore();
-
 
   useEffect(() => {
     getUserPosts();
@@ -40,7 +39,10 @@ export default function Profile() {
         <BtnMain
           mode={0}
           text={"Log Out"}
-          onClick={() => logOut()}
+          onClick={() => {
+            userStore.setState({ loggedOut: true });
+            logOut();
+          }}
           link="/"
           disabled={false}
         />

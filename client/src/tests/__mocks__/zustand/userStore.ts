@@ -2,7 +2,18 @@ import {UserStoreType } from "../../../zustand/userStore";
 
 //mocked state
 const initialState: UserStoreType = {
-     user:null,
+     user: {
+        name: "",
+        userName: "",
+        email: "",
+        password: "",
+        city: "",
+        profilePicture: null,
+        id: "",
+        createdAt: null,
+        posts: [] 
+    
+    },
      auth: false,
      loading: false,
      firebaseUid: "",
