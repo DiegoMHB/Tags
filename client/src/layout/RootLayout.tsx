@@ -1,3 +1,4 @@
+import '../index.css'
 import Landing from "../pages/Landing";
 import Map from "../pages/Map";
 import NavBarElement from "../components/buttons/NavBarElement";
