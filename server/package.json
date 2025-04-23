@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "dev": "nodemon src/index.ts",
-    "start": "node src/index.ts",
+    "start": "node dist/index.js",
     "build": "tsc",
     "dev:3001": "cross-env PORT=3001 ts-node src/index.ts",
     "test": "jest --runInBand"
