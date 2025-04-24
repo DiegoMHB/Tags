@@ -53,7 +53,7 @@ export default function RootLayout() {
         <section
           className="flex-1 flex align-middle justify-center 
         bg-gradient-to-b from-[#c6eef7] to-[#e0f5e6] 
-        h-[100%] w-[100%]
+        w-[100%]
         overflow-y-auto scrollbar-hidden "
         >
           {url === "/" && !mapRender ? (
@@ -65,7 +65,7 @@ export default function RootLayout() {
           )}
         </section>
 
-        <section className="flex justify-evenly bg-[#c8eef9]  h-12 min-h-12 w-full  items-center max-w-[400px] ">
+        <section className="flex justify-evenly bg-[#c8eef9]  h-12  w-full  items-center max-w-[400px] ">
           {linkRendered.map((el) =>
             authUserActivePost &&
             el.text == "New Post" ? null : !authUserActivePost &&
