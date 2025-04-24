@@ -26,7 +26,7 @@ export default function RootLayout() {
 
   return (
     <>
-      <main className="flex flex-col justify-center items-center h-screen max-w-[400px] m-auto ">
+      <main className="flex flex-col justify-center items-center min-h-screen max-w-[400px] m-auto ">
         {auth && (
           <section className="flex flex-row justify-between bg-[#c8eef9] h-14 w-full p-3">
             <div

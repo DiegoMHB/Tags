@@ -19,13 +19,13 @@ export const mapStore = create<MapStoreType>()((set) => ({
         console.log("getCoords")
         navigator.geolocation.getCurrentPosition( (position) => {
             const res = [position.coords.latitude, position.coords.longitude];
-            let [lat, long] = res;
+            // let [lat, long] = res;
 
             //creating a variaton in the coordinates --DEV-- 0.05 = 5km 
-            lat = lat + ((Math.random() < 0.5)? (0.05*(Math.random()) ): (- 0.05*(Math.random())))
-            long = long + ((Math.random() < 0.5)? (0.05*(Math.random()) ): (- 0.05*(Math.random())))
+            // lat = lat + ((Math.random() < 0.5)? (0.05*(Math.random()) ): (- 0.05*(Math.random())))
+            // long = long + ((Math.random() < 0.5)? (0.05*(Math.random()) ): (- 0.05*(Math.random())))
             
-            set({coordinates: [lat,long] as LatLngTuple , loading:false });
+            set({coordinates: res as LatLngTuple , loading:false });
           },
           (error) => {
             console.error("No location found:", error);
