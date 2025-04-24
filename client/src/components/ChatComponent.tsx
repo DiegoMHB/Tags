@@ -81,7 +81,7 @@ export default function ChatComponent() {
   }
 
   return (
-    <main className="flex flex-col h-screen w-full relative ">
+    <main className="flex flex-col h-[100%] w-full relative ">
       <div className="absolute top-5 left-1/2 transform -translate-x-1/2 z-1000 flex flex-row  gap-2 h-[70px]">
         <img
           src={selectedChat?.context.owner.profilePic}
