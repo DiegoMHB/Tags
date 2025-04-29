@@ -65,7 +65,7 @@ export default function RootLayout() {
           )}
         </section>
 
-        <section className="flex justify-evenly bg-[#c8eef9]  h-24  w-full  items-center max-w-[400px] ">
+        <section className="flex justify-evenly bg-[#c8eef9]  h-14  w-full  items-center max-w-[400px] ">
           {linkRendered.map((el) =>
             authUserActivePost &&
             el.text == "New Post" ? null : !authUserActivePost &&
