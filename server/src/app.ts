@@ -14,12 +14,17 @@ app.use(cors({
     METHODS:["GET","POST","PATCH","DELETE"]
 }));
 app.options('*', (req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    const origin = req.headers.origin;
+    if (["http://localhost:5173","https://transcendent-taffy-8552e6.netlify.app"].includes(origin)) {
+        res.setHeader('Access-Control-Allow-Origin', origin);
+    }
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
-    res.setHeader('Cache-Control', 'no-store');  //avoids caching
-    res.status(204).end(); // answers with headers
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    res.setHeader('Cache-Control', 'no-store');
+    res.status(204).end();
 });
+
 app.use(cookieParser())
 app.use(bodyParser.json());
 app.use(router)
