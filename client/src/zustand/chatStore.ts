@@ -22,7 +22,7 @@ export const chatStore = create<ChatStoreType>()((set) => ({
         set({ loading: true });
         console.log("getChatById")
         try {
-            const response = await fetch(`${API_URL}getChatById/${id}`);
+            const response = await fetch(`${API_URL}/getChatById/${id}`);
             if (!response.ok) {
                 const data = await response.json();
                 appStore.setState({ error: data.error });
@@ -44,7 +44,7 @@ export const chatStore = create<ChatStoreType>()((set) => ({
         set({ loading: true });
         console.log("getAllChats")
         try {
-            const response = await fetch(`${API_URL}getAllMyChats/${userStore.getState().user!.id}`);
+            const response = await fetch(`${API_URL}/getAllMyChats/${userStore.getState().user!.id}`);
             if (!response.ok) {
                 const data = await response.json();
                 appStore.setState({ error: data.error });
@@ -89,7 +89,7 @@ export const chatStore = create<ChatStoreType>()((set) => ({
         set({ loading: true });
         console.log("createChat")
         try {
-            const response = await fetch(`${API_URL}newChat`, {
+            const response = await fetch(`${API_URL}/newChat`, {
                 method: "POST",
                 body: JSON.stringify({ postId, ownerId, notOwnerId }),
                 headers: {
@@ -126,7 +126,7 @@ export const chatStore = create<ChatStoreType>()((set) => ({
         console.log("createMessage")
         console.log(chatId, message, userId)
         try {
-            const response = await fetch(`${API_URL}postMessage`, {
+            const response = await fetch(`${API_URL}/postMessage`, {
                 method: "POST",
                 body: JSON.stringify({ chatId, message, userId }),
                 headers: {

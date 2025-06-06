@@ -48,7 +48,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
         console.log("signIn")
 
         try {
-            const response = await fetch(`${API_URL}register`, {
+            const response = await fetch(`${API_URL}/register`, {
                 method: "POST",
                 body: JSON.stringify(user),
                 credentials: 'include',
@@ -80,7 +80,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
         set({ loading: true });
         console.log("logIn")
         try {
-            const response = await fetch(`${API_URL}login`, {
+            const response = await fetch(`${API_URL}/login`, {
                 method: "POST",
                 body: JSON.stringify(form),
                 credentials: 'include',
@@ -109,7 +109,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
         set({ loading: true });
         console.log("logInAuto")
         try {
-            const response = await fetch(`${API_URL}loginAuto`, {
+            const response = await fetch(`${API_URL}/loginAuto`, {
                 method: "GET",
                 credentials: 'include',
             });
@@ -143,7 +143,7 @@ export const userStore = create<UserStoreType>()((set, get) => ({
         set({ loading: true });
         console.log("logOut")
         try {
-            const response = await fetch(`${API_URL}logOut`, {
+            const response = await fetch(`${API_URL}/logOut`, {
                 method: "GET",
                 credentials: 'include'
             });

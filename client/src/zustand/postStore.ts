@@ -26,7 +26,7 @@ export const postStore = create<PostStoreType>()((set) => ({
         console.log("getPostById", id)
         set({ loading: true });
         try {
-            const response = await fetch(`${API_URL}getPostById/${id}`);
+            const response = await fetch(`${API_URL}/getPostById/${id}`);
             if (!response.ok) {
                 const data = await response.json();
                 appStore.setState({ error: data.error });
@@ -46,7 +46,7 @@ export const postStore = create<PostStoreType>()((set) => ({
         set({ loading: true });
         console.log('createActivePost')
         try {
-            const response = await fetch(`${API_URL}newPost`, {
+            const response = await fetch(`${API_URL}/newPost`, {
                 method: "POST",
                 body: JSON.stringify(post),
                 headers: {
@@ -79,7 +79,7 @@ export const postStore = create<PostStoreType>()((set) => ({
         console.log('deletePost')
         set({ loading: true });
         try {
-            const response = await fetch(`${API_URL}deletePost`, {
+            const response = await fetch(`${API_URL}/deletePost`, {
                 method: "DELETE",
                 body: JSON.stringify({ id }),
                 headers: {
@@ -109,7 +109,7 @@ export const postStore = create<PostStoreType>()((set) => ({
 
         try {
             const postId = appStore.getState().authUserActivePost!.id;
-            const response = await fetch(`${API_URL}closePost/${postId}`, {
+            const response = await fetch(`${API_URL}/closePost/${postId}`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -144,7 +144,7 @@ export const postStore = create<PostStoreType>()((set) => ({
         const id = appStore.getState().authUserPostsList!.filter((post: PostType) => post.isActive)[0].id;
 
         try {
-            const response = await fetch(`${API_URL}editPost`, {
+            const response = await fetch(`${API_URL}/editPost`, {
                 method: "PATCH",
                 body: JSON.stringify({ ...changes, id }),
                 headers: {
@@ -173,7 +173,7 @@ export const postStore = create<PostStoreType>()((set) => ({
         set({ loading: true });
         const id = userStore.getState().user!.id
         try {
-            const response = await fetch(`${API_URL}getUserPosts/${id}`);
+            const response = await fetch(`${API_URL}/getUserPosts/${id}`);
             if (!response.ok) {
                 const data = await response.json();
                 appStore.setState({ error: data.error });
