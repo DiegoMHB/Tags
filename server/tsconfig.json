@@ -17,5 +17,5 @@
     "src/controllers/users.ts",
     "src/dev/InitializersFunctions.ts"
 , "src/dev/defaultPosts.js", "src/dev/defaultUsers.js"  ],
-  "exclude": ["node_modules","src/**/*.test.ts"]
+  "exclude": ["node_modules","src/**/*.test.ts", "dev"]
 }
