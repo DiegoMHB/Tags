@@ -8,7 +8,7 @@ const app = express();
 
 
 app.use(cors({
-    origin: ["http://localhost:5173","https://tags-svuf.onrender.com"],
+    origin: ["http://localhost:5173","https://thetaggers.netlify.app/"],
     credentials: true,
     methods:["GET","POST","PATCH","DELETE"]
 }));
