@@ -8,7 +8,7 @@ const app = express();
 
 
 app.use(cors({
-    origin: ["http://localhost:5173","https://transcendent-taffy-8552e6.netlify.app"],
+    origin: ["http://localhost:5173","https://tags-svuf.onrender.com"],
     credentials: true,
     methods:["GET","POST","PATCH","DELETE"]
 }));
