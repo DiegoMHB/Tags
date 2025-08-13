@@ -4,7 +4,6 @@ import { userStore } from "../zustand/userStore";
 import { AllChatsListElement } from "../types/appTypes";
 import { formatDateTime } from "../assets/helperFunctions/dateFunctions";
 
-
 type AllChatsCompType = {
   chats?: AllChatsListElement[];
 };
@@ -13,7 +12,6 @@ export default function ChatListComponent({ chats }: AllChatsCompType) {
   const { user } = userStore();
   const { setSelectedPost, getUserById } = appStore();
   const navigate = useNavigate();
-  console.log(chats)
 
   return (
     <main className="flex flex-col justify-start items-center w-[100%] space-y-4 p-2 h-max-[800px]">
@@ -62,18 +60,18 @@ export default function ChatListComponent({ chats }: AllChatsCompType) {
                     }
                     alt={"photo"}
                     onClick={() => {
-                        getUserById(chat.notOwner.userId)
-                        navigate(`/profile/${chat.notOwner.userId}`);
-                      }}
+                      getUserById(chat.notOwner.userId);
+                      navigate(`/profile/${chat.notOwner.userId}`);
+                    }}
                   />
-                  <div className="flex flex-row justify-between w-[100%] ml-2"
-                  onClick={() => {
-                    navigate(`/chat/${chat.id}`);
-                  }} >
+                  <div
+                    className="flex flex-row justify-between w-[100%] ml-2"
+                    onClick={() => {
+                      navigate(`/chat/${chat.id}`);
+                    }}
+                  >
                     <div className="flex flex-col">
-                      <p
-                        
-                      >
+                      <p>
                         {chat.owner.userName == user.userName
                           ? chat.notOwner.userName
                           : chat.owner.userName}
@@ -81,7 +79,9 @@ export default function ChatListComponent({ chats }: AllChatsCompType) {
                       <p>{chat.messages[chat.messages.length - 1].content}</p>
                     </div>
                     <p className="text-sm ml-[max]">
-                      {formatDateTime(chat.messages[chat.messages.length - 1]?.date)}
+                      {formatDateTime(
+                        chat.messages[chat.messages.length - 1]?.date
+                      )}
                     </p>
                   </div>
                 </div>

@@ -37,6 +37,7 @@ export default function Post() {
     setPost(postById!);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allActivePosts, authUserPostsList, id]);
+  
 
   async function handleChatClick() {
     if (post!.userId === user.id) {
