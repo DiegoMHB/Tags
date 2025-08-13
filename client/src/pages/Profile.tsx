@@ -24,13 +24,15 @@ export default function Profile() {
 
   return (
     <div className="flex flex-col justify-between items-center w-screen space-y-4 p-2">
-      <div className="w-full">
-        <ProfileHeader />
-      </div>
-      <div className="w-full flex-grow overflow-y-auto scrollbar-hidden rounded-2xl h-[300px]">
+      
+      <ProfileHeader/>
+
+      <div className="flex-grow overflow-y-auto scrollbar-hidden rounded-2xl h-[300px]">
         <div className="flex flex-col justify-between items-center gap-3">
           {sortedPosts!.map((post: PostType) => (
-            <PostComponent key={post.id} post={post} />
+            <div className=" flex flex-col items-center w-[350px] p-2 gap-2 bg-gradient-to-t from-[#FFFFFF]/60 to-[#FFFFFF]/40 rounded-2xl ">
+              <PostComponent key={post.id} post={post} />
+            </div>
           ))}
         </div>
       </div>

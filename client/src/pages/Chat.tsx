@@ -39,8 +39,8 @@ export default function Chat() {
 
   return (
     <main className="flex flex-col justify-start w-[100%] space-y-4 ">
-      {pageContent == "all" && <ChatListComponent chats={[...(allChats ?? [])].reverse()} />}
-      {pageContent == "post" && <ChatListComponent chats={[...(filteredChats ?? [])].reverse()} />}
+      {pageContent == "all" && <ChatListComponent chats={allChats!} />}
+      {pageContent == "post" && <ChatListComponent chats={filteredChats} />}
       {pageContent == "chat" && <ChatComponent />}
     </main>
   );

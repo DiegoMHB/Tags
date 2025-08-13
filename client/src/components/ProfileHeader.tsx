@@ -8,12 +8,12 @@ export default function ProfileHeader() {
 
   return (
     <section
-      className="flex flex-col justify-between h-[100px] w-full p-2 rounded-2xl
+      className="flex flex-col justify-between h-[100px] w-[350px] p-3 rounded-2xl
     bg-gradient-to-t from-[#FFFFFF]/30 to-[#FFFFFF]/40"
     >
       <div className="flex gap-5 ">
         <img
-          className="w-20 h-20 object-cover m-1 mr-0 rounded-[100%]"
+          className="w-20 h-20 object-cover rounded-[100%]"
           src={user.profilePicture!}
           alt={"photo"}
         />
