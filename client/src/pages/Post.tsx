@@ -60,26 +60,24 @@ export default function Post() {
 
   return (
     <main className="flex flex-col justify-center items-center w-screen">
-      {/*POST HEADER*/}
 
+      {/*title of the post: if own post, others, or closed*/}
       {authUserActivePost && post && post.id === authUserActivePost.id && (
         <h3 className="text-xl text-center mb-3">You have an active post:</h3>
+      )}
+      {post && post.userId == user.id && post.id !== authUserActivePost?.id && (
+        <h3 className="text-2xl text-center m-3">Closed post:</h3>
+      )}
+      {selectedUser && post && post.userId !== user.id && (
+        <h3 className="text-xl text-center m-1">
+          Active post from: {selectedUser.name}
+        </h3>
       )}
 
       <div
         className="flex flex-col justify-center items-center gap-3
-                    bg-gradient-to-t from-[#FFFFFF]/60 to-[#FFFFFF]/40 rounded-2xl "  >
-        {post &&
-          post.userId == user.id &&
-          post.id !== authUserActivePost?.id && (
-            <h3 className="text-2xl text-center m-3">Closed post:</h3>
-          )}
-        {selectedUser && post && post.userId !== user.id && (
-          <h3 className="text-xl text-center m-1">
-            Active post from: {selectedUser.name}
-          </h3>
-        )}
-
+                            bg-gradient-to-t from-[#FFFFFF]/60 to-[#FFFFFF]/40 rounded-2xl "
+      >
         <div className="flex flex-col justify-center items-center ">
           {post && (
             <div className=" flex flex-col items-center w-[350px] p-2 gap-2">
@@ -118,8 +116,8 @@ export default function Post() {
                     disabled={selectedFile && !fotoUrl ? true : false}
                     mode={2}
                     link=""
-                    onClick={async() => {
-                       closeActivePost();
+                    onClick={async () => {
+                      closeActivePost();
 
                       navigate("/Profile");
                     }}

@@ -18,9 +18,8 @@ export default function Map() {
   useEffect(() => {
     getCoords();
     resetSelected();
-    if (!allActivePosts) {
-      getAllPosts();
-    }
+    //TODO: create in appStore a property that reflects that there was a change to call getAllPosts
+    getAllPosts();
   }, []);
 
   // Filtering post by category
@@ -56,7 +55,7 @@ export default function Map() {
             />
           )
         ) : (
-          <LocationMarker location={coordinates}/>
+          <LocationMarker location={coordinates} />
         )}
 
         {filteredPosts?.map((post) => (

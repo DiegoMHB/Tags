@@ -44,10 +44,8 @@ export default function PostComponent({ post }: PostComponentProps) {
   }, [timeLeft]);
 
   return (
-    <section
-      className="flex flex-col w-full p-2 mt-0 rounded-2xl relative"
-    >
-      <div className="w-13 h-13 rounded-full overflow-hidden flex items-center justify-center absolute right-[20px] top-[45px]">
+    <section className="flex flex-col w-full p-2 mt-0 rounded-2xl relative">
+      <div className="w-13 h-13 rounded-full overflow-hidden absolute right-[20px] top-[45px]">
         <img
           className={`w-full h-full transition-opacity duration-500 transform 
                 ${imageLoaded ? "opacity-100 " : "opacity-0 "}
@@ -102,10 +100,12 @@ export default function PostComponent({ post }: PostComponentProps) {
             <p className="text-xs mr-[90px]">{selectedUser!.userName}</p>
           </div>
         )}
-        <div className="flex justify-between items-baseline ">
-          <p className="text-xs font-bold">Chats:</p>
-          <p className="text-xs mr-[90px]">2</p>
-        </div>
+        {post.userId == user.id &&
+          <div className="flex justify-between items-baseline ">
+            <p className="text-xs font-bold">Chats:</p>
+            <p className="text-xs mr-[90px]">{post.chatList.length}</p>
+          </div>
+        }
         <div className="flex flex-col items-baseline">
           <p className="text-xs font-bold">Description:</p>
           <p className="text-[14px] ">{post.description}</p>
