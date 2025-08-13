@@ -7,9 +7,10 @@ import stampToDate from "../assets/helperFunctions/dateFunctions";
 import { useNavigate } from "react-router-dom";
 import { appStore } from "../zustand/appStore";
 import { postStore } from "../zustand/postStore";
-import { MapContainer, Marker, TileLayer } from "react-leaflet";
+import { MapContainer, TileLayer } from "react-leaflet";
 import { mapUtilities } from "../data/mapUtilities";
 import { LatLngTuple } from "leaflet";
+import LocationMarker from "./LocationMarker";
 
 type PostComponentProps = {
   post: PostType;
@@ -122,7 +123,7 @@ export default function PostComponent({ post }: PostComponentProps) {
               attribution={mapUtilities.attribution}
               id="map"
             />
-            <Marker position={post!.coordinates as LatLngTuple}></Marker>
+            <LocationMarker location={post.coordinates} />
           </MapContainer>
         </div>
       </div>
