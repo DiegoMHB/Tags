@@ -3,6 +3,7 @@ import BtnMain from "../components/buttons/BtnMain";
 import { appStore } from "../zustand/appStore";
 import { mapStore } from "../zustand/mapStore";
 import { userStore } from "../zustand/userStore";
+import { API_URL } from "../config";
 
 export default function Landing() {
   const { logInAuto, loggedOut } = userStore();
@@ -11,11 +12,14 @@ export default function Landing() {
 
   useEffect(() => {
     getCoords();
+    fetch(`${API_URL}/notificationVisita`, {
+      method: "POST",
+    });
     if (allActivePosts?.length == 0) {
       getAllPosts();
     }
   }, []);
-  
+
   useEffect(() => {
     if (!loggedOut) {
       logInAuto();

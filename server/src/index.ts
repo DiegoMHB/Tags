@@ -15,19 +15,19 @@ const port = process.env.PORT
 async function connectDB() {
     try {
         await db.authenticate();
-        await db.sync()
-            // // TODO: CLOSE EXPIRED POSTS 
-            // .then(() => Populate())//-- DEV --
-            // .then(() => {
-            //     if(port === "3000")
-            //     deleteExpiredPosts();
-            //     deleteDefaultPosts();
-            //     console.log("Database:::: deleted expired and default Posts")
-            // })
-            // .then(() => {
-            //     createPosts();
-            //     console.log("Database::: new default Posts created")
-            // })
+        await db.sync({force:true})
+            // TODO: CLOSE EXPIRED POSTS 
+            .then(() => Populate())//-- DEV --
+            .then(() => {
+                if(port === "3000")
+                deleteExpiredPosts();
+                deleteDefaultPosts();
+                console.log("Database:::: deleted expired and default Posts")
+            })
+            .then(() => {
+                createPosts();
+                console.log("Database::: new default Posts created")
+            })
         console.log("Connected with DB")
         app.listen(port, () => {
             console.log(`Example app listening on port  https://localhost:${port}`)

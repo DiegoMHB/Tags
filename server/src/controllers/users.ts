@@ -91,7 +91,6 @@ export const loginAuto = async (req, res) => {
     }
     try {
         const data = jwt.verify(token, jsonToken);
-        console.log("DATA-------->", data)
         const user = await User.findByPk(data.id);
         if (user instanceof User) {
             user.password = '';

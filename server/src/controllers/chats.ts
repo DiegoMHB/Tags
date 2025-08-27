@@ -168,10 +168,10 @@ export const postMessage = async (req: Request, res: Response): Promise<void> =>
             id: message.id
         };
 
-        // Actualizar la lista de mensajes del chat
+        // add new messaege
         const updatedMessages = [...chat.messages, newMsg];
 
-        // Guardar en la base de datos
+        // save in DB
         await chat.update({ messages: updatedMessages });
 
         res.status(200).json({ success: true, message: "Message added successfully", chat });
