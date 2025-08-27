@@ -25,6 +25,7 @@ export default function Chat() {
     if (id === user.id) {
       setPageContent("all");
     } else if (checkIdType(id!, authUserPostsList!)) {
+        console.log("selectedPost",selectedPost)
       const postId = selectedPost?.id;
       if (!postId) return;
       const filtered = allChats?.filter((chat) => chat.post.id === postId);

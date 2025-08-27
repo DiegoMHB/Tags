@@ -10,7 +10,7 @@ import { useEffect } from "react";
 import { userStore } from "../zustand/userStore";
 
 export default function RootLayout() {
-  const { mapRender, authUserActivePost } = appStore();
+  const { mapRender, authUserActivePost} = appStore();
   const { auth, user } = userStore();
   const url = useLocation().pathname;
   const navigate = useNavigate();
@@ -67,9 +67,7 @@ export default function RootLayout() {
 
         <section className="flex justify-evenly bg-[#c8eef9]  h-14  w-full  items-center max-w-[400px] ">
           {linkRendered.map((el) =>
-            authUserActivePost &&
-            el.text == "New Post" ? null : !authUserActivePost &&
-              el.text == "Post" ? null : (
+            authUserActivePost && el.text == "New Post" ? null : !authUserActivePost && el.text == "Post" ? null : (
               <NavBarElement
                 url={url}
                 key={el.id}

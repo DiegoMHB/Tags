@@ -12,7 +12,6 @@ export default function ChatListComponent({ chats }: AllChatsCompType) {
   const { user } = userStore();
   const { setSelectedPost, getUserById } = appStore();
   const navigate = useNavigate();
-  console.log(chats);
 
   return (
     <main className="flex flex-col justify-start items-center w-[100%] space-y-4 p-2 h-max-[800px]">

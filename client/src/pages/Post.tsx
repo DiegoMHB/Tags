@@ -13,7 +13,6 @@ import { postStore } from "../zustand/postStore";
 
 export default function Post() {
   const {
-    allChats,
     fotoUrl,
     selectedFile,
     allActivePosts,
@@ -21,7 +20,7 @@ export default function Post() {
     authUserPostsList,
     authUserActivePost,
   } = appStore();
-  const { createChat,getAllChats,   } = chatStore();
+  const { createChat, getAllChats } = chatStore();
   const { deletePost, closeActivePost } = postStore();
   const { user } = userStore();
 
@@ -38,15 +37,17 @@ export default function Post() {
     setPost(postById!);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [allActivePosts, authUserPostsList, id]);
-  
 
   async function handleChatClick() {
     getAllChats();
+    //owner
     if (post!.userId === user.id) {
-      //owner
-      navigate(`/chat/${post!.id}`);
+        
+        // const chatId = post!.chatList.find(el => el.notOwnerId === )
+      navigate(`/chat/${authUserActivePost!.id}`);
     } else {
       //not owner
+      console.log("not the owner")
       const chat = checkExistingChat(user.id, post!) as ChatListElement;
 
       if (chat) {
@@ -63,7 +64,6 @@ export default function Post() {
 
   return (
     <main className="flex flex-col justify-center items-center w-screen">
-
       {/*title of the post: if own post, others, or closed*/}
       {authUserActivePost && post && post.id === authUserActivePost.id && (
         <h3 className="text-xl text-center mb-3">You have an active post:</h3>

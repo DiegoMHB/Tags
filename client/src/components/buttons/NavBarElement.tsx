@@ -8,7 +8,7 @@ type NavBarElementProps = {
 };
 
 export default function NavBarElement({ text, link, url }: NavBarElementProps) {
-  const { setMapRender, mapRender } = appStore();
+  const { setMapRender, mapRender, setSelectedPost, authUserActivePost } = appStore();
 
   const navigate = useNavigate();
 
@@ -16,6 +16,9 @@ export default function NavBarElement({ text, link, url }: NavBarElementProps) {
     if ((url === "/" && mapRender) || (url === "/map" && mapRender)) {
       setMapRender();
       navigate(`${link}`);
+    }
+    if(text === "Post"){
+        setSelectedPost(authUserActivePost!.id)
     }
     navigate(`${link}`);
   }
