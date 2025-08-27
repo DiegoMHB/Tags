@@ -82,7 +82,6 @@ export const appStore = create<AppStoreType>(
                 const data = await response.json();
                 set({ loading: false, allActivePosts: data.posts });
             } catch (error) {
-                console.log("hola")
                 console.error(error);
             }
         },

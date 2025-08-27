@@ -21,8 +21,8 @@ export default function Chat() {
   >([]);
 
   useEffect(() => {
+    getAllChats();
     if (id === user.id) {
-      getAllChats();
       setPageContent("all");
     } else if (checkIdType(id!, authUserPostsList!)) {
       const postId = selectedPost?.id;
@@ -31,7 +31,6 @@ export default function Chat() {
       setFilteredChats(filtered ?? []);
       setPageContent("post");
     } else {
-      getAllChats();
       setPageContent("chat");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -20,7 +20,7 @@ export default function Post() {
     authUserPostsList,
     authUserActivePost,
   } = appStore();
-  const { createChat } = chatStore();
+  const { createChat,getAllChats  } = chatStore();
   const { deletePost, closeActivePost } = postStore();
   const { user } = userStore();
 
@@ -40,6 +40,7 @@ export default function Post() {
   
 
   async function handleChatClick() {
+    getAllChats();
     if (post!.userId === user.id) {
       //owner
       navigate(`/chat/${post!.id}`);

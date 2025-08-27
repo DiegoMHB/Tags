@@ -3,19 +3,20 @@ import { userStore } from "../../zustand/userStore";
 import { EmailAuthProvider } from "firebase/auth/web-extension";
 import { auth } from "./firebase";
 
-;
 
+// Ensures there is a Firebase user (creates an anonymous user if none exists)
 export async function ensureFirebaseUser(): Promise<User> {
-    // authenticated user:
+    // If already logged in, return the current user
     if (auth.currentUser) {
         console.log("User already authenticated:", auth.currentUser.uid);
         return auth.currentUser;
     }
 
-    // no auth user:
+    // If no user exists, create an anonymous account
     try {
         const result = await signInAnonymously(auth);
         const uid = result.user.uid;
+        // Save the UID in your zustand store
         userStore.getState().setUid(uid);
         console.log("Anonymous user created:", uid);
         return result.user;
@@ -25,6 +26,7 @@ export async function ensureFirebaseUser(): Promise<User> {
     }
 }
 
+// Upgrade an anonymous user to an email/password account
 export async function upgradeAnonUser(email: string, password: string) {
     if (!auth.currentUser) throw new Error("No user is signed in");
 
