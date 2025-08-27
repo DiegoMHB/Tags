@@ -13,6 +13,7 @@ import { postStore } from "../zustand/postStore";
 
 export default function Post() {
   const {
+    allChats,
     fotoUrl,
     selectedFile,
     allActivePosts,
@@ -20,7 +21,7 @@ export default function Post() {
     authUserPostsList,
     authUserActivePost,
   } = appStore();
-  const { createChat,getAllChats  } = chatStore();
+  const { createChat,getAllChats,   } = chatStore();
   const { deletePost, closeActivePost } = postStore();
   const { user } = userStore();
 
