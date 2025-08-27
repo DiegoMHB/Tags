@@ -2,7 +2,7 @@ import express from "express";
 import { register, login, loginAuto, logout, getUser } from "./controllers/users";
 import { newPost, getAllPosts, deletePost, closePost, editPost, getUserPosts, getPostById } from "./controllers/posts";
 import { newChat, getChatById, postMessage, getChatsByPostId, getAllMyChats } from "./controllers/chats";
-import {sendNotificationVisit} from "./controllers/notification"
+import {sendNotificationVisit} from "./controllers/notifications"
 
 
 const router = express.Router();

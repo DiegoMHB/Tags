@@ -6,7 +6,6 @@ const mail = process.env.EMAIL_USER
 
 export const sendNotificationVisit = async (req:Request, res: Response) => {
      try {
-        console.log("corriendo------------<")
     await sendMail(mail, "han entrado","alguien entro en tu cuenta!")
     res.status(200).send({ message: "Mail enviado" });
   } catch (error) {
