@@ -81,7 +81,7 @@ export const createPosts = async () => {
                     } catch (deleteError) {
                         console.error(`Error closing post ${newPost.id}:`, deleteError);
                     }
-                }, el.duration * 60 * 1000);
+                },Number( el.duration) * 60 * 1000);
                 if (el.isActive) {
                     userIndex++
                 } else continue
