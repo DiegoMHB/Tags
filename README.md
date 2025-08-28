@@ -17,7 +17,7 @@ Explore, share, and connect — all in one interactive map experience!
 ### Technologies
 - **Frontend**
   - React
-  - Zustand / Redux Toolkit for global state
+  - Zustand for global state
   - React Router for navigation
   - TailwindCSS for styling
   - React-Leaflet for interactive maps and custom markers
