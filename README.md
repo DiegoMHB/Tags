@@ -58,5 +58,3 @@ Explore, share, and connect — all in one interactive map experience!
 #### Navigation
 - React Router for page navigation
 
-
-/SocialMapApp
