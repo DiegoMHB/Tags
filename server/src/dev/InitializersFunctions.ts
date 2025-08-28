@@ -3,8 +3,8 @@ import jwt from 'jsonwebtoken';
 import bcrypt from "bcrypt";
 import Post from "../models/Post.model";
 import User from "../models/User.model";
-import { postsArray } from "./defaultPosts.js"
-import { usersArray } from "./defaultUsers.js"
+import  postsArray  from "./defaultPosts"
+import  usersArray  from "./defaultUsers"
 
 const jsonToken = process.env.JSON_TOKEN
 

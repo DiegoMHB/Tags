@@ -1,4 +1,4 @@
-exports.postsArray = [{
+const postsArray = [{
     category: "need",
     coordinates: [
         52.45894807145169,
@@ -62,3 +62,5 @@ exports.postsArray = [{
     isActive: true
 },
 ]
+
+export default postsArray

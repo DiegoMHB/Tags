@@ -1,6 +1,6 @@
 
 
-exports.usersArray = [
+const usersArray = [
     {
         name: "Diego Martin",
         userName: "diego84",
@@ -73,3 +73,4 @@ exports.usersArray = [
 
 
 
+export default usersArray
